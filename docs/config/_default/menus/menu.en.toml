@@ -1,0 +1,26 @@
+#  menu items
+[[main]]
+name = "Documentation"
+weight = 2
+url = "docs/"
+
+[[main]]
+  name = "Mokksy API"
+  weight = 3
+  url = "https://mokksy.github.io/mokksy/"
+
+[[main]]
+name = "Mokksy API"
+weight = 3
+url = "https://mokksy.github.io/mokksy/"
+
+[[main]]
+name = "AI-Mocks API"
+weight = 4
+url = "https://mokksy.dev/apidocs/"
+
+[[main]]
+  name = "GitHub"
+  weight = 4
+  url = "https://github.com/mokksy"
+

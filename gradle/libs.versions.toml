@@ -1,0 +1,119 @@
+[versions]
+anthropic-java = "2.18.0"
+assertj = "3.27.7"
+atomicfu = "0.32.1"
+assertk = "0.28.1"
+awaitility = "4.3.0"
+datafaker = "2.5.4"
+detekt = "2.0.0-alpha.2"
+dokka = "2.2.0"
+finchly = "0.1.1"
+google-genai = "1.45.0"
+google-adk = "1.0.0"
+junit = "6.0.3"
+kotest = "5.9.1"
+kotlin = "2.2.21"
+kotlinLogging = "8.0.01"
+kotlinxCoroutines = "1.10.2"
+kotlinxCollectionsImmutable = "0.4.0"
+kotlinxDatetime = "0.7.1-0.6.x-compat"
+kotlinxSchema = "0.4.4"
+kotlinxSerialization = "1.9.0"
+kover = "0.9.8"
+ktor = "3.3.3"
+langchain4j = "1.12.2"
+lincheck = "3.5"
+mockk = "1.14.9"
+mokksy = "0.9.1"
+ai-mocks = "0.7.2"
+netty = "4.2.12.Final"
+openai = "4.30.0"
+openrewrite = "7.29.0"
+slf4j = "2.0.17"
+spring = "6.2.17"
+spring-ai = "1.1.4"
+system-stubs = "2.1.8"
+jansi = "2.4.3"
+knit = "0.5.1"
+vanniktechMavenPublish = "0.36.0"
+
+[libraries]
+# buildSrc dependencies
+dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+gradle-maven-publish-plugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktechMavenPublish" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+mokksy = { module = "dev.mokksy:mokksy", version.ref = "mokksy" }
+ai-mocks-a2a-client = { module = "dev.mokksy.aimocks:a2a-client", version.ref = "ai-mocks" }
+ai-mocks-a2a = { module = "dev.mokksy.aimocks:ai-mocks-a2a", version.ref = "ai-mocks" }
+ai-mocks-anthropic = { module = "dev.mokksy.aimocks:ai-mocks-anthropic", version.ref = "ai-mocks" }
+ai-mocks-gemini = { module = "dev.mokksy.aimocks:ai-mocks-gemini", version.ref = "ai-mocks" }
+ai-mocks-ollama = { module = "dev.mokksy.aimocks:ai-mocks-ollama", version.ref = "ai-mocks" }
+ai-mocks-openai = { module = "dev.mokksy.aimocks:ai-mocks-openai", version.ref = "ai-mocks" }
+anthropic-java = { group = "com.anthropic", name = "anthropic-java", version.ref = "anthropic-java" }
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
+awaitility = { group = "org.awaitility", name = "awaitility", version.ref = "awaitility" }
+awaitility-kotlin = { group = "org.awaitility", name = "awaitility-kotlin", version.ref = "awaitility" }
+datafaker = { module = "net.datafaker:datafaker", version.ref = "datafaker" }
+finchly = { module = "me.kpavlov.finchly:finchly", version.ref = "finchly" }
+google-adk = { group = "com.google.adk", name = "google-adk", version.ref = "google-adk" }
+google-genai = { group = "com.google.genai", name = "google-genai", version.ref = "google-genai" }
+jansi = { module = "org.fusesource.jansi:jansi", version.ref = "jansi" }
+junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-assertions-json = { module = "io.kotest:kotest-assertions-json", version.ref = "kotest" }
+kotest-assertions-ktor = { module = "io.kotest:kotest-assertions-ktor", version.ref = "kotest" }
+kotlinLogging = { module = "io.github.oshai:kotlin-logging", version.ref = "kotlinLogging" }
+kotlinx-atomicfu = { group = "org.jetbrains.kotlinx", name = "atomicfu", version.ref = "atomicfu" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
+kotlinx-coroutines-core-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+kotlinx-schema-json = { module = "org.jetbrains.kotlinx:kotlinx-schema-json", version.ref = "kotlinxSchema" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+ktor-bom = { group = "io.ktor", name = "ktor-bom", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation" }
+ktor-client-core = { module = "io.ktor:ktor-client-core" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin" }
+ktor-client-java = { module = "io.ktor:ktor-client-java" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging" }
+ktor-serialization-jackson = { module = "io.ktor:ktor-serialization-jackson" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json" }
+ktor-server-call-logging = { module = "io.ktor:ktor-server-call-logging" }
+ktor-server-cio = { module = "io.ktor:ktor-server-cio" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation" }
+ktor-server-core = { module = "io.ktor:ktor-server-core" }
+ktor-server-double-receive = { module = "io.ktor:ktor-server-double-receive" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty" }
+ktor-server-sse = { module = "io.ktor:ktor-server-sse" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host" }
+ktor-sse = { module = "io.ktor:ktor-sse" }
+langchain4j-anthropic = { group = "dev.langchain4j", name = "langchain4j-anthropic" }
+langchain4j-bom = { group = "dev.langchain4j", name = "langchain4j-bom", version.ref = "langchain4j" }
+langchain4j-gemini = { group = "dev.langchain4j", name = "langchain4j-google-ai-gemini" }
+langchain4j-kotlin = { group = "dev.langchain4j", name = "langchain4j-kotlin" }
+langchain4j-ollama = { group = "dev.langchain4j", name = "langchain4j-ollama" }
+langchain4j-openai = { group = "dev.langchain4j", name = "langchain4j-open-ai" }
+lincheck = { module = "org.jetbrains.lincheck:lincheck", version.ref = "lincheck" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-dsl = { module = "io.mockk:mockk-dsl", version.ref = "mockk" }
+netty-bom = { group = "io.netty", name = "netty-bom", version.ref = "netty" }
+openai-java = { group = "com.openai", name = "openai-java", version.ref = "openai" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+spring-ai-bom = { group = "org.springframework.ai", name = "spring-ai-bom", version.ref = "spring-ai" }
+spring-ai-client-chat = { group = "org.springframework.ai", name = "spring-ai-client-chat" }
+spring-ai-gemini = { group = "org.springframework.ai", name = "spring-ai-vertex-ai-gemini" }
+spring-ai-ollama = { group = "org.springframework.ai", name = "spring-ai-ollama" }
+spring-ai-openai = { group = "org.springframework.ai", name = "spring-ai-openai" }
+spring-bom = { group = "org.springframework", name = "spring-framework-bom", version.ref = "spring" }
+system-stubs = { module = "uk.org.webcompere:system-stubs-jupiter", version.ref = "system-stubs" }
+
+[plugins]
+detekt = { id = "dev.detekt", version.ref = "detekt" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+knit = { id = "org.jetbrains.kotlinx.knit", version.ref = "knit" }
+kotlinx-atomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "atomicfu" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+openrewrite = { id = "org.openrewrite.rewrite", version.ref = "openrewrite" }

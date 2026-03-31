@@ -1,0 +1,4 @@
+[submodule "docs/themes/compose"]
+	path = docs/themes/compose
+	url = https://github.com/onweru/compose.git
+	shallow = true

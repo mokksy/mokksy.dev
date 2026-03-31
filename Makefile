@@ -11,7 +11,6 @@ docs:
 	git submodule sync && \
   git submodule update --init --depth=1 && \
 	cd docs && \
-	(cd themes/docsy && npm install)
 	hugo server -D --watch
 
 .PHONY: knit

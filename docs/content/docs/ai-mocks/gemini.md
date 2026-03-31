@@ -14,13 +14,13 @@ Currently, it supports basic content generation requests and streaming responses
 
 Include the library in your test dependencies (Maven or Gradle).
 
-{{< tabs "dependencies" >}}
-{{< tab "Gradle" >}}
+
+For Gradle project:
 ```kotlin
 testImplementation("dev.mokksy.aimocks:ai-mocks-gemini-jvm:$latestVersion")
 ```
-    {{< /tab >}}
-    {{< tab "Maven" >}}
+    
+    For Maven project:
 ```xml
 <dependency>
   <groupId>dev.mokksy.aimocks</groupId>
@@ -30,8 +30,8 @@ testImplementation("dev.mokksy.aimocks:ai-mocks-gemini-jvm:$latestVersion")
 </dependency>
 ```
 
-{{< /tab >}}
-{{< /tabs >}}
+
+
 
 ## Content Generation API
 

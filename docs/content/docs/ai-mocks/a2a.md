@@ -16,14 +16,14 @@ Supported A2A protocol version is **0.3.0**.
 
 Include the library in your test dependencies (Maven or Gradle).
 
-{{< tabs "dependencies" >}}
-{{< tab "Gradle" >}}
+
+For Gradle project:
 ```kotlin
 testImplementation("dev.mokksy.aimocks:ai-mocks-a2a-jvm:$latestVersion")
 ```
 
-{{< /tab >}}
-{{< tab "Maven" >}}
+
+For Maven project:
 ```xml
 <dependency>
     <groupId>dev.mokksy.aimocks</groupId>
@@ -33,8 +33,6 @@ testImplementation("dev.mokksy.aimocks:ai-mocks-a2a-jvm:$latestVersion")
 </dependency>
 ```
 
-{{< /tab >}}
-{{< /tabs >}}
 
 ### Initialize the Server
 

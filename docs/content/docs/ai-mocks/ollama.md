@@ -21,14 +21,14 @@ Currently, it supports the main endpoints of the Ollama API, including:
 
 Include the library in your test dependencies (Maven or Gradle).
 
-{{< tabs "dependencies" >}}
-{{< tab "Gradle" >}}
+
+For Gradle project:
 ```kotlin
 testImplementation("dev.mokksy.aimocks:ai-mocks-ollama-jvm:$latestVersion")
 ```
 
-{{< /tab >}}
-{{< tab "Maven" >}}
+
+For Maven project:
 ```xml
 <dependency>
   <groupId>dev.mokksy.aimocks</groupId>
@@ -38,8 +38,8 @@ testImplementation("dev.mokksy.aimocks:ai-mocks-ollama-jvm:$latestVersion")
 </dependency>
 ```
 
-{{< /tab >}}
-{{< /tabs >}}
+
+
 
 ## Basic Setup
 

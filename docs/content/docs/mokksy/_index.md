@@ -19,10 +19,8 @@ _Mokksy_ is a mock HTTP server built with [Kotlin](https://kotlinlang.org/) and 
 ## Installation
 
 Add Mokksy to your project dependencies:
-
-{{< tabs "dependencies" >}}
-{{< tab "Gradle" >}}
-
+  
+For Gradle project:
 ```kotlin
 // For JVM projects
 testImplementation("dev.mokksy:mokksy-jvm:$latestVersion")
@@ -31,9 +29,7 @@ testImplementation("dev.mokksy:mokksy-jvm:$latestVersion")
 testImplementation("dev.mokksy:mokksy:$latestVersion")
 ```
 
-{{< /tab >}}
-{{< tab "Maven" >}}
-
+For Maven project:
 ```xml
 
 <dependency>
@@ -43,9 +39,6 @@ testImplementation("dev.mokksy:mokksy:$latestVersion")
   <scope>test</scope>
 </dependency>
 ```
-
-{{< /tab >}}
-{{< /tabs >}}
 
 ## Basic Usage
 

@@ -14,15 +14,15 @@ testing by allowing you to define request expectations and responses without mak
 
 Include the library in your test dependencies (Maven or Gradle).
 
-{{< tabs "dependencies" >}}
-{{< tab "Gradle" >}}
+
+For Gradle project:
 
 ```kotlin
 testImplementation("dev.mokksy.aimocks:ai-mocks-anthropic-jvm:$latestVersion")
 ```
 
-{{< /tab >}}
-{{< tab "Maven" >}}
+
+For Maven project:
 
 ```xml
 <dependency>
@@ -33,8 +33,8 @@ testImplementation("dev.mokksy.aimocks:ai-mocks-anthropic-jvm:$latestVersion")
 </dependency>
 ```
 
-{{< /tab >}}
-{{< /tabs >}}
+
+
 
 ### Initialize the Server
 

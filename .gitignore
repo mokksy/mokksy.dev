@@ -45,6 +45,7 @@ buildNumber.properties
 
 ### JetBrains template
 .idea/
+!.idea/icon.png
 *.iml
 *.ipr
 

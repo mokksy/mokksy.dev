@@ -17,7 +17,7 @@ url = "https://mokksy.github.io/mokksy/"
 [[main]]
 name = "AI-Mocks API"
 weight = 4
-url = "https://mokksy.dev/apidocs/"
+url = "https://mokksy.github.io/ai-mocks/"
 
 [[main]]
   name = "GitHub"

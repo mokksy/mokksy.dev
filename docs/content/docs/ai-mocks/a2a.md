@@ -1445,7 +1445,7 @@ fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
 ```kotlin
-a2aServer.verifyNoUnexpectedRequests()
+a2aServer.verifyNoUnmatchedRequests()
 ```
 
 <!--- SUFFIX

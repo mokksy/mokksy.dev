@@ -36,11 +36,6 @@ jobs:
           distribution: ${{ env.JVM_DISTRIBUTION }}
           cache: gradle
 
-#      - name: Setup packages
-#        run: |-
-#          npm install --save-dev autoprefixer postcss-cli
-#          (cd themes/docsy && npm install)
-
       - name: 🐘Setup Gradle
         uses: gradle/actions/setup-gradle@39e147cb9de83bb9910b8ef8bd7fff0ee20fcd6f # v6.0.1
 
@@ -50,9 +45,9 @@ jobs:
           hugo-version: '0.158.0'
           extended: true
 
-#      - name: Generate Dokka Site
-#        run: |-
-#          make clean docs
+      - name: Run Knit
+        run: |-
+          make knit
 
       - name: Build Hugo Site
         run: |-

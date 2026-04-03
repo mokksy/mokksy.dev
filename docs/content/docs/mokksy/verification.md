@@ -2,6 +2,8 @@
 title: "Verification and request journal"
 weight: 40
 toc: true
+summary: |-
+  Verify your tests with Mokksy. Learn how to catch unmatched requests and unused stubs using the Request Journal to ensure your integration tests are 100% accurate.
 ---
 
 Mokksy provides two complementary verification methods that check opposite sides of the stub/request contract.

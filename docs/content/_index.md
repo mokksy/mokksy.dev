@@ -2,6 +2,19 @@
 title: "Mokksy and AI-Mocks"
 #weight: 0
 featureImage: "mokksy-mascot-256.png"
+description: |-
+  Mokksy & AI-Mocks: The modern mock HTTP server for Kotlin & Ktor. High-fidelity mocking for OpenAI, Anthropic, Gemini, and SSE streaming where WireMock falls short.
+Keywords: 
+  - Mokksy
+  - AI-Mocks
+  - Mock HTTP server
+  - Kotlin
+  - Ktor
+  - OpenAI
+  - Anthropic
+  - Gemini
+  - SSE
+  - streaming
 ---
 
 _Mokksy_ and _AI-Mocks_ are mock HTTP and LLM (Large Language Model) servers inspired by WireMock, with support for

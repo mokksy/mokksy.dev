@@ -2,6 +2,8 @@
 title: "Stubbing responses"
 weight: 10
 toc: true
+summary: |-
+  Learn how to stub HTTP responses in Mokksy. Define custom body content, status codes, and headers with a fluent Kotlin DSL. Perfect for simulating complex API behaviors.
 ---
 
 Mokksy supports all HTTP verbs. Here are some examples.

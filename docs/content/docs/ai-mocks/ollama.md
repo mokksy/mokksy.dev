@@ -2,6 +2,8 @@
 title: "Ollama"
 weight: 40
 toc: true
+summary: |-
+  Documentation for AI-Mocks Ollama: Learn to mock local LLM endpoints. Setup guides for streaming, request matching, and LangChain4j integrations for development.
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-ollama.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-ollama) 
 

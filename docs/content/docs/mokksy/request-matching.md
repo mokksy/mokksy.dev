@@ -2,6 +2,8 @@
 title: "Request matching"
 weight: 30
 toc: true
+summary: |-
+  Master request matching in Mokksy. Use path matchers, header verification, and body content matchers with a fluent Kotlin DSL to route mock HTTP requests accurately.
 ---
 
 ## Request specification matchers

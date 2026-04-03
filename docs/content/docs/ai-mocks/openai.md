@@ -2,6 +2,8 @@
 title: "OpenAI"
 weight: 20
 toc: true
+summary: |-
+  Mock OpenAI APIs with ease. AI-Mocks supports Chat Completions, Embeddings, and Moderations with true streaming and error simulation. Integrated with LangChain4j and Spring AI.
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-openai.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-openai)
 

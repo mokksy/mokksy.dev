@@ -1,6 +1,8 @@
 ---
 title: "AI-Mocks"
 weight: 30
+description: |-
+  Official Mokksy Documentation: Get started with mock HTTP and LLM servers. Setup guides for SSE streaming, error simulation, and agent-to-agent protocols.
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-core.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-core)
 

@@ -1,6 +1,8 @@
 ---
 title: "Mokksy and AI-Mocks"
 #weight: 1
+summary: |-
+  Integration guides for Mokksy: Set up mock servers for LangChain4j, Spring-AI, and Google Gen AI Java SDK. Complete documentation for AI response simulation.
 ---
 
 Welcome to the Mokksy and AI-Mocks documentation. This documentation will help you get started with using Mokksy and AI-Mocks for mocking HTTP and LLM APIs in your projects.

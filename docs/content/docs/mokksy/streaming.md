@@ -2,6 +2,8 @@
 title: "Streaming and SSE"
 weight: 20
 toc: true
+summary: |-
+  Mock true Server-Sent Events (SSE) and chunked streaming responses with Mokksy. Overcome WireMock limitations with native support for real-time data flow in Kotlin.
 ---
 
 ## Server-Sent Events (SSE)

@@ -2,6 +2,8 @@
 title: "Anthropic"
 weight: 10
 toc: true
+summary: |-
+  Mock Anthropic Claude APIs locally with AI-Mocks. Support for Messages API, SSE streaming, and error simulation. Fully compatible with LangChain4j and the official Anthropic SDK.
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-anthropic.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-anthropic) 
 

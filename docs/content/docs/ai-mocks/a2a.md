@@ -3,6 +3,8 @@ title: "A2A Protocol"
 description: "Agent2Agent (A2A) Protocol"
 weight: 50
 toc: true
+summary: |-
+  Documentation for mocking the A2A protocol. Learn to simulate agent capabilities, streaming updates, and notification history using AI-Mocks for local development.
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-a2a.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-a2a)
 

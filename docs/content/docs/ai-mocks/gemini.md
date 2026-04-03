@@ -2,6 +2,8 @@
 title: "Gemini"
 weight: 30
 toc: true
+summary: |-
+  Documentation for AI-Mocks Gemini: Learn how to mock Vertex AI Gemini endpoints. Includes setup guides for streaming, request matching, and Spring AI integrations.
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-gemini.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-gemini)
 

@@ -10,6 +10,11 @@
 <meta property="og:url"         content="{{ .Permalink }}">
 
 {{ partial "opengraph.html" . }}
+{{ partial "schema.html" . }}
+{{ partial "twitter_cards.html" . }}
+{{- if hugo.IsProduction }}
+  {{- template "_internal/google_analytics.html" . }}
+{{- end -}}
 
 <!-- Title -->
 <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} — {{ .Site.Title }}{{ end }}</title>

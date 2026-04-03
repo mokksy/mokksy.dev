@@ -6,6 +6,7 @@ repo = "https://github.com/mokksy/mokksy.dev"
 # Defaults to true if not set
 # Enable copyRight Footer Stamp. Takes in attribution
 enableCopyright = true
+images = ['mokksy-mascot-512.png']
 
 # search
 [search]

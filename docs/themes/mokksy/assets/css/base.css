@@ -35,6 +35,10 @@
   --bg-code:        #1e1f22;  /* code blocks — always dark for contrast */
   --bg-code-inline: rgba(143, 62, 227, 0.08);  /* inline code tint */
   --bg-nav:        rgba(255, 255, 255, 0.82);
+  --hero-terminal-bg: #ffffff;
+  --hero-terminal-bar-bg: #f5f5f7;
+  --hero-terminal-border: rgba(0, 0, 0, 0.08);
+  --hero-terminal-ln: #7a7f87;
 
   --text:          #1d1d1f;
   --text-heading:  #1d1d1f;
@@ -82,6 +86,10 @@
   --bg-code:        #1a1b1e;  /* slightly darker than page bg for depth */
   --bg-code-inline: rgba(143, 62, 227, 0.15);
   --bg-nav:        rgba(43, 43, 43, 0.88);
+  --hero-terminal-bg: #1a1b1e;
+  --hero-terminal-bar-bg: #313335;
+  --hero-terminal-border: #474a4d;
+  --hero-terminal-ln: #60656b;
 
   /* IDEA Dracula default text: #a9b7c6 */
   --text:          #a9b7c6;

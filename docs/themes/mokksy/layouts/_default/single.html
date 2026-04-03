@@ -12,6 +12,11 @@
     <!-- Breadcrumb -->
     {{ partial "breadcrumb.html" . }}
 
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}
+    <p class="docs-page-description">{{ . }}</p>
+    {{ end }}
+
     <!-- Doc metadata -->
     <div class="doc-meta">
       {{ with .Params.since }}

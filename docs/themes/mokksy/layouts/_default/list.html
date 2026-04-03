@@ -12,7 +12,7 @@
 
     <h1>{{ .Title }}</h1>
     {{ with .Description }}
-    <p style="font-size:18px;color:var(--text-muted);margin-bottom:2rem;">{{ . }}</p>
+    <p class="docs-page-description">{{ . }}</p>
     {{ end }}
 
     {{ if .Content }}

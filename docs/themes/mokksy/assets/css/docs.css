@@ -57,7 +57,7 @@
 .copy-btn svg { width: 13px; height: 13px; }
 
 .code-body {
-  padding: 20px 22px;
+  padding: 16px 18px;
   overflow-x: auto;
 }
 .code-body pre { margin: 0; }
@@ -125,14 +125,14 @@
   background: var(--bg-code);
 }
 .tab-panel.active { display: block; }
-.tab-panel .code-body { padding: 20px 22px; }
+.tab-panel .code-body { padding: 16px 18px; }
 
 /* ─── Chroma Syntax Highlighting — Light ─────────────────────────────────────── */
 /* ─── Chroma base ─────────────────────────────────────────────────────────────────── */
 .highlight { margin: 1.25rem 0; }
 .highlight pre.chroma {
   margin: 0;
-  padding: 18px 0;
+  padding: 14px 0;
   overflow-x: auto;
   font-family: var(--font-mono);
   font-size: 14.5px;
@@ -146,9 +146,9 @@
 .chroma .ln {
   display: inline-block;
   min-width: 2.2em;
-  padding-right: 1.2em;
-  padding-left: 1em;
-  margin-right: 1.2em;
+  padding-right: 1em;
+  padding-left: 0.75em;
+  margin-right: 0.9em;
   text-align: right;
   border-right: 1px solid var(--border);
   opacity: 0.38;
@@ -158,7 +158,7 @@
 }
 
 /* Code content column */
-.chroma .cl { padding-right: 22px; flex: 1; }
+.chroma .cl { padding-right: 18px; flex: 1; }
 
 /* Language label — populated by JS via data-lang on .highlight */
 .highlight {
@@ -388,6 +388,13 @@
 .docs-content h2:hover .anchor,
 .docs-content h3:hover .anchor,
 .docs-content h4:hover .anchor { opacity: 1; }
+
+/* ─── Page Description ───────────────────────────────────────────────────────── */
+.docs-page-description {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
 
 /* ─── Last updated ───────────────────────────────────────────────────────────── */
 .doc-meta {

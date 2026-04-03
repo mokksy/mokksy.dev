@@ -16,6 +16,8 @@ Attributes:
 */}}
 
 {{ $id := printf "ct-%s" (now.UnixNano | string) }}
+{{ .Scratch.Set "codeTabsWrapperId" $id }}
+{{ .Scratch.Set "codeTabsPanelIndex" 0 }}
 
 <div class="code-tabs-wrap" id="{{ $id }}">
   <div class="code-tabs-header">
@@ -39,6 +41,8 @@ Attributes:
   // Build tab buttons from panels
   panels.forEach(function(panel, i){
     var lang = panel.dataset.lang || 'code';
+    var panelId = panel.id || ('{{ $id }}-panel-' + i);
+    panel.id = panelId;
     var label = lang.charAt(0).toUpperCase() + lang.slice(1);
     var btn = document.createElement('button');
     btn.className = 'tab-btn' + (i===0 ? ' active' : '');
@@ -46,6 +50,7 @@ Attributes:
     btn.dataset.lang = lang;
     btn.textContent = label;
     btn.setAttribute('role','tab');
+    btn.setAttribute('aria-controls', panelId);
     btn.setAttribute('aria-selected', i===0 ? 'true' : 'false');
     tabList.appendChild(btn);
     if(i===0) panel.classList.add('active');

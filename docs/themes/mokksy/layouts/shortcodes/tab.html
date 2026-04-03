@@ -8,8 +8,16 @@ Params:
 
 {{ $lang     := .Get "lang"     | default "text" }}
 {{ $filename := .Get "filename" | default "" }}
+{{ $wrapperId := "" }}
+{{ $panelIndex := 0 }}
+{{ with .Parent }}
+  {{ $wrapperId = .Scratch.Get "codeTabsWrapperId" | default "" }}
+  {{ $panelIndex = .Scratch.Get "codeTabsPanelIndex" | default 0 }}
+  {{ .Scratch.Set "codeTabsPanelIndex" (add $panelIndex 1) }}
+{{ end }}
+{{ $panelId := printf "%s-panel-%d" (cond (ne $wrapperId "") $wrapperId "ct") $panelIndex }}
 
-<div class="tab-panel" data-lang="{{ $lang }}" role="tabpanel">
+<div class="tab-panel" id="{{ $panelId }}" data-lang="{{ $lang }}" role="tabpanel">
   <div class="code-body">
     {{ if $filename }}
     <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);">

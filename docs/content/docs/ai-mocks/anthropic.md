@@ -33,9 +33,6 @@ For Maven project:
 </dependency>
 ```
 
-
-
-
 ### Initialize the Server
 
 <!--- CLEAR -->

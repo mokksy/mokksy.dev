@@ -65,7 +65,7 @@ assertThat(response.body()).isEqualTo("data: One\r\n\r\ndata: Two\r\n\r\n");
 
 ## Long-lived SSE streams
 
-By default, the SSE stream closes when the flow completes. 
+By default, the SSE stream closes when the flow completes.
 
 To keep it open (e.g. for clients that reconnect on close), end the flow with `awaitCancellation()`:
 

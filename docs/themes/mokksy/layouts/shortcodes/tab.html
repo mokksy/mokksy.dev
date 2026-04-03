@@ -20,10 +20,13 @@ Params:
 <div class="tab-panel" id="{{ $panelId }}" data-lang="{{ $lang }}" role="tabpanel">
   <div class="code-body">
     {{ if $filename }}
-    <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);">
+    <div class="tab-filename">
       {{ $filename }}
     </div>
     {{ end }}
-    {{ highlight (trim .Inner "\n") $lang "" }}
+    {{ $code := trim .Inner "\n" }}
+    {{ $code = replaceRE "^```[a-zA-Z]*\\s*\n?" "" $code }}
+    {{ $code = replaceRE "\n?```\\s*$" "" $code }}
+    {{ highlight (trim $code "\n") $lang "" }}
   </div>
 </div>

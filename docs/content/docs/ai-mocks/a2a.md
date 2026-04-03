@@ -1,6 +1,7 @@
 ---
-title: "Agent2Agent Protocol"
-#weight: 50
+title: "A2A Protocol"
+description: "Agent2Agent (A2A) Protocol"
+weight: 50
 toc: true
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-a2a.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-a2a)
@@ -17,14 +18,8 @@ Supported A2A protocol version is **0.3.0**.
 
 Include the library in your test dependencies (Maven or Gradle).
 
-
-For Gradle project:
-```kotlin
-testImplementation("dev.mokksy.aimocks:ai-mocks-a2a-jvm:$latestVersion")
-```
-
-
-For Maven project:
+{{< code-tabs >}}
+{{< tab lang="xml" filename="pom.xml" >}}
 ```xml
 <dependency>
     <groupId>dev.mokksy.aimocks</groupId>
@@ -33,6 +28,25 @@ For Maven project:
   <scope>test</scope>
 </dependency>
 ```
+{{< /tab >}}
+{{< tab lang="kotlin" filename="build.gradle.kts" >}}
+```kotlin
+dependencies {
+    testImplementation("me.kpavlov.aimocks:ai-mocks-a2a:0.x.x")
+    // Optional: typed model classes
+    testImplementation("me.kpavlov.aimocks:ai-mocks-a2a-models:0.x.x")
+}
+```
+{{< /tab >}}
+{{< tab lang="groovy" filename="build.gradle" >}}
+```groovy
+dependencies {
+    testImplementation 'me.kpavlov.aimocks:ai-mocks-a2a:0.x.x'
+    testImplementation 'me.kpavlov.aimocks:ai-mocks-a2a-models:0.x.x'
+}
+```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 
 ### Initialize the Server
@@ -43,9 +57,13 @@ import dev.mokksy.aimocks.a2a.MockAgentServer
 
 fun main () {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val a2aServer = MockAgentServer(verbose = true)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -68,10 +86,14 @@ import dev.mokksy.aimocks.a2a.MockAgentServer
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create a Ktor client configured for A2A
 val a2aClient = A2AClientFactory.create(baseUrl = a2aServer.baseUrl())
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -94,6 +116,8 @@ import kotlinx.serialization.json.Json
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create a Ktor client configured for A2A
 val a2aClient = HttpClient(Java) {
@@ -113,6 +137,8 @@ val a2aClient = HttpClient(Java) {
     }
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -135,6 +161,8 @@ import kotlin.time.Duration.Companion.milliseconds
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create an AgentCard object
 val agentCard = AgentCard.create {
@@ -172,6 +200,8 @@ a2aServer.agentCard() responds {
     card = agentCard
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -204,6 +234,8 @@ val a2aClient = HttpClient(Java) {
     install(DefaultRequest) { url(a2aServer.baseUrl()) }
 }
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Make a GET request to the Agent Card endpoint
 val response = a2aClient
@@ -215,6 +247,8 @@ val response = a2aClient
 // Parse the response into an AgentCard object
 val receivedCard = Json.decodeFromString<AgentCard>(response)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -234,6 +268,8 @@ import dev.mokksy.aimocks.a2a.MockAgentServer
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Configure the mock server to respond with a task
 a2aServer.getTask() responds {
@@ -253,6 +289,8 @@ a2aServer.getTask() responds {
     }
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -269,6 +307,8 @@ import dev.mokksy.aimocks.a2a.model.taskNotFoundError
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Configure the mock server to respond with a task not found error
 a2aServer.getTask() responds {
@@ -276,6 +316,8 @@ a2aServer.getTask() responds {
     error = taskNotFoundError()
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -314,6 +356,8 @@ val a2aClient = HttpClient(Java) {
     install(DefaultRequest) { url(a2aServer.baseUrl()) }
 }
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create a GetTaskRequest object
 val jsonRpcRequest = GetTaskRequest(
@@ -336,6 +380,8 @@ val response = a2aClient
 val body = response.body<String>()
 val payload = Json.decodeFromString<GetTaskResponse>(body)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -357,6 +403,8 @@ import dev.mokksy.aimocks.a2a.model.create
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create a Task object
 val task = Task.create {
@@ -380,6 +428,8 @@ a2aServer.sendMessage() responds {
   result = task
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -417,6 +467,8 @@ val a2aClient = HttpClient(Java) {
     install(DefaultRequest) { url(a2aServer.baseUrl()) }
 }
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create a SendMessageRequest object using the builder function
 val jsonRpcRequest = sendMessageRequest {
@@ -444,6 +496,8 @@ val response = a2aClient
 val body = response.body<String>()
 val payload = Json.decodeFromString<SendMessageResponse>(body)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -471,6 +525,8 @@ import kotlin.time.Duration.Companion.seconds
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Configure the mock server to respond with streaming updates
 val taskId = "task_12345"
@@ -548,6 +604,8 @@ a2aServer.sendMessageStreaming() responds {
     }
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -593,6 +651,8 @@ val a2aClient = HttpClient(Java) {
     install(DefaultRequest) { url(a2aServer.baseUrl()) }
 }
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create a collection to store the events
 var collectedEvents = ConcurrentLinkedQueue<TaskUpdateEvent>()
@@ -651,6 +711,8 @@ a2aClient.sse(
     }
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -673,6 +735,8 @@ import java.util.UUID
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Configure the mock server to respond with a canceled task
 a2aServer.cancelTask() responds {
@@ -684,6 +748,8 @@ a2aServer.cancelTask() responds {
     }
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -721,6 +787,8 @@ val a2aClient = HttpClient(Java) {
     install(DefaultRequest) { url(a2aServer.baseUrl()) }
 }
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create a CancelTaskRequest object
 val jsonRpcRequest = cancelTaskRequest {
@@ -742,6 +810,8 @@ val response = a2aClient
 val body = response.body<String>()
 val payload = Json.decodeFromString<CancelTaskResponse>(body)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -764,6 +834,8 @@ import dev.mokksy.aimocks.a2a.model.create
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create a TaskPushNotificationConfig object
 val taskId: TaskId = "task_12345"
@@ -795,6 +867,8 @@ a2aServer.setTaskPushNotification() responds {
     }
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -833,6 +907,8 @@ val a2aClient = HttpClient(Java) {
     install(DefaultRequest) { url(a2aServer.baseUrl()) }
 }
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create a TaskPushNotificationConfig object
 val config = TaskPushNotificationConfig.create {
@@ -865,6 +941,8 @@ val response = a2aClient
 val body = response.body<String>()
 val payload = Json.decodeFromString<SetTaskPushNotificationResponse>(body)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -888,6 +966,8 @@ import dev.mokksy.aimocks.a2a.model.TaskPushNotificationConfig
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create a TaskPushNotificationConfig object
 val taskId: TaskId = "task_12345"
@@ -908,6 +988,8 @@ a2aServer.getTaskPushNotification() responds {
     result = config
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -947,6 +1029,8 @@ val a2aClient = HttpClient(Java) {
 }
 val taskId: TaskId = "task_12345"
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create a GetTaskPushNotificationRequest object
 val jsonRpcRequest = GetTaskPushNotificationRequest(
@@ -968,6 +1052,8 @@ val response = a2aClient
 val body = response.body<String>()
 val payload = Json.decodeFromString<GetTaskPushNotificationResponse>(body)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -992,6 +1078,8 @@ import dev.mokksy.aimocks.a2a.model.create
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Configure the mock server to respond with a list of push notification configs
 val taskId: TaskId = "task_12345"
@@ -1012,6 +1100,8 @@ a2aServer.listTaskPushNotificationConfig() responds {
   )
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -1050,6 +1140,8 @@ val a2aClient = HttpClient(Java) {
     install(DefaultRequest) { url(a2aServer.baseUrl()) }
 }
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Build a ListTaskPushNotificationConfigRequest
 val jsonRpcRequest = ListTaskPushNotificationConfigRequest(
@@ -1072,6 +1164,8 @@ val response = a2aClient
 val body = response.body<String>()
 val payload = Json.decodeFromString<ListTaskPushNotificationConfigResponse>(body)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -1093,6 +1187,8 @@ import dev.mokksy.aimocks.a2a.model.TaskId
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Configure the mock server to respond to delete push notification config
 val taskId: TaskId = "task_12345"
@@ -1102,6 +1198,8 @@ a2aServer.deleteTaskPushNotificationConfig() responds {
   // success without error
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -1141,6 +1239,8 @@ val a2aClient = HttpClient(Java) {
 }
 val taskId: TaskId = "task_12345"
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Build a DeleteTaskPushNotificationConfigRequest
 val jsonRpcRequest = DeleteTaskPushNotificationConfigRequest(
@@ -1162,6 +1262,8 @@ val response = a2aClient
 val body = response.body<String>()
 val payload = Json.decodeFromString<DeleteTaskPushNotificationConfigResponse>(body)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -1189,6 +1291,8 @@ import kotlin.time.Duration.Companion.seconds
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Configure the mock server to respond with streaming updates
 val taskId: TaskId = "task_12345"
@@ -1230,6 +1334,8 @@ a2aServer.taskResubscription() responds {
     }
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -1273,6 +1379,8 @@ val a2aClient = HttpClient(Java) {
 }
 val taskId: TaskId = "task_12345"
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create a collection to store the events
 val collectedEvents = ConcurrentLinkedQueue<TaskUpdateEvent>()
@@ -1324,6 +1432,8 @@ a2aClient.sse(
     }
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -1347,6 +1457,8 @@ import io.kotest.matchers.collections.shouldHaveSize
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val taskId: TaskId = "task_12345"
 val notificationHistory = a2aServer.getTaskNotifications(taskId)
@@ -1354,6 +1466,8 @@ val notificationHistory = a2aServer.getTaskNotifications(taskId)
 // Verify that the history is initially empty
 notificationHistory.events() shouldHaveSize 0
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -1376,6 +1490,8 @@ fun main() = runBlocking {
 val a2aServer = MockAgentServer(verbose = true)
 val taskId: TaskId = "task_12345"
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val taskUpdateEvent = taskArtifactUpdateEvent {
     id = taskId
@@ -1389,6 +1505,8 @@ val taskUpdateEvent = taskArtifactUpdateEvent {
 }
 a2aServer.sendPushNotification(event = taskUpdateEvent)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -1424,10 +1542,14 @@ val taskUpdateEvent = taskArtifactUpdateEvent {
 }
 a2aServer.sendPushNotification(event = taskUpdateEvent)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Verify that the notification history contains the event
 notificationHistory.events() shouldContain taskUpdateEvent
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -1445,9 +1567,13 @@ import dev.mokksy.aimocks.a2a.MockAgentServer
 fun main() {
 val a2aServer = MockAgentServer(verbose = true)
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
-a2aServer.verifyNoUnmatchedRequests()
+a2aServer.verifyNoUnexpectedRequests()
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }

@@ -2,7 +2,7 @@
 title: "AI-Mocks"
 weight: 30
 ---
-[![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-core)](https://repo1.maven.org/maven2/dev/mokksy/aimocks/ai-mocks-core/)     
+[![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-core.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-core)
 
 AI-Mocks provides specialized mock server implementations built on top of Mokksy for testing and development with LLM APIs.
 
@@ -18,7 +18,7 @@ AI-Mocks provides specialized mock server implementations built on top of Mokksy
 
 | Feature              | OpenAI    | Anthropic | Gemini | Ollama   | A2A                                  |
 |----------------------|-----------|-----------|--------|----------|--------------------------------------|
-| **Chat Completions** | ✅         | ✅         | ✅      | ✅        | ✅                                    |
+| **Chat Completions** | ✅         | ✅         | ✅      | ✅        | ❌                                    |
 | **Streaming**        | ✅         | ✅         | ✅      | ✅        | ✅                                    |
 | **Embeddings**       | ✅         | ❌         | ❌      | ✅        | ❌                                    |
 | **Moderation**       | ✅         | ❌         | ❌      | ❌        | ❌                                    |
@@ -30,7 +30,7 @@ AI-Mocks provides specialized mock server implementations built on top of Mokksy
 - **Chat Completions** (`/v1/chat/completions`) - with streaming support
 - **Embeddings** (`/v1/embeddings`) - text embedding generation
 - **Moderation** (`/v1/moderations`) - content moderation
-- **Responses** (`/v1/responses`) - response generation from input files
+- **Responses** (`/v1/responses`) - response generation
 
 #### Anthropic
 - **Messages** (`/v1/messages`) - Claude's message API with streaming
@@ -46,7 +46,7 @@ AI-Mocks provides specialized mock server implementations built on top of Mokksy
 
 #### A2A (Agent-to-Agent Protocol)
 - **Agent Discovery** - agent card endpoint
-- **Message Exchange** - send/receive messages with streaming
+- **Message Exchange** - send and receive messages with streaming
 - **Task Management** - create, get, cancel, and resubscribe to tasks
-- **Push Notifications** - configure task notifications
+- **Push Notifications** - configure task push notifications
 - Full support for A2A Protocol v0.3.0

@@ -1,0 +1,29 @@
+# {{ .Site.Title }}
+
+> {{ .Site.Params.description }}
+
+## Docs
+{{ range .Site.Sections }}{{ template "llmsfull-section-toc" . }}{{ end }}
+---
+{{ range .Site.Sections }}{{ template "llmsfull-section-content" . }}{{ end }}
+{{- define "llmsfull-section-toc" }}
+{{- range .Pages }}
+{{- if .IsSection }}
+{{ template "llmsfull-section-toc" . }}
+{{- else }}
+- [{{ .Title }}]({{ .Permalink | replaceRE "/$" "" }}.md): {{ with .Description }}{{ . }}{{ else }}{{ .Title }}{{ end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- define "llmsfull-section-content" }}
+{{- range .Pages }}
+{{- if .IsSection }}
+{{ template "llmsfull-section-content" . }}
+{{- else }}
+
+# {{ .Title }}
+
+{{ .RawContent | replaceRE `\{\{<\s*/?\s*code-tabs\s*>\}\}\s*\n?` "" | replaceRE `\{\{<\s*tab\s+[^>]*>\}\}\s*\n?` "" | replaceRE `\{\{<\s*/tab\s*>\}\}\s*\n?` "" | replaceRE `<!---\s*(INCLUDE|SUFFIX|KNIT|CLEAR|TEST_NAME|MODULE_NAME|INDEX)\s*[^>]*-->\s*\n?` "" | replaceRE `(?m)^\s*\n\s*\n` "\n" }}
+{{- end }}
+{{- end }}
+{{- end }}

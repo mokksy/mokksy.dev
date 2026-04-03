@@ -1,0 +1,15 @@
+# {{ .Site.Title }}
+
+> {{ .Site.Params.description }}
+
+## Docs
+{{ range .Site.Sections }}{{ template "llms-section" . }}{{ end }}
+{{- define "llms-section" }}
+{{- range .Pages }}
+{{- if .IsSection }}
+{{ template "llms-section" . }}
+{{- else }}
+- [{{ .Title }}]({{ .Permalink | replaceRE "/$" "" }}.md): {{ with .Description }}{{ . }}{{ else }}{{ .Title }}{{ end }}
+{{- end }}
+{{- end }}
+{{- end }}

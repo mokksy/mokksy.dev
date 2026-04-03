@@ -6,7 +6,7 @@ title: "Mokksy and AI-Mocks"
 Welcome to the Mokksy and AI-Mocks documentation. This documentation will help you get started with using Mokksy and AI-Mocks for mocking HTTP and LLM APIs in your projects.
 
 - [Mokksy](./mokksy/)
-- AI Mocks
+- AI-Mocks
   - [OpenAI](./ai-mocks/openai/)
   - [Anthropic](./ai-mocks/anthropic/)
   - [Gemini](./ai-mocks/gemini/)

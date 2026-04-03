@@ -1,6 +1,6 @@
 ---
 title: "Gemini"
-#weight: 30
+weight: 30
 toc: true
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-gemini.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-gemini)
@@ -14,14 +14,13 @@ Currently, it supports basic content generation requests and streaming responses
 ## Quick Start
 
 Include the library in your test dependencies (Maven or Gradle).
-
-
-For Gradle project:
+{{< code-tabs >}}
+{{< tab lang="kotlin" filename="build.gradle.kts" >}}
 ```kotlin
 testImplementation("dev.mokksy.aimocks:ai-mocks-gemini-jvm:$latestVersion")
 ```
-    
-    For Maven project:
+{{< /tab >}}
+{{< tab lang="xml" filename="pom.xml" >}}
 ```xml
 <dependency>
   <groupId>dev.mokksy.aimocks</groupId>
@@ -30,6 +29,8 @@ testImplementation("dev.mokksy.aimocks:ai-mocks-gemini-jvm:$latestVersion")
   <scope>test</scope>
 </dependency>
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 
 
@@ -42,9 +43,13 @@ Set up a mock server and define mock responses:
 <!--- INCLUDE
 import dev.mokksy.aimocks.gemini.MockGemini
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val gemini = MockGemini(verbose = true)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- KNIT example-gemini-01.kt -->
 Let's simulate Gemini content generation API:
@@ -55,6 +60,8 @@ import kotlin.time.Duration.Companion.milliseconds
 val gemini = MockGemini(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Define mock response
 gemini.generateContent {
@@ -83,6 +90,8 @@ gemini.generateContent {
   delay = 42.milliseconds // delay before answer
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -138,6 +147,8 @@ import kotlin.time.Duration.Companion.milliseconds
 val gemini = MockGemini(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Define streaming mock response
 gemini.generateContentStream {
@@ -168,6 +179,8 @@ gemini.generateContentStream {
   delayBetweenChunks = 15.milliseconds // delay between chunks
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -202,6 +215,8 @@ import java.io.IOException
 import kotlin.time.Duration
 import kotlin.time.toJavaDuration
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 internal fun createTestVertexAI(
     endpoint: String,
@@ -259,6 +274,8 @@ internal fun createTestVertexAI(
     }
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- KNIT example-gemini-04.kt -->
 
@@ -272,12 +289,30 @@ import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel
 import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatOptions
 import com.google.cloud.vertexai.VertexAI
+import com.google.cloud.vertexai.Transport
+import com.google.api.gax.core.NoCredentialsProvider
+import com.google.auth.ApiKeyCredentials
+import com.google.cloud.vertexai.api.LlmUtilityServiceClient
+import com.google.cloud.vertexai.api.LlmUtilityServiceSettings
+import com.google.cloud.vertexai.api.PredictionServiceClient
+import com.google.cloud.vertexai.api.PredictionServiceSettings
+import com.google.cloud.vertexai.api.stub.LlmUtilityServiceStubSettings
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
-fun createTestVertexAI(endpoint: String, projectId: String, location: String, timeout: Duration): VertexAI = TODO()
+import kotlin.time.toJavaDuration
+fun createTestVertexAI(endpoint: String, projectId: String, location: String, timeout: Duration): VertexAI {
+    val channelProvider = LlmUtilityServiceStubSettings.defaultHttpJsonTransportProviderBuilder().setEndpoint(endpoint).build()
+    val llmStubSettings = LlmUtilityServiceStubSettings.newHttpJsonBuilder().apply { unaryMethodSettingsBuilders().forEach { it.setSimpleTimeoutNoRetriesDuration(timeout.toJavaDuration()) } }.setEndpoint(endpoint).setCredentialsProvider(NoCredentialsProvider.create()).setTransportChannelProvider(channelProvider).build()
+    val llmClient = LlmUtilityServiceClient.create(LlmUtilityServiceSettings.create(llmStubSettings))
+    val predictionSettings = PredictionServiceSettings.newHttpJsonBuilder().setEndpoint(endpoint).setCredentialsProvider(NoCredentialsProvider.create()).applyToAllUnaryMethods { it.setSimpleTimeoutNoRetriesDuration(timeout.toJavaDuration()); null }.build()
+    val predictionClient = PredictionServiceClient.create(predictionSettings)
+    return VertexAI.Builder().setTransport(Transport.REST).setProjectId(projectId).setLocation(location).setLlmClientSupplier { llmClient }.setPredictionClientSupplier { predictionClient }.setCredentials(ApiKeyCredentials.create("dummy-key")).build()
+}
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // create mock server
 val gemini = MockGemini(verbose = true)
@@ -333,6 +368,8 @@ response shouldNotBeNull {
   }
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -352,11 +389,26 @@ import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel
 import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatOptions
 import com.google.cloud.vertexai.VertexAI
+import com.google.cloud.vertexai.Transport
+import com.google.api.gax.core.NoCredentialsProvider
+import com.google.auth.ApiKeyCredentials
+import com.google.cloud.vertexai.api.LlmUtilityServiceClient
+import com.google.cloud.vertexai.api.LlmUtilityServiceSettings
+import com.google.cloud.vertexai.api.PredictionServiceClient
+import com.google.cloud.vertexai.api.PredictionServiceSettings
+import com.google.cloud.vertexai.api.stub.LlmUtilityServiceStubSettings
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
-fun createTestVertexAI(endpoint: String, projectId: String, location: String, timeout: Duration): VertexAI = TODO()
+fun createTestVertexAI(endpoint: String, projectId: String, location: String, timeout: Duration): VertexAI {
+    val channelProvider = LlmUtilityServiceStubSettings.defaultHttpJsonTransportProviderBuilder().setEndpoint(endpoint).build()
+    val llmStubSettings = LlmUtilityServiceStubSettings.newHttpJsonBuilder().apply { unaryMethodSettingsBuilders().forEach { it.setSimpleTimeoutNoRetriesDuration(timeout.toJavaDuration()) } }.setEndpoint(endpoint).setCredentialsProvider(NoCredentialsProvider.create()).setTransportChannelProvider(channelProvider).build()
+    val llmClient = LlmUtilityServiceClient.create(LlmUtilityServiceSettings.create(llmStubSettings))
+    val predictionSettings = PredictionServiceSettings.newHttpJsonBuilder().setEndpoint(endpoint).setCredentialsProvider(NoCredentialsProvider.create()).applyToAllUnaryMethods { it.setSimpleTimeoutNoRetriesDuration(timeout.toJavaDuration()); null }.build()
+    val predictionClient = PredictionServiceClient.create(predictionSettings)
+    return VertexAI.Builder().setTransport(Transport.REST).setProjectId(projectId).setLocation(location).setLlmClientSupplier { llmClient }.setPredictionClientSupplier { predictionClient }.setCredentials(ApiKeyCredentials.create("dummy-key")).build()
+}
 val gemini = MockGemini(verbose = true)
 val vertexAI = createTestVertexAI(
     endpoint = gemini.baseUrl(),
@@ -367,6 +419,8 @@ val vertexAI = createTestVertexAI(
 val chatClient = ChatClient.builder(VertexAiGeminiChatModel.builder().vertexAI(vertexAI).build()).build()
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // configure mock gemini
 gemini.generateContentStream {
@@ -408,6 +462,8 @@ val chunkCount =
 // Verify the complete response
 buffer.toString() shouldBe "Ahoy there, matey! Hello!"
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -427,9 +483,13 @@ First, create a mock Gemini server:
 <!--- INCLUDE
 import dev.mokksy.aimocks.gemini.MockGemini
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val gemini = MockGemini(verbose = true)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- KNIT example-gemini-07.kt -->
 
@@ -444,6 +504,8 @@ import dev.mokksy.aimocks.gemini.MockGemini
 val gemini = MockGemini(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val client = Client.builder()
   .project("your-project-id")
@@ -457,6 +519,8 @@ val client = Client.builder()
   .httpOptions(HttpOptions.builder().baseUrl(gemini.baseUrl()).build())
   .build()
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -473,6 +537,8 @@ import kotlin.time.Duration.Companion.milliseconds
 val gemini = MockGemini(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 gemini.generateContent {
   temperature = 0.7
@@ -488,6 +554,8 @@ gemini.generateContent {
   delay = 60.milliseconds
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -520,6 +588,8 @@ val client = Client.builder()
     .build()
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val config = GenerateContentConfig.builder()
   .seed(42)
@@ -540,6 +610,8 @@ val response = client.models.generateContent(
 // Verify the response
 response.text() shouldBe "Ahoy there, matey! Hello!"
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -558,6 +630,8 @@ import kotlin.time.Duration.Companion.milliseconds
 val gemini = MockGemini(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 gemini.generateContentStream {
   temperature = 0.7
@@ -582,6 +656,8 @@ gemini.generateContentStream {
   delayBetweenChunks = 15.milliseconds
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -623,6 +699,8 @@ val config = GenerateContentConfig.builder()
     .build()
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val response = client.models.generateContentStream(
   "gemini-2.0-flash",
@@ -636,6 +714,8 @@ val fullResponse = response.joinToString(separator = "") {
 }
 fullResponse shouldBe "Ahoy there, matey! Hello!"
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }

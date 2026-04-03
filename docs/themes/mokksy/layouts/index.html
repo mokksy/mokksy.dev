@@ -32,44 +32,294 @@
     {{ end }}
   </div>
 
-  <div class="hero-terminal" aria-label="Quick start code example">
-    <div class="terminal-bar" aria-hidden="true">
-      <span class="tdot r"></span>
-      <span class="tdot y"></span>
-      <span class="tdot g"></span>
-    </div>
-    <div class="terminal-body">
-{{ highlight `// Kotlin DSL — mock any LLM in 5 lines
-val server = anthropicAiMock()
-server.onRequest {
-    respondWith {
-        content = "Hello, I'm a mocked Claude!"
-        stopReason = "end_turn"
-        model = "claude-opus-4-0"
-    }
+  <div class="hero-carousel" id="hero-carousel" aria-label="Code examples carousel">
+    <div class="carousel-slides">
+
+      <!-- ── Slide 1: Simple POST ─────────────────────────────────── -->
+      <div class="carousel-slide active" data-slide="0">
+        <div class="carousel-slide-title">Simple POST</div>
+        <div class="hero-terminal code-tabs-wrap">
+          <div class="code-tabs-header">
+            <div class="hero-dots" aria-hidden="true">
+              <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
+            </div>
+            <div class="tab-list" role="tablist"></div>
+            <button class="tab-copy-btn" aria-label="Copy code">Copy</button>
+          </div>
+          <div class="tab-panel active" data-lang="kotlin" role="tabpanel">
+            <div class="code-body">
+{{ highlight `// Create mock server
+val mokksy = MokksyServer()
+mokksy.startSuspend()
+
+// Stub a POST endpoint
+mokksy.post {
+    path("/items")
+    bodyContains("widget")
+} respondsWith {
+    body = """{"id":"42"}"""
+    httpStatus = HttpStatusCode.Created
 }
 
-// Point your Anthropic SDK at the mock server
+// Call the server
+val response = client.post(mokksy.baseUrl() + "/items") {
+    setBody("""{"name":"widget"}""")
+}
+println(response.bodyAsText()) // {"id":"42"}` "kotlin" "" }}
+            </div>
+          </div>
+          <div class="tab-panel" data-lang="java" role="tabpanel">
+            <div class="code-body">
+{{ highlight `// Create mock server
+var mokksy = Mokksy.create();
+mokksy.start();
+
+// Stub a POST endpoint
+mokksy.post(spec -> spec.path("/items"))
+    .respondsWith(builder -> builder
+        .body("{\"id\":\"42\"}")
+        .status(201)
+        .header("Location", "/items/42"));
+
+// Call the server
+var response = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/items"))
+        .POST(BodyPublishers.ofString("{\"name\":\"widget\"}"))
+        .build(),
+    BodyHandlers.ofString());
+System.out.println(response.body()); // {"id":"42"}` "java" "" }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Slide 2: Streaming Response ──────────────────────────── -->
+      <div class="carousel-slide" data-slide="1">
+        <div class="carousel-slide-title">Streaming Response</div>
+        <div class="hero-terminal code-tabs-wrap">
+          <div class="code-tabs-header">
+            <div class="hero-dots" aria-hidden="true">
+              <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
+            </div>
+            <div class="tab-list" role="tablist"></div>
+            <button class="tab-copy-btn" aria-label="Copy code">Copy</button>
+          </div>
+          <div class="tab-panel active" data-lang="kotlin" role="tabpanel">
+            <div class="code-body">
+{{ highlight `// Create mock server
+val mokksy = MokksyServer()
+mokksy.startSuspend()
+
+// Stub a streaming endpoint
+mokksy.get {
+    path("/stream")
+} respondsWithStream {
+    chunks += "Hello"
+    chunks += "World"
+}
+
+// Call the server — response streams as text/event-stream
+val response = client.get(mokksy.baseUrl() + "/stream")
+println(response.bodyAsText()) // HelloWorld` "kotlin" "" }}
+            </div>
+          </div>
+          <div class="tab-panel" data-lang="java" role="tabpanel">
+            <div class="code-body">
+{{ highlight `// Create mock server
+var mokksy = Mokksy.create().start();
+
+// Stub a streaming endpoint
+mokksy.get(spec -> spec.path("/stream"))
+    .respondsWithStream(builder -> builder
+        .chunks(List.of("Hello", "World")));
+
+// Call the server — response streams as text/event-stream
+var response = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/stream"))
+        .GET().build(),
+    BodyHandlers.ofString());
+System.out.println(response.body()); // HelloWorld` "java" "" }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Slide 3: Anthropic Mock ──────────────────────────────── -->
+      <div class="carousel-slide" data-slide="2">
+        <div class="carousel-slide-title">Anthropic Mock</div>
+        <div class="hero-terminal code-tabs-wrap">
+          <div class="code-tabs-header">
+            <div class="hero-dots" aria-hidden="true">
+              <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
+            </div>
+            <div class="tab-list" role="tablist"></div>
+            <button class="tab-copy-btn" aria-label="Copy code">Copy</button>
+          </div>
+          <div class="tab-panel active" data-lang="kotlin" role="tabpanel">
+            <div class="code-body">
+{{ highlight `// Create Anthropic mock server
+val anthropic = MockAnthropic(verbose = true).start()
+
+// Stub a messages endpoint
+anthropic.messages {
+    model = "claude-3-7-sonnet-latest"
+    userMessageContains("say 'Hello!'")
+} responds {
+    assistantContent = "Hello!"
+    stopReason = "end_turn"
+}
+
+// Point your Anthropic SDK at the mock
 val client = AnthropicOkHttpClient.builder()
-    .baseUrl(server.baseUrl())
+    .baseUrl(anthropic.baseUrl())
     .apiKey("any-key")
     .build()` "kotlin" "" }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /carousel-slides -->
+
+    <!-- Carousel navigation -->
+    <div class="carousel-nav">
+      <button class="carousel-arrow carousel-prev" aria-label="Previous example">‹</button>
+      <div class="carousel-dots"></div>
+      <button class="carousel-arrow carousel-next" aria-label="Next example">›</button>
     </div>
   </div>
+
+  <script>
+  (function(){
+    var carousel = document.getElementById('hero-carousel');
+    if(!carousel) return;
+    var slides = carousel.querySelectorAll('.carousel-slide');
+    var dotsWrap = carousel.querySelector('.carousel-dots');
+    var current = 0;
+
+    // Build dots
+    slides.forEach(function(_,i){
+      var dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (i===0 ? ' active' : '');
+      dot.type = 'button';
+      dot.setAttribute('aria-label', 'Go to slide '+(i+1));
+      dot.dataset.index = i;
+      dotsWrap.appendChild(dot);
+    });
+
+    function goTo(idx){
+      if(idx<0) idx = slides.length-1;
+      if(idx>=slides.length) idx = 0;
+      slides.forEach(function(s,i){ s.classList.toggle('active', i===idx); });
+      dotsWrap.querySelectorAll('.carousel-dot').forEach(function(d,i){
+        d.classList.toggle('active', i===idx);
+      });
+      current = idx;
+    }
+
+    carousel.querySelector('.carousel-prev').addEventListener('click', function(){ goTo(current-1); });
+    carousel.querySelector('.carousel-next').addEventListener('click', function(){ goTo(current+1); });
+    dotsWrap.addEventListener('click', function(e){
+      var dot = e.target.closest('.carousel-dot');
+      if(dot) goTo(parseInt(dot.dataset.index));
+    });
+
+    var LANG_KEY = 'preferred-code-lang';
+    var savedLang = null;
+    try { savedLang = localStorage.getItem(LANG_KEY); } catch(e){}
+
+    function switchAllHeroTabs(lang){
+      carousel.querySelectorAll('.hero-terminal').forEach(function(w){
+        var hasLang = w.querySelector('.tab-panel[data-lang="'+lang+'"]');
+        if(!hasLang) return;
+        w.querySelectorAll('.tab-btn').forEach(function(b){
+          b.classList.toggle('active', b.dataset.lang===lang);
+          b.setAttribute('aria-selected', b.dataset.lang===lang ? 'true' : 'false');
+        });
+        w.querySelectorAll('.tab-panel').forEach(function(p){
+          p.classList.toggle('active', p.dataset.lang===lang);
+        });
+      });
+      // Also sync any code-tabs shortcodes on the page
+      document.querySelectorAll('.code-tabs-wrap').forEach(function(w){
+        var hasLang = w.querySelector('.tab-panel[data-lang="'+lang+'"]');
+        if(!hasLang) return;
+        w.querySelectorAll('.tab-btn').forEach(function(b){
+          b.classList.toggle('active', b.dataset.lang===lang);
+          b.setAttribute('aria-selected', b.dataset.lang===lang ? 'true' : 'false');
+        });
+        w.querySelectorAll('.tab-panel').forEach(function(p){
+          p.classList.toggle('active', p.dataset.lang===lang);
+        });
+      });
+    }
+
+    // Init code-tabs inside each slide
+    carousel.querySelectorAll('.hero-terminal').forEach(function(wrap){
+      var panels = wrap.querySelectorAll('.tab-panel');
+      var tabList = wrap.querySelector('.tab-list');
+      var availLangs = [];
+      panels.forEach(function(panel){ availLangs.push(panel.dataset.lang || 'code'); });
+      var defaultIdx = (savedLang && availLangs.indexOf(savedLang) !== -1) ? availLangs.indexOf(savedLang) : 0;
+      panels.forEach(function(panel, i){
+        var lang = panel.dataset.lang || 'code';
+        var btn = document.createElement('button');
+        btn.className = 'tab-btn' + (i===defaultIdx ? ' active' : '');
+        btn.type = 'button';
+        btn.dataset.lang = lang;
+        btn.textContent = lang.charAt(0).toUpperCase() + lang.slice(1);
+        btn.setAttribute('role','tab');
+        tabList.appendChild(btn);
+        panel.classList.toggle('active', i===defaultIdx);
+      });
+      tabList.addEventListener('click', function(e){
+        var btn = e.target.closest('.tab-btn');
+        if(!btn) return;
+        var lang = btn.dataset.lang;
+        try { localStorage.setItem(LANG_KEY, lang); } catch(e){}
+        switchAllHeroTabs(lang);
+      });
+      var copyBtn = wrap.querySelector('.tab-copy-btn');
+      if(copyBtn){
+        copyBtn.addEventListener('click', function(){
+          var active = wrap.querySelector('.tab-panel.active');
+          if(!active) return;
+          var code = active.querySelector('code');
+          if(!code) return;
+          var text = '';
+          code.childNodes.forEach(function(node){
+            if(node.nodeType===3){ text += node.textContent; }
+            else if(node.nodeType===1){
+              var cl = node.classList;
+              if(cl && (cl.contains('ln') || cl.contains('lnt'))) return;
+              text += node.textContent;
+            }
+          });
+          navigator.clipboard.writeText(text).then(function(){
+            copyBtn.textContent = 'Copied!';
+            setTimeout(function(){ copyBtn.textContent = 'Copy'; }, 1500);
+          });
+        });
+      }
+    });
+  })();
+  </script>
 </section>
 
 <!-- ═══ INTEGRATIONS ══════════════════════════════════════════════════════════ -->
 <section class="section" aria-label="Supported integrations">
   <div class="section-inner">
     <p style="text-align:center;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:32px;">
-      Tested with all major LLM providers &amp; frameworks
+      Tested with these LLM providers &amp; frameworks
     </p>
     <div class="chips-row reveal">
       <span class="chip">🤖 Anthropic</span>
       <span class="chip">✦ OpenAI</span>
       <span class="chip">◆ Google Gemini</span>
       <span class="chip">🦙 Ollama</span>
-      <span class="chip">⇄ Agent2Agent (A2A)</span>
+      <span class="chip">⇄ Agent-to-Agent (A2A)</span>
       <span class="chip">⛓ LangChain4j</span>
       <span class="chip">🌱 Spring AI</span>
     </div>
@@ -116,7 +366,7 @@ val client = AnthropicOkHttpClient.builder()
   <div class="section-inner">
     <div class="cta-banner-inner reveal">
       <h2>Start mocking today</h2>
-      <p>Open-source, MIT licenced, built for Kotlin &amp; Java teams.</p>
+      <p>Open-source, MIT licensed, built for Kotlin &amp; Java teams.</p>
       <div class="cta-buttons">
         <a href="/docs/" class="btn btn-primary btn-lg">Read the Documentation</a>
         {{ with $p.github }}

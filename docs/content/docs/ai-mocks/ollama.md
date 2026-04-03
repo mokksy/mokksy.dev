@@ -1,6 +1,6 @@
 ---
 title: "Ollama"
-#weight: 30
+weight: 40
 toc: true
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-ollama.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-ollama) 
@@ -21,15 +21,13 @@ Currently, it supports the main endpoints of the Ollama API, including:
 ## Quick Start
 
 Include the library in your test dependencies (Maven or Gradle).
-
-
-For Gradle project:
+{{< code-tabs >}}
+{{< tab lang="kotlin" filename="build.gradle.kts" >}}
 ```kotlin
 testImplementation("dev.mokksy.aimocks:ai-mocks-ollama-jvm:$latestVersion")
 ```
-
-
-For Maven project:
+{{< /tab >}}
+{{< tab lang="xml" filename="pom.xml" >}}
 ```xml
 <dependency>
   <groupId>dev.mokksy.aimocks</groupId>
@@ -38,6 +36,8 @@ For Maven project:
   <scope>test</scope>
 </dependency>
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 
 
@@ -50,6 +50,8 @@ Set up a mock server and define mock responses:
 <!--- INCLUDE
 import dev.mokksy.aimocks.ollama.MockOllama
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create a mock Ollama server
 val ollama = MockOllama(verbose = true)
@@ -57,6 +59,8 @@ val ollama = MockOllama(verbose = true)
 // Get the base URL of the mock server
 val baseUrl = ollama.baseUrl()
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- KNIT example-ollama-01.kt -->
 
@@ -82,6 +86,8 @@ val client = HttpClient.newHttpClient()
 val json = Json { ignoreUnknownKeys = true }
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Define mock response
 ollama.generate {
@@ -122,6 +128,8 @@ generateResponse.model shouldBe "llama3"
 generateResponse.done shouldBe true
 generateResponse.doneReason shouldBe "stop"
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -151,6 +159,8 @@ val client = HttpClient.newHttpClient()
 val json = Json { ignoreUnknownKeys = true }
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Define mock response
 ollama.chat {
@@ -194,6 +204,8 @@ chatResponse.message.content shouldBe "Hello, how can I help you today?"
 chatResponse.model shouldBe "llama3"
 chatResponse.done shouldBe true
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -222,6 +234,8 @@ val client = HttpClient.newHttpClient()
 val json = Json { ignoreUnknownKeys = true }
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Define mock response for a single string input
 val embeddings = listOf(listOf(0.1f, 0.2f, 0.3f, 0.4f, 0.5f))
@@ -260,6 +274,8 @@ val embedResponse = json.decodeFromString<EmbeddingsResponse>(response.body())
 embedResponse.embeddings shouldBe embeddings
 embedResponse.model shouldBe "llama3"
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -286,6 +302,8 @@ val client = HttpClient.newHttpClient()
 val json = Json { ignoreUnknownKeys = true }
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Define mock response for multiple string inputs
 val embeddings = listOf(
@@ -327,6 +345,8 @@ val embedResponse = json.decodeFromString<EmbeddingsResponse>(response.body())
 embedResponse.embeddings shouldBe embeddings
 embedResponse.model shouldBe "llama3"
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -343,6 +363,8 @@ import kotlin.time.Duration.Companion.milliseconds
 val ollama = MockOllama(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Define streaming mock response for generate endpoint
 ollama.generate {
@@ -372,6 +394,8 @@ ollama.chat {
   delayBetweenChunks = 100.milliseconds
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -463,6 +487,8 @@ import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 class MyOllamaTest {
   private val ollama = MockOllama()
@@ -480,6 +506,8 @@ class MyOllamaTest {
   }
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- KNIT example-ollama-07.kt -->
 
@@ -498,6 +526,8 @@ import kotlinx.coroutines.test.runTest
 import kotlin.time.Duration.Companion.milliseconds
 fun main() = runBlocking {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Create a mock Ollama server
 val ollama = MockOllama(verbose = true)
@@ -528,6 +558,8 @@ result.apply {
   aiMessage().text() shouldBe "Hello, how can I help you today?"
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }

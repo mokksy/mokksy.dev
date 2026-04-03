@@ -4,6 +4,15 @@ title         = 'Mokksy'
 theme         = 'mokksy'
 enableRobotsTXT = true
 
+[markup]
+  [markup.highlight]
+    noClasses          = false
+    lineNos            = false
+    lineNumbersInTable = false
+    tabWidth           = 4
+  [markup.goldmark.renderer]
+    unsafe = true
+
 [params]
   description       = 'Mokksy & AI-Mocks — mock HTTP and LLM servers for Kotlin & JVM'
   github            = 'https://github.com/mokksy'

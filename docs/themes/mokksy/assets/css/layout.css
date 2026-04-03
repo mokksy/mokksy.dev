@@ -318,31 +318,80 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Terminal */
-.hero-terminal {
+/* Hero carousel */
+.hero-carousel {
   margin-top: 72px;
   width: 100%;
   max-width: 740px;
-  background: var(--hero-terminal-bg);
-  border: 1px solid var(--hero-terminal-border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
   animation: fade-up 0.7s ease 0.4s both;
   text-align: left;
 }
-.terminal-bar {
+.carousel-slide { display: none; }
+.carousel-slide.active { display: block; }
+.carousel-slide-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+  text-align: center;
+}
+.carousel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 18px;
+}
+.carousel-arrow {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 20px;
+  width: 34px; height: 34px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition);
+}
+.carousel-arrow:hover {
+  border-color: var(--border-hover);
+  color: var(--text);
+}
+.carousel-dots {
+  display: flex;
+  gap: 8px;
+}
+.carousel-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: var(--border);
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--transition);
+}
+.carousel-dot.active {
+  background: var(--accent);
+}
+
+/* Hero terminal (code-tabs variant) */
+.hero-terminal {
+  width: 100%;
+  max-width: 740px;
+  text-align: left;
+}
+.hero-dots {
   display: flex;
   align-items: center;
   gap: 7px;
-  padding: 13px 18px;
-  background: var(--hero-terminal-bar-bg);
-  border-bottom: 1px solid var(--hero-terminal-border);
+  margin-right: 12px;
 }
 .tdot { width: 11px; height: 11px; border-radius: 50%; }
 .tdot.r { background: #ff5f57; }
 .tdot.y { background: #febc2e; }
 .tdot.g { background: #28c840; }
-.terminal-body { padding: 8px; overflow-x: auto; }
 .hero-terminal .highlight,
 .hero-terminal .highlight pre.chroma {
   background: transparent;
@@ -539,7 +588,7 @@
 }
 @media (max-width: 600px) {
   .hero-actions { flex-direction: column; align-items: center; }
-  .hero-terminal { display: none; }
+  .hero-carousel { display: none; }
   .feature-grid { grid-template-columns: 1fr; }
   .cta-banner-inner { padding: 40px 24px; }
 }

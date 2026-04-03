@@ -1,6 +1,6 @@
 ---
 title: "Anthropic"
-#weight: 40
+weight: 10
 toc: true
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-anthropic.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-anthropic) 
@@ -14,17 +14,13 @@ testing by allowing you to define request expectations and responses without mak
 ### Add Dependency
 
 Include the library in your test dependencies (Maven or Gradle).
-
-
-For Gradle project:
-
+{{< code-tabs >}}
+{{< tab lang="kotlin" filename="build.gradle.kts" >}}
 ```kotlin
 testImplementation("dev.mokksy.aimocks:ai-mocks-anthropic-jvm:$latestVersion")
 ```
-
-
-For Maven project:
-
+{{< /tab >}}
+{{< tab lang="xml" filename="pom.xml" >}}
 ```xml
 <dependency>
   <groupId>dev.mokksy.aimocks</groupId>
@@ -33,6 +29,8 @@ For Maven project:
   <scope>test</scope>
 </dependency>
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 ### Initialize the Server
 
@@ -40,9 +38,13 @@ For Maven project:
 <!--- INCLUDE
 import dev.mokksy.aimocks.anthropic.MockAnthropic
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val anthropic = MockAnthropic(verbose = true)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- KNIT example-anthropic-01.kt -->
 
@@ -59,6 +61,8 @@ import kotlin.time.Duration.Companion.milliseconds
 val anthropic = MockAnthropic(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 anthropic.messages {
   temperature = 0.42
@@ -76,6 +80,8 @@ anthropic.messages {
   stopReason = "end_turn" // reason for stopping
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -98,6 +104,8 @@ import io.kotest.matchers.shouldBe
 val anthropic = MockAnthropic(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // create Anthropic SDK client
 val client =
@@ -129,6 +137,8 @@ result
   .asText()
   .text() shouldBe "Hello" // kotest matcher
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -145,6 +155,8 @@ import kotlin.time.Duration.Companion.milliseconds
 val anthropic = MockAnthropic(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 anthropic.messages {
   temperature = 0.7
@@ -162,6 +174,8 @@ anthropic.messages {
   stopReason = "end_turn"
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -177,6 +191,8 @@ import kotlin.time.Duration.Companion.milliseconds
 val anthropic = MockAnthropic(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 anthropic.messages("anthropic-messages-flow") {
   temperature = 0.7
@@ -201,6 +217,8 @@ anthropic.messages("anthropic-messages-flow") {
   stopReason = "end_turn"
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -221,6 +239,8 @@ val anthropic = MockAnthropic(verbose = true)
 val client = AnthropicOkHttpClient.builder().apiKey("my-anthropic-api-key").baseUrl(anthropic.baseUrl()).build()
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val params =
   MessageCreateParams
@@ -247,6 +267,8 @@ val timedValue =
 timedValue.duration shouldBeLessThan 10.seconds
 timedValue.value shouldBeLessThan 10L
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -265,6 +287,8 @@ import io.ktor.http.HttpStatusCode
 val anthropic = MockAnthropic(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 anthropic.messages {
   // expected request
@@ -280,6 +304,8 @@ anthropic.messages {
   // Optionally add a delay or other properties
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -297,6 +323,8 @@ data class ConversationResult(val assistantMessage: String)
 class FakeAnthropicClient { fun sendMessage(msg: String): ConversationResult = ConversationResult("") }
 val yourAnthropicClient = FakeAnthropicClient()
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 @Test
 fun `test basic conversation`() {
@@ -314,6 +342,8 @@ fun `test basic conversation`() {
   assertEquals("Hi from mock!", result.assistantMessage)
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- KNIT example-anthropic-08.kt -->
 
@@ -334,6 +364,8 @@ import kotlin.time.Duration.Companion.milliseconds
 val anthropic = MockAnthropic(verbose = true)
 fun main() = runBlocking {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Set up mock response
 anthropic.messages {
@@ -365,6 +397,8 @@ result.apply {
   aiMessage().text() shouldBe "Hello"
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -393,6 +427,8 @@ import kotlinx.coroutines.runBlocking
 val anthropic = MockAnthropic(verbose = true)
 fun main() = runBlocking {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Example 1: Using responseChunks
 val userMessage = "What do we need?"
@@ -471,6 +507,8 @@ model.chat(
   }
 )
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -484,9 +522,13 @@ import dev.mokksy.aimocks.anthropic.MockAnthropic
 val anthropic = MockAnthropic(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 anthropic.shutdown()
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }

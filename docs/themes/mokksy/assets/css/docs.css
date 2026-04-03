@@ -32,6 +32,17 @@
   color: var(--text-dim);
 }
 
+.tab-filename {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 8px;
+  margin-bottom: 10px;
+  padding-left: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
 .copy-btn {
   display: flex;
   align-items: center;
@@ -122,10 +133,9 @@
 
 .tab-panel {
   display: none;
-  background: var(--bg-code);
 }
 .tab-panel.active { display: block; }
-.tab-panel .code-body { padding: 16px 18px; }
+.tab-panel .code-body { padding: 0; }
 
 /* ─── Chroma Syntax Highlighting — Light ─────────────────────────────────────── */
 /* ─── Chroma base ─────────────────────────────────────────────────────────────────── */
@@ -180,6 +190,17 @@
   pointer-events: none;
   z-index: 1;
   line-height: 1.6;
+}
+/* Hide language label inside code-tabs — the tab header already shows it */
+.tab-panel .highlight[data-lang]::before {
+  display: none;
+}
+/* Tighten spacing inside code-tabs */
+.tab-panel .highlight {
+  margin: 0;
+}
+.tab-panel .highlight pre.chroma {
+  padding: 10px 0;
 }
 
 /* ─── Chroma — Light theme / VS Code Dark syntax (dark bg) ──────────────────────── */
@@ -251,6 +272,8 @@
 [data-theme="dark"] .chroma .p    { color: #a9b7c6; }                      /* operator / punctuation */
 [data-theme="dark"] .code-body,
 [data-theme="dark"] .tab-panel    { color: #a9b7c6; }                      /* IDEA default text */
+[data-theme="dark"] .tab-btn      { color: #8b949e; }                      /* inactive pill — readable on dark bg */
+[data-theme="dark"] .tab-btn:hover { color: #c9d1d9; background: var(--bg-code); }
 
 /* ─── Callouts ───────────────────────────────────────────────────────────────── */
 .callout {

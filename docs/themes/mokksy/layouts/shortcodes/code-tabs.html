@@ -38,6 +38,15 @@ Attributes:
   var panels = wrap.querySelectorAll('.tab-panel');
   var tabList = wrap.querySelector('.tab-list');
 
+  var LANG_KEY = 'preferred-code-lang';
+  var savedLang = null;
+  try { savedLang = localStorage.getItem(LANG_KEY); } catch(e){}
+
+  // Collect available langs in this block
+  var availLangs = [];
+  panels.forEach(function(panel){ availLangs.push(panel.dataset.lang || 'code'); });
+  var defaultIdx = (savedLang && availLangs.indexOf(savedLang) !== -1) ? availLangs.indexOf(savedLang) : 0;
+
   // Build tab buttons from panels
   panels.forEach(function(panel, i){
     var lang = panel.dataset.lang || 'code';
@@ -45,29 +54,63 @@ Attributes:
     panel.id = panelId;
     var label = lang.charAt(0).toUpperCase() + lang.slice(1);
     var btn = document.createElement('button');
-    btn.className = 'tab-btn' + (i===0 ? ' active' : '');
+    btn.className = 'tab-btn' + (i===defaultIdx ? ' active' : '');
     btn.type = 'button';
     btn.dataset.lang = lang;
     btn.textContent = label;
     btn.setAttribute('role','tab');
     btn.setAttribute('aria-controls', panelId);
-    btn.setAttribute('aria-selected', i===0 ? 'true' : 'false');
+    btn.setAttribute('aria-selected', i===defaultIdx ? 'true' : 'false');
     tabList.appendChild(btn);
-    if(i===0) panel.classList.add('active');
+    if(i===defaultIdx) panel.classList.add('active');
   });
+
+  function switchAllTabs(lang){
+    document.querySelectorAll('.code-tabs-wrap, .hero-terminal').forEach(function(w){
+      var hasLang = w.querySelector('.tab-panel[data-lang="'+lang+'"]');
+      if(!hasLang) return;
+      w.querySelectorAll('.tab-btn').forEach(function(b){
+        b.classList.toggle('active', b.dataset.lang===lang);
+        b.setAttribute('aria-selected', b.dataset.lang===lang ? 'true' : 'false');
+      });
+      w.querySelectorAll('.tab-panel').forEach(function(p){
+        p.classList.toggle('active', p.dataset.lang===lang);
+      });
+    });
+  }
 
   // Switch tabs
   tabList.addEventListener('click', function(e){
     var btn = e.target.closest('.tab-btn');
     if(!btn) return;
     var lang = btn.dataset.lang;
-    wrap.querySelectorAll('.tab-btn').forEach(function(b){
-      b.classList.toggle('active', b.dataset.lang===lang);
-      b.setAttribute('aria-selected', b.dataset.lang===lang ? 'true' : 'false');
-    });
-    panels.forEach(function(p){
-      p.classList.toggle('active', p.dataset.lang===lang);
-    });
+    try { localStorage.setItem(LANG_KEY, lang); } catch(e){}
+    switchAllTabs(lang);
   });
+
+  // Copy button — copies only code text, excluding line numbers
+  var copyBtn = wrap.querySelector('.tab-copy-btn');
+  if(copyBtn){
+    copyBtn.addEventListener('click', function(){
+      var active = wrap.querySelector('.tab-panel.active');
+      if(!active) return;
+      var code = active.querySelector('code');
+      if(!code) return;
+      // Collect text from code element, skipping line-number spans (.ln, .lnt)
+      var text = '';
+      code.childNodes.forEach(function(node){
+        if(node.nodeType === 3){ text += node.textContent; }
+        else if(node.nodeType === 1){
+          var cl = node.classList;
+          if(cl && (cl.contains('ln') || cl.contains('lnt'))) return;
+          text += node.textContent;
+        }
+      });
+      navigator.clipboard.writeText(text).then(function(){
+        copyBtn.textContent = 'Copied!';
+        setTimeout(function(){ copyBtn.textContent = 'Copy'; }, 1500);
+      });
+    });
+  }
 })();
 </script>

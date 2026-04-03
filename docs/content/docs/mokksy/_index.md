@@ -8,7 +8,7 @@ weight: 20
 
 ## Why Mokksy?
 
-Wiremock does not support true SSE and streaming responses.
+WireMock does not support true SSE and streaming responses.
 
 Mokksy is here to address those limitations.
 Particularly, it might be useful for integration testing LLM clients.
@@ -28,9 +28,8 @@ Particularly, it might be useful for integration testing LLM clients.
 ## Quick start
 
 1. Add dependencies:
-
-   Gradle _build.gradle.kts:_
-
+{{< code-tabs >}}
+{{< tab lang="kotlin" filename="build.gradle.kts" >}}
    ```kotlin
    dependencies {               
         // for multiplatform projects
@@ -39,8 +38,8 @@ Particularly, it might be useful for integration testing LLM clients.
        implementation("dev.mokksy:mokksy-jvm:$latestVersion")
    }
    ``` 
-
-   Maven _pom.xml:_
+{{< /tab >}}
+{{< tab lang="xml" filename="pom.xml" >}}
    ```xml
     <dependency>
         <groupId>dev.mokksy</groupId>
@@ -49,12 +48,16 @@ Particularly, it might be useful for integration testing LLM clients.
         <scope>test</scope>
     </dependency>
    ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 
 2. Create and start Mokksy server:
 
    **Kotlin — all platforms (coroutine-based):**
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
    ```kotlin
    import dev.mokksy.mokksy.Mokksy
 
@@ -62,19 +65,27 @@ Particularly, it might be useful for integration testing LLM clients.
    mokksy.startSuspend()
    mokksy.awaitStarted() // port() and baseUrl() are safe after this point
    ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
    **Kotlin — JVM blocking:**
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
    ```kotlin
    import dev.mokksy.mokksy.Mokksy
 
    val mokksy = Mokksy().start()
    ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
    **Java** — see [Java API](#java-api) below.
 
 3. Configure http client using Mokksy server's as baseUrl in your application:
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val client = HttpClient {
   install(DefaultRequest) {
@@ -85,6 +96,8 @@ val client = HttpClient {
   }
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 ## Responding with predefined responses
 
@@ -142,6 +155,8 @@ class ReadmeTest {
   suspend fun testGet() {
 -->
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // given
 val expectedResponse =
@@ -169,9 +184,13 @@ val result = client.get("/ping") {
 result.status shouldBe HttpStatusCode.OK
 result.bodyAsText() shouldBe expectedResponse
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 When the request does not match - Mokksy server returns `404 (Not Found)`:
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val notFoundResult = client.get("/ping") {
   headers.append("Foo", "baz")
@@ -179,6 +198,8 @@ val notFoundResult = client.get("/ping") {
 
 notFoundResult.status shouldBe HttpStatusCode.NotFound
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- INCLUDE
   }
@@ -193,6 +214,8 @@ POST request example:
   suspend fun testPost() {
 -->
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // given
 val id = Random.nextInt()
@@ -240,6 +263,8 @@ result shouldNotBeNull {
   headers["Foo"] shouldBe "bar"
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- INCLUDE
   }
@@ -250,6 +275,8 @@ result shouldNotBeNull {
 When the request body type is known at compile time, use the **reified** overloads to let the compiler infer the type —
 no explicit `::class` argument required:
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 @Serializable
 @JvmRecord
@@ -259,12 +286,16 @@ data class CreateItemRequest(val name: String)
 @JvmRecord
 data class CreateItemResponse(val message: String)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- INCLUDE
   @Test
   suspend fun testReified() {
 -->
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val itemName = "Widget"
 
@@ -289,6 +320,8 @@ result shouldNotBeNull {
   body<CreateItemResponse>().message shouldBe "Hello, $itemName!"
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- INCLUDE
   }
@@ -308,6 +341,8 @@ pass a `KClass` token using the named `requestType` parameter:
   suspend fun testKClass() {
 -->
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 mokksy.post(requestType = CreateItemRequest::class) {
   path("/items")
@@ -326,6 +361,8 @@ val result =
 result.status shouldBe HttpStatusCode.Created
 result.body<CreateItemResponse>().message shouldBe "Hello, widget!"
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- INCLUDE
   }
@@ -349,6 +386,8 @@ It's an infix function, so it reads naturally next to the stub definition:
 
 Java callers use the `int` overload on `JavaBuildingStep`:
 
+{{< code-tabs >}}
+{{< tab lang="java" >}}
 ```java
 mokksy.get(spec ->spec.
 
@@ -363,6 +402,8 @@ path("/item")).
 
 respondsWithStatus(410);
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 ## Server-Side Events (SSE) response
 
@@ -381,6 +422,8 @@ Server-Side Events (SSE) example:
   suspend fun testSse() {
 -->
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 mokksy.post {
   path = beEqual("/sse")
@@ -412,6 +455,8 @@ result shouldNotBeNull {
   bodyAsText() shouldBe "data: One\r\n\r\ndata: Two\r\n\r\n"
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- INCLUDE
   }
@@ -423,12 +468,16 @@ By default, the SSE stream closes when the flow completes.
 
 To keep it open (e.g. for clients that reconnect on close), end the flow with `awaitCancellation()`:
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```
 flow = flow {
     emit(ServerSentEvent(data = "hello"))
     awaitCancellation() // stream stays open until client disconnects
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 ## Request Specification Matchers
 
@@ -458,6 +507,8 @@ regardless of registration order.
   suspend fun testSpecificity() {
 -->
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Generic: matches any POST to /users
 mokksy.post {
@@ -482,6 +533,8 @@ adminResult.bodyAsText() shouldBe "admin user"
 val genericResult = client.post("/users") { setBody("regular") }
 genericResult.bodyAsText() shouldBe "any user"
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- INCLUDE
   }
@@ -491,6 +544,8 @@ genericResult.bodyAsText() shouldBe "any user"
   suspend fun testRespondsWithStatus() {
 -->
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 mokksy.get { path("/ping") } respondsWithStatus HttpStatusCode.NoContent
 
@@ -498,6 +553,8 @@ val response = client.get("/ping")
 
 response.status shouldBe HttpStatusCode.NoContent
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- INCLUDE
   }
@@ -516,6 +573,8 @@ If multiple stubs match with the same specificity score, the one with the higher
   suspend fun testPriority() {
 -->
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Catch-all stub with low priority (negative value)
 mokksy.get {
@@ -541,6 +600,8 @@ val special = client.get("/things/special")
 generic.bodyAsText() shouldBe "Generic Thing"
 special.bodyAsText() shouldBe "Special Thing"
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- INCLUDE
   }
@@ -556,10 +617,14 @@ Mokksy provides two complementary verification methods that check opposite sides
 Use this to catch stubs you set up but that were never actually called — a sign the code under test took
 a different path than expected.
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Fails if any stub has never been matched
 mokksy.verifyNoUnmatchedStubs()
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 > **Note:** Be careful when running tests in parallel against a single `MokksyServer` instance.
 > Some stubs might be unmatched when one test completes. Avoid calling this in `@AfterEach`/`@AfterTest`
@@ -570,10 +635,14 @@ mokksy.verifyNoUnmatchedStubs()
 `verifyNoUnexpectedRequests()` fails if any HTTP request arrived at the server but no stub matched it.
 These requests are recorded in the `RequestJournal` and reported together.
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Fails if any request arrived with no matching stub
 mokksy.verifyNoUnexpectedRequests()
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 ### Recommended AfterEach setup
 
@@ -606,6 +675,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 -->
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MyTest {
@@ -654,6 +725,8 @@ class MyTest {
   }
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- KNIT example-readme-02.kt -->
 
@@ -661,6 +734,8 @@ class MyTest {
 
 Use the `find*` variants to retrieve the unmatched items directly for custom assertions:
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // List<RecordedRequest> — HTTP requests with no matching stub
 val unmatchedRequests: List<RecordedRequest> = mokksy.findAllUnexpectedRequests()
@@ -668,6 +743,8 @@ val unmatchedRequests: List<RecordedRequest> = mokksy.findAllUnexpectedRequests(
 // List<RequestSpecification<*>> — stubs that were never triggered
 val unmatchedStubs: List<RequestSpecification<*>> = mokksy.findAllUnmatchedStubs()
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 `RecordedRequest` is an immutable snapshot that captures `method`, `uri`, and `headers` of the incoming request.
 
@@ -681,6 +758,8 @@ Mokksy records incoming requests in a `RequestJournal`. The recording mode is co
   `verifyNoUnexpectedRequests()`.
 - **JournalMode.FULL** - Records all incoming requests, both matched and unmatched.
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val mokksy = MokksyServer(
   configuration = ServerConfiguration(
@@ -688,15 +767,21 @@ val mokksy = MokksyServer(
   ),
 )
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 Call `resetMatchState()` between scenarios to clear stub match state and the journal:
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 @AfterTest
 fun afterEach() {
   mokksy.resetMatchState()
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 > **Note:** Stubs configured with `eventuallyRemove = true` are permanently removed from the registry
 > on first match and cannot be re-armed by `resetMatchState()`. Re-register them before the next scenario.
@@ -713,6 +798,8 @@ stub handling directly, without allocating a second embedded server.
 automatically, then mounts a catch-all route that dispatches every incoming request through the
 stub registry:
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 import dev.mokksy.mokksy.MokksyServer
 import dev.mokksy.mokksy.mokksy
@@ -726,6 +813,8 @@ embeddedServer(Netty, port = 8080) {
   mokksy(server)
 }.start(wait = true)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 Use this overload when Mokksy owns the entire application and you want the simplest possible setup.
 
@@ -736,16 +825,22 @@ application-level overload, it does **not** install plugins — you are responsi
 `SSE`, `DoubleReceive`, and `ContentNegotiation` on the surrounding application. This makes it
 suitable when Mokksy stubs coexist with real routes:
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 routing {
   get("/health") { call.respondText("OK") }
   mokksy(server)
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 To place stubs behind an authentication check, install the required plugins and wrap `mokksy` in
 an `authenticate` block:
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 install(SSE)
 install(DoubleReceive)
@@ -766,13 +861,19 @@ routing {
   }
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 Both extension functions accept any `path` pattern as a second parameter (default: `"{...}"`,
 which matches all routes). Narrow the scope by passing a prefix:
 
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 mokksy(server, path = "/api/{...}")
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 [sse]: https://html.spec.whatwg.org/multipage/server-sent-events.html "Server-Side Events Specification"
 

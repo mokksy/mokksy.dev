@@ -1,6 +1,6 @@
 ---
 title: "OpenAI"
-#weight: 30
+weight: 20
 toc: true
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-openai.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-openai)
@@ -19,15 +19,13 @@ Currently, it supports:
 ## Quick Start
 
 Include the library in your test dependencies (Maven or Gradle).
-
-
-For Gradle project:
+{{< code-tabs >}}
+{{< tab lang="kotlin" filename="build.gradle.kts" >}}
 ```kotlin
 testImplementation("dev.mokksy.aimocks:ai-mocks-openai-jvm:$latestVersion")
 ```
-
-
-For Maven project:
+{{< /tab >}}
+{{< tab lang="xml" filename="pom.xml" >}}
 ```xml
 <dependency>
   <groupId>dev.mokksy.aimocks</groupId>
@@ -36,6 +34,8 @@ For Maven project:
   <scope>test</scope>
 </dependency>
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 
 
@@ -48,9 +48,13 @@ Set up a mock server and define mock responses:
 <!--- INCLUDE
 import dev.mokksy.aimocks.openai.MockOpenai
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val openai = MockOpenai(verbose = true)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- KNIT example-openai-01.kt -->
 Let's simulate OpenAI [Chat Completions API](https://platform.openai.com/docs/api-reference/chat):
@@ -68,6 +72,8 @@ import kotlin.time.Duration.Companion.milliseconds
 val openai = MockOpenai(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Define mock response
 openai.completion {
@@ -127,6 +133,8 @@ val result: ChatCompletion =
 
 println(result)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -147,6 +155,8 @@ import kotlin.time.Duration.Companion.milliseconds
 val openai = MockOpenai(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 openai.completion {
   temperature = 0.7
@@ -171,6 +181,8 @@ openai.completion {
   httpStatus = HttpStatusCode.PreconditionFailed
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -187,6 +199,8 @@ import kotlin.time.Duration.Companion.milliseconds
 val openai = MockOpenai(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 openai.completion {
   temperature = 0.7
@@ -213,6 +227,8 @@ openai.completion {
   httpStatus = HttpStatusCode.InternalServerError
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -233,6 +249,8 @@ import kotlinx.coroutines.runBlocking
 val openai = MockOpenai(verbose = true)
 fun main() = runBlocking {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 val model: OpenAiChatModel =
   OpenAiChatModel
@@ -257,6 +275,8 @@ val result =
 
 println(result)
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -280,6 +300,8 @@ import kotlin.time.Duration.Companion.milliseconds
 val openai = MockOpenai(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 openai.completion {
   temperature = 0.7
@@ -333,6 +355,8 @@ client
 
 // Result: "All we need is Love"
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -348,6 +372,8 @@ import kotlin.time.Duration.Companion.milliseconds
 val openai = MockOpenai(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 openai.completion {
   temperature = 0.7
@@ -366,6 +392,8 @@ openai.completion {
   finishReason = "stop"
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -386,6 +414,8 @@ import io.kotest.matchers.shouldNotBe
 import kotlin.time.Duration.Companion.milliseconds
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // create mock server
 val openai = MockOpenai(verbose = true)
@@ -448,6 +478,8 @@ metadata.finishReason shouldBe "STOP"
 output?.text shouldBe "Ahoy there, matey! Hello!"
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -470,6 +502,8 @@ import com.openai.models.embeddings.EmbeddingCreateParams
 import kotlin.time.Duration.Companion.milliseconds
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Set up mock server
 val openai = MockOpenai(verbose = true)
@@ -511,6 +545,8 @@ result.model() // "text-embedding-3-small"
 result.data()[0].embedding() // [0.1, 0.2, 0.3]
 result.data()[0].index() // 0
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -531,6 +567,8 @@ val openai = MockOpenai(verbose = true)
 val client: OpenAIClient = OpenAIOkHttpClient.builder().apiKey("dummy-key").baseUrl(openai.baseUrl()).build()
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 openai.embeddings {
     model = "text-embedding-3-small"
@@ -558,6 +596,8 @@ result.data().size // 2
 result.data()[0].embedding() // [0.1, 0.2, 0.3]
 result.data()[1].embedding() // [0.4, 0.5, 0.6]
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -573,6 +613,8 @@ import dev.mokksy.aimocks.openai.MockOpenai
 val openai = MockOpenai(verbose = true)
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 openai.embeddings {
     model = "text-embedding-3-small"
@@ -583,6 +625,8 @@ openai.embeddings {
     embeddings(listOf(0.1f, 0.2f, 0.3f))
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -606,6 +650,8 @@ val openai = MockOpenai(verbose = true)
 val client: OpenAIClient = OpenAIOkHttpClient.builder().apiKey("dummy-key").baseUrl(openai.baseUrl()).build()
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 openai.embeddings {
     model = "text-embedding-3-small"
@@ -630,6 +676,8 @@ try {
     // Handle error
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -653,6 +701,8 @@ import com.openai.models.moderations.ModerationCreateParams
 import kotlin.time.Duration.Companion.milliseconds
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 // Set up mock server
 val openai = MockOpenai(verbose = true)
@@ -700,6 +750,8 @@ result.results()[0].categories().harassment() // true
 result.results()[0].categoryScores().harassment() // 0.1
 result.results()[0].categoryAppliedInputTypes().harassment() // [TEXT]
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }
@@ -722,6 +774,8 @@ val openai = MockOpenai(verbose = true)
 val client: OpenAIClient = OpenAIOkHttpClient.builder().apiKey("dummy-key").baseUrl(openai.baseUrl()).build()
 fun main() {
 -->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
 ```kotlin
 openai.moderation {
     model = "omni-moderation-latest"
@@ -746,6 +800,8 @@ try {
     // Handle error
 }
 ```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 <!--- SUFFIX
 }

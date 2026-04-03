@@ -109,6 +109,9 @@ Attributes:
       navigator.clipboard.writeText(text).then(function(){
         copyBtn.textContent = 'Copied!';
         setTimeout(function(){ copyBtn.textContent = 'Copy'; }, 1500);
+      }).catch(function(){
+        copyBtn.textContent = 'Failed';
+        setTimeout(function(){ copyBtn.textContent = 'Copy'; }, 1500);
       });
     });
   }

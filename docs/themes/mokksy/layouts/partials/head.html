@@ -9,6 +9,9 @@
 <meta property="og:type"        content="website">
 <meta property="og:url"         content="{{ .Permalink }}">
 
+<!-- Google Analytics 4 -->
+{{ template "_internal/google_analytics.html" . }}
+
 <!-- Title -->
 <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} — {{ .Site.Title }}{{ end }}</title>
 
@@ -49,5 +52,3 @@
 <!-- Canonical -->
 <link rel="canonical" href="{{ .Permalink }}">
 
-<!-- Google Analytics 4 -->
-{{ template "_internal/google_analytics.html" . }}

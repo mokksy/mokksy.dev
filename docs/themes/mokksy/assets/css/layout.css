@@ -359,6 +359,10 @@
   border-color: var(--border-hover);
   color: var(--text);
 }
+.carousel-arrow:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+}
 .carousel-dots {
   display: flex;
   gap: 8px;

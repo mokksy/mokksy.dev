@@ -1,0 +1,73 @@
+{{/*
+Usage in markdown:
+
+{{< code-tabs >}}
+{{< tab lang="kotlin" filename="MyTest.kt" >}}
+val mock = openAiMock()
+{{< /tab >}}
+{{< tab lang="java" filename="MyTest.java" >}}
+OpenAiMock mock = openAiMock();
+{{< /tab >}}
+{{< /code-tabs >}}
+
+Attributes:
+  lang     — "kotlin" | "java" | any Chroma language key
+  filename — optional filename shown in header
+*/}}
+
+{{ $id := printf "ct-%s" (now.UnixNano | string) }}
+{{ .Scratch.Set "codeTabsWrapperId" $id }}
+{{ .Scratch.Set "codeTabsPanelIndex" 0 }}
+
+<div class="code-tabs-wrap" id="{{ $id }}">
+  <div class="code-tabs-header">
+    <div class="tab-list" role="tablist">
+      <!-- Tab buttons injected by init script below -->
+    </div>
+    <button class="tab-copy-btn" aria-label="Copy code">Copy</button>
+  </div>
+  <!-- Tab panels filled by inner tab shortcodes -->
+  {{ .Inner }}
+</div>
+
+<script>
+(function(){
+  var wrap = document.getElementById('{{ $id }}');
+  if(!wrap) return;
+
+  var panels = wrap.querySelectorAll('.tab-panel');
+  var tabList = wrap.querySelector('.tab-list');
+
+  // Build tab buttons from panels
+  panels.forEach(function(panel, i){
+    var lang = panel.dataset.lang || 'code';
+    var panelId = panel.id || ('{{ $id }}-panel-' + i);
+    panel.id = panelId;
+    var label = lang.charAt(0).toUpperCase() + lang.slice(1);
+    var btn = document.createElement('button');
+    btn.className = 'tab-btn' + (i===0 ? ' active' : '');
+    btn.type = 'button';
+    btn.dataset.lang = lang;
+    btn.textContent = label;
+    btn.setAttribute('role','tab');
+    btn.setAttribute('aria-controls', panelId);
+    btn.setAttribute('aria-selected', i===0 ? 'true' : 'false');
+    tabList.appendChild(btn);
+    if(i===0) panel.classList.add('active');
+  });
+
+  // Switch tabs
+  tabList.addEventListener('click', function(e){
+    var btn = e.target.closest('.tab-btn');
+    if(!btn) return;
+    var lang = btn.dataset.lang;
+    wrap.querySelectorAll('.tab-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.lang===lang);
+      b.setAttribute('aria-selected', b.dataset.lang===lang ? 'true' : 'false');
+    });
+    panels.forEach(function(p){
+      p.classList.toggle('active', p.dataset.lang===lang);
+    });
+  });
+})();
+</script>

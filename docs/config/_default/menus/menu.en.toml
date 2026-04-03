@@ -1,13 +1,7 @@
-#  menu items
 [[main]]
 name = "Documentation"
 weight = 2
-url = "docs/"
-
-[[main]]
-  name = "Mokksy API"
-  weight = 3
-  url = "https://mokksy.github.io/mokksy/"
+url = "/docs/"
 
 [[main]]
 name = "Mokksy API"
@@ -19,8 +13,24 @@ name = "AI-Mocks API"
 weight = 4
 url = "https://mokksy.github.io/ai-mocks/"
 
-[[main]]
-  name = "GitHub"
-  weight = 4
-  url = "https://github.com/mokksy"
+
+[[footer]]
+name = "Docs"
+weight = 10
+url = "/docs/"
+
+[[footer]]
+name = "API Reference"
+weight = 20
+url = "https://mokksy.github.io/mokksy/"
+
+[[footer]]
+name = "GitHub"
+weight = 30
+url = "https://github.com/mokksy"
+
+[[footer]]
+name = "Author"
+weight = 40
+url = "https://kpavlov.me"
 

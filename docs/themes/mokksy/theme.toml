@@ -1,0 +1,15 @@
+name        = "mokksy"
+license     = "MIT"
+licenselink = "https://github.com/mokksy/mokksy.dev/blob/main/LICENSE"
+description = "Apple-inspired dark/light documentation theme for Mokksy & AI-Mocks"
+homepage    = "https://mokksy.dev"
+tags        = ["docs", "dark", "responsive", "kotlin"]
+
+[author]
+  name     = "Konstantin Pavlov"
+  homepage = "https://kpavlov.me"
+
+[module]
+  [module.hugoVersion]
+    extended = true
+    min      = "0.120.0"

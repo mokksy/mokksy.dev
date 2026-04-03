@@ -1,0 +1,36 @@
+{{/*
+Usage:
+  {{< callout type="note" >}}   Content here   {{< /callout >}}
+  {{< callout type="tip" >}}    Content here   {{< /callout >}}
+  {{< callout type="warning" >}} Content here  {{< /callout >}}
+  {{< callout type="danger" >}}  Content here  {{< /callout >}}
+*/}}
+
+{{ $type  := .Get "type" | default "note" }}
+{{ $title := .Get "title" }}
+
+{{ $icons := dict
+  "note"    "ℹ"
+  "tip"     "✦"
+  "warning" "⚠"
+  "danger"  "✕"
+}}
+{{ $titles := dict
+  "note"    "Note"
+  "tip"     "Tip"
+  "warning" "Warning"
+  "danger"  "Danger"
+}}
+
+{{ $icon       := index $icons  $type | default "ℹ" }}
+{{ $titleLabel := $title | default (index $titles $type) | default "Note" }}
+
+<div class="callout callout-{{ $type }}" role="note" aria-label="{{ $titleLabel }}">
+  <span class="callout-icon" aria-hidden="true">{{ $icon }}</span>
+  <div class="callout-body">
+    <strong style="display:block;margin-bottom:4px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;">
+      {{ $titleLabel }}
+    </strong>
+    {{ .Inner | markdownify }}
+  </div>
+</div>

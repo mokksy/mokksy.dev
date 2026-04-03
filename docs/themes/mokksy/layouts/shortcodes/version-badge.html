@@ -1,0 +1,7 @@
+{{/* {{< version-badge since="0.4.0" >}} or {{< version-badge deprecated="0.3.0" >}} */}}
+{{ with .Get "since" }}
+<span class="version-badge since" title="Available since {{ . }}">Since {{ . }}</span>
+{{ end }}
+{{ with .Get "deprecated" }}
+<span class="version-badge deprecated" title="Deprecated since {{ . }}">Deprecated {{ . }}</span>
+{{ end }}

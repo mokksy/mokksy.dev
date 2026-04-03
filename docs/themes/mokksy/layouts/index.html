@@ -1,0 +1,133 @@
+{{ define "main" }}
+{{ $p := .Site.Params }}
+<div class="landing-wrap">
+
+<!-- ═══ HERO ══════════════════════════════════════════════════════════════════ -->
+<section class="hero" aria-label="Hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+
+  <img src="/mokksy-mascot-round.png"
+       alt="Mokksy mascot"
+       width="96" height="96"
+       style="border-radius:50%;margin-bottom:24px;animation:fadeUp 0.5s ease both;">
+
+  <div class="hero-badge">
+    <span aria-hidden="true" style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;"></span>
+    Kotlin &amp; JVM · Open Source
+  </div>
+
+  <h1>Mock <span>LLM APIs</span><br>with confidence</h1>
+
+  <p class="hero-sub">
+    Mokksy &amp; AI-Mocks let you test AI-powered applications without hitting
+    real LLM endpoints. Streaming, SSE, error simulation — all included.
+  </p>
+
+  <div class="hero-actions">
+    <a href="/docs/" class="btn btn-primary btn-lg">Read the Docs</a>
+    {{ with $p.github }}
+    <a href="{{ . }}" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
+      View on GitHub
+    </a>
+    {{ end }}
+  </div>
+
+  <div class="hero-terminal" aria-label="Quick start code example">
+    <div class="terminal-bar" aria-hidden="true">
+      <span class="tdot r"></span>
+      <span class="tdot y"></span>
+      <span class="tdot g"></span>
+    </div>
+    <div class="terminal-body">
+{{ highlight `// Kotlin DSL — mock any LLM in 5 lines
+val server = anthropicAiMock()
+server.onRequest {
+    respondWith {
+        content = "Hello, I'm a mocked Claude!"
+        stopReason = "end_turn"
+        model = "claude-opus-4-0"
+    }
+}
+
+// Point your Anthropic SDK at the mock server
+val client = AnthropicOkHttpClient.builder()
+    .baseUrl(server.baseUrl())
+    .apiKey("any-key")
+    .build()` "kotlin" "" }}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INTEGRATIONS ══════════════════════════════════════════════════════════ -->
+<section class="section" aria-label="Supported integrations">
+  <div class="section-inner">
+    <p style="text-align:center;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:32px;">
+      Tested with all major LLM providers &amp; frameworks
+    </p>
+    <div class="chips-row reveal">
+      <span class="chip">🤖 Anthropic</span>
+      <span class="chip">✦ OpenAI</span>
+      <span class="chip">◆ Google Gemini</span>
+      <span class="chip">🦙 Ollama</span>
+      <span class="chip">⇄ Agent2Agent (A2A)</span>
+      <span class="chip">⛓ LangChain4j</span>
+      <span class="chip">🌱 Spring AI</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="features" aria-label="Features">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">Why Mokksy</p>
+      <h2 class="section-title">Everything WireMock isn't<br>for AI testing</h2>
+      <p class="section-sub">
+        Built for the unique challenges of testing LLM-powered applications —
+        streaming, chunked responses, and non-determinism included.
+      </p>
+    </div>
+
+    <div class="feature-grid">
+      {{ range $p.features }}
+      <div class="feature-card reveal">
+        <div class="feature-card-header">
+          <div class="feature-icon" aria-hidden="true">{{ .icon }}</div>
+          <h3>{{ .title }}</h3>
+        </div>
+        <p>{{ .description }}</p>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTENT ═══════════════════════════════════════════════════════════════ -->
+{{ if .Content }}
+<section class="section">
+  <div class="section-inner">
+    <div class="docs-content">{{ .Content }}</div>
+  </div>
+</section>
+{{ end }}
+
+<!-- ═══ CTA ═══════════════════════════════════════════════════════════════════ -->
+<section class="section" aria-label="Call to action">
+  <div class="section-inner">
+    <div class="cta-banner-inner reveal">
+      <h2>Start mocking today</h2>
+      <p>Open-source, MIT licenced, built for Kotlin &amp; Java teams.</p>
+      <div class="cta-buttons">
+        <a href="/docs/" class="btn btn-primary btn-lg">Read the Documentation</a>
+        {{ with $p.github }}
+        <a href="{{ . }}" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
+          Star on GitHub ★
+        </a>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /landing-wrap -->
+{{ end }}

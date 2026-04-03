@@ -1,0 +1,38 @@
+{{ if .TableOfContents }}
+<aside class="docs-toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <nav>
+    <ul class="toc-nav">
+      {{/* Hugo's built-in .TableOfContents renders a <nav><ul>…</ul></nav>.
+           We need the inner items, so we render it and let JS handle
+           the active-spy highlighting. */}}
+    </ul>
+  </nav>
+  {{/* Render Hugo ToC and inject into our styled container via JS */}}
+  <div id="toc-raw" style="display:none">{{ .TableOfContents }}</div>
+  <script>
+  (function(){
+    var raw = document.getElementById('toc-raw');
+    var nav = document.querySelector('.docs-toc .toc-nav');
+    if(!raw || !nav) return;
+    // Copy inner links from Hugo's rendered ToC
+    var links = raw.querySelectorAll('a');
+    links.forEach(function(a){
+      var li = document.createElement('li');
+      var depth = 0;
+      var p = a.parentElement;
+      while(p && !p.classList.contains('toc-nav')){
+        if(p.tagName==='UL') depth++;
+        p=p.parentElement;
+      }
+      var clone = a.cloneNode(true);
+      clone.removeAttribute('class');
+      if(depth>=2) li.classList.add('toc-h3');
+      li.appendChild(clone);
+      nav.appendChild(li);
+    });
+    raw.remove();
+  })();
+  </script>
+</aside>
+{{ end }}

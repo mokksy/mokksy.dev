@@ -410,8 +410,8 @@
 }
 
 /* Sections */
-.section { padding: 100px 32px; }
-.section-inner { max-width: 1100px; margin: 0 auto; }
+.section { padding: 32px 32px; }
+.section-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
 .section-label {
   font-size: 12px;
   font-weight: 600;
@@ -420,12 +420,14 @@
   color: var(--accent);
   margin-bottom: 14px;
 }
-.section-title { max-width: 640px; }
+.section-title { max-width: 640px; margin-left: auto; margin-right: auto; }
 .section-sub {
   font-size: 18px;
   color: var(--text-muted);
   max-width: 520px;
   margin-top: 14px;
+  margin-left: auto;
+  margin-right: auto;
   font-weight: 400;
   line-height: 1.6;
 }
@@ -448,6 +450,7 @@
   transition: border-color var(--transition), transform var(--transition);
   position: relative;
   overflow: hidden;
+  text-align: left;
 }
 .feature-card::before {
   content: '';
@@ -480,6 +483,7 @@
 }
 .feature-card h3 { font-size: 18px; margin-bottom: 0; }
 .feature-card p  { font-size: 16px; color: var(--text-muted); line-height: 1.6; margin: 0; }
+.feature-list { text-align: left; display: inline-block; }
 
 /* Integration chips */
 .chips-row {

@@ -30,6 +30,14 @@ enableRobotsTXT = true
   [markup.goldmark.renderer]
     unsafe = true
 
+[services]
+  [services.googleAnalytics]
+    ID = 'G-WKRE9Y25GP'
+
+[privacy]
+  [privacy.googleAnalytics]
+    respectDoNotTrack = true
+
 [params]
   description       = 'Mokksy & AI-Mocks — mock HTTP and LLM servers for Kotlin & JVM'
   github            = 'https://github.com/mokksy'

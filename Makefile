@@ -27,7 +27,7 @@ docs:
 knit:
 	@echo "🪡🧶 Running Knit..."
 	@rm -rf docs/build
-	@./gradlew knit :docs:test
+	@./gradlew knit test --rerun-tasks
 	@echo "✅ Knit completed!"
 
 .PHONY: lint

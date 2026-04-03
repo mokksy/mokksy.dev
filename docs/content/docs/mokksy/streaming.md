@@ -71,7 +71,7 @@ To keep it open (e.g. for clients that reconnect on close), end the flow with `a
 
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
-```
+```kotlin
 flow = flow {
     emit(ServerSentEvent(data = "hello"))
     awaitCancellation() // stream stays open until client disconnects

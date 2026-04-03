@@ -2,38 +2,39 @@
 {{ $p := .Site.Params }}
 <div class="landing-wrap">
 
-<!-- ═══ HERO ══════════════════════════════════════════════════════════════════ -->
-<section class="hero" aria-label="Hero">
-  <div class="hero-glow" aria-hidden="true"></div>
+  <!-- ═══ HERO ══════════════════════════════════════════════════════════════════ -->
+  <section class="hero" aria-label="Hero">
+    <div class="hero-glow" aria-hidden="true"></div>
 
-  <img src="/mokksy-mascot-round.png"
-       alt="Mokksy mascot"
-       width="96" height="96"
-       style="border-radius:50%;margin-bottom:24px;animation:fadeUp 0.5s ease both;">
+    <img src="/mokksy-mascot-round.png"
+         alt="Mokksy mascot"
+         width="96" height="96"
+         style="border-radius:50%;margin-bottom:24px;animation:fadeUp 0.5s ease both;">
 
-  <div class="hero-badge">
-    <span aria-hidden="true" style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;"></span>
-    Kotlin &amp; JVM · Open Source
-  </div>
+    <div class="hero-badge">
+      <span aria-hidden="true"
+            style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;"></span>
+      Kotlin &amp; JVM · Open Source · Integration Testing
+    </div>
 
-  <h1>Mock <span>LLM APIs</span><br>with confidence</h1>
+    <h1>Mock <span>HTTP APIs</span><br>with real-world behavior</h1>
 
-  <p class="hero-sub">
-    Mokksy &amp; AI-Mocks let you test AI-powered applications without hitting
-    real LLM endpoints. Streaming, SSE, error simulation — all included.
-  </p>
+    <p class="hero-sub">
+      Mokksy is a mock HTTP server for integration testing — with true streaming,
+      SSE, and failure simulation. Test your services as they behave in production.
+    </p>
 
-  <div class="hero-actions">
-    <a href="/docs/" class="btn btn-primary btn-lg">Read the Docs</a>
-    {{ with $p.github }}
-    <a href="{{ . }}" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
-      View on GitHub
-    </a>
-    {{ end }}
-  </div>
+    <div class="hero-actions">
+      <a href="/docs/" class="btn btn-primary btn-lg">Read the Docs</a>
+      {{ with $p.github }}
+      <a href="{{ . }}" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
+        View on GitHub
+      </a>
+      {{ end }}
+    </div>
 
-  <div class="hero-carousel" id="hero-carousel" aria-label="Code examples carousel">
-    <div class="carousel-slides">
+    <div class="hero-carousel" id="hero-carousel" aria-label="Code examples carousel">
+      <div class="carousel-slides">
 
       <!-- ── Slide 1: Simple POST ─────────────────────────────────── -->
       <div class="carousel-slide active" data-slide="0">
@@ -81,7 +82,7 @@ mokksy.post(spec -> spec.path("/items"))
         .status(201)
         .header("Location", "/items/42"));
 
-// Call the server
+// Call the server - response streams as text/event-stream
 var response = httpClient.send(
     HttpRequest.newBuilder()
         .uri(URI.create(mokksy.baseUrl() + "/items"))
@@ -115,13 +116,17 @@ mokksy.startSuspend()
 mokksy.get {
     path("/stream")
 } respondsWithStream {
-    chunks += "Hello"
-    chunks += "World"
+    flow = flow {
+        delay(100.milliseconds)
+        emit("Hello")
+        delay(50.milliseconds)
+        emit(" World")
+    }
 }
 
 // Call the server — response streams as text/event-stream
 val response = client.get(mokksy.baseUrl() + "/stream")
-println(response.bodyAsText()) // HelloWorld` "kotlin" "" }}
+println(response.bodyAsText()) // Hello World` "kotlin" "" }}
             </div>
           </div>
           <div class="tab-panel" data-lang="java" role="tabpanel">
@@ -132,7 +137,7 @@ var mokksy = Mokksy.create().start();
 // Stub a streaming endpoint
 mokksy.get(spec -> spec.path("/stream"))
     .respondsWithStream(builder -> builder
-        .chunks(List.of("Hello", "World")));
+        .chunks(List.of("Hello", " World")));
 
 // Call the server — response streams as text/event-stream
 var response = httpClient.send(
@@ -140,166 +145,184 @@ var response = httpClient.send(
         .uri(URI.create(mokksy.baseUrl() + "/stream"))
         .GET().build(),
     BodyHandlers.ofString());
-System.out.println(response.body()); // HelloWorld` "java" "" }}
+System.out.println(response.body()); // Hello World` "java" "" }}
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ── Slide 3: Anthropic Mock ──────────────────────────────── -->
-      <div class="carousel-slide" data-slide="2">
-        <div class="carousel-slide-title">Anthropic Mock</div>
-        <div class="hero-terminal code-tabs-wrap">
-          <div class="code-tabs-header">
-            <div class="hero-dots" aria-hidden="true">
-              <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
-            </div>
-            <div class="tab-list" role="tablist"></div>
-            <button class="tab-copy-btn" aria-label="Copy code">Copy</button>
-          </div>
-          <div class="tab-panel active" data-lang="kotlin" role="tabpanel">
-            <div class="code-body">
-{{ highlight `// Create Anthropic mock server
-val anthropic = MockAnthropic(verbose = true).start()
-
-// Stub a messages endpoint
-anthropic.messages {
-    model = "claude-3-7-sonnet-latest"
-    userMessageContains("say 'Hello!'")
-} responds {
-    assistantContent = "Hello!"
-    stopReason = "end_turn"
-}
-
-// Point your Anthropic SDK at the mock
-val client = AnthropicOkHttpClient.builder()
-    .baseUrl(anthropic.baseUrl())
-    .apiKey("any-key")
-    .build()` "kotlin" "" }}
-            </div>
-          </div>
-        </div>
       </div>
 
-    </div><!-- /carousel-slides -->
-
-    <!-- Carousel navigation -->
-    <div class="carousel-nav">
-      <button class="carousel-arrow carousel-prev" aria-label="Previous example">‹</button>
-      <div class="carousel-dots"></div>
-      <button class="carousel-arrow carousel-next" aria-label="Next example">›</button>
+      <div class="carousel-nav">
+        <button class="carousel-arrow carousel-prev" aria-label="Previous example">‹</button>
+        <div class="carousel-dots"></div>
+        <button class="carousel-arrow carousel-next" aria-label="Next example">›</button>
+      </div>
     </div>
-  </div>
 
-  <script>
-  (function(){
-    var carousel = document.getElementById('hero-carousel');
-    if(!carousel) return;
-    var slides = carousel.querySelectorAll('.carousel-slide');
-    var dotsWrap = carousel.querySelector('.carousel-dots');
-    var current = 0;
+    <script>
+      (function(){
+        const carousel = document.getElementById('hero-carousel');
+        if(!carousel) return;
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const dotsWrap = carousel.querySelector('.carousel-dots');
+        let current = 0;
 
-    // Build dots
-    slides.forEach(function(_,i){
-      var dot = document.createElement('button');
-      dot.className = 'carousel-dot' + (i===0 ? ' active' : '');
-      dot.type = 'button';
-      dot.setAttribute('aria-label', 'Go to slide '+(i+1));
-      dot.dataset.index = i;
-      dotsWrap.appendChild(dot);
-    });
+        slides.forEach(function(_,i){
+          const dot = document.createElement('button');
+          dot.className = 'carousel-dot' + (i===0 ? ' active' : '');
+          dot.type = 'button';
+          dot.setAttribute('aria-label', 'Go to slide '+(i+1));
+          dot.dataset.index = i;
+          dotsWrap.appendChild(dot);
+        });
 
-    function goTo(idx){
-      if(idx<0) idx = slides.length-1;
-      if(idx>=slides.length) idx = 0;
-      slides.forEach(function(s,i){ s.classList.toggle('active', i===idx); });
-      dotsWrap.querySelectorAll('.carousel-dot').forEach(function(d,i){
-        d.classList.toggle('active', i===idx);
-      });
-      current = idx;
-    }
+        function goTo(idx){
+          if(idx<0) idx = slides.length-1;
+          if(idx>=slides.length) idx = 0;
+          slides.forEach(function(s,i){ s.classList.toggle('active', i===idx); });
+          dotsWrap.querySelectorAll('.carousel-dot').forEach(function(d,i){
+            d.classList.toggle('active', i===idx);
+          });
+          current = idx;
+        }
 
-    carousel.querySelector('.carousel-prev').addEventListener('click', function(){ goTo(current-1); });
-    carousel.querySelector('.carousel-next').addEventListener('click', function(){ goTo(current+1); });
-    dotsWrap.addEventListener('click', function(e){
-      var dot = e.target.closest('.carousel-dot');
-      if(dot) goTo(parseInt(dot.dataset.index));
-    });
-    // Tab init, switching, and copy are handled by theme.js
-  })();
-  </script>
-</section>
+        carousel.querySelector('.carousel-prev').addEventListener('click', function () {
+          goTo(current - 1);
+        });
+        carousel.querySelector('.carousel-next').addEventListener('click', function () {
+          goTo(current + 1);
+        });
+        dotsWrap.addEventListener('click', function (e) {
+          const dot = e.target.closest('.carousel-dot');
+          if (dot) goTo(parseInt(dot.dataset.index));
+        });
+      })();
+    </script>
+  </section>
 
-<!-- ═══ INTEGRATIONS ══════════════════════════════════════════════════════════ -->
-<section class="section" aria-label="Supported integrations">
-  <div class="section-inner">
-    <p style="text-align:center;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:32px;">
-      Tested with these LLM providers &amp; frameworks
-    </p>
-    <div class="chips-row reveal">
-      <span class="chip">🤖 Anthropic</span>
-      <span class="chip">✦ OpenAI</span>
-      <span class="chip">◆ Google Gemini</span>
-      <span class="chip">🦙 Ollama</span>
-      <span class="chip">⇄ Agent-to-Agent (A2A)</span>
-      <span class="chip">⛓ LangChain4j</span>
-      <span class="chip">🌱 Spring AI</span>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ FEATURES ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="features" aria-label="Features">
-  <div class="section-inner">
-    <div class="reveal">
-      <p class="section-label">Why Mokksy</p>
-      <h2 class="section-title">Everything WireMock isn't<br>for AI testing</h2>
+  <!-- ═══ WHY IT MATTERS ═══════════════════════════════════════════════════════ -->
+  <section class="section" aria-label="What problem Mokksy solves">
+    <div class="section-inner reveal">
+      <p class="section-label">Why it matters</p>
+      <h2 class="section-title">Catch failures before production</h2>
       <p class="section-sub">
-        Built for the unique challenges of testing LLM-powered applications —
-        streaming, chunked responses, and non-determinism included.
+        Unit tests don’t cover timeouts, retries, or streaming behavior.
+        Mokksy lets you test real HTTP interactions — including slow responses,
+        partial streams, and connection drops — in a deterministic way.
       </p>
     </div>
+  </section>
 
-    <div class="feature-grid">
-      {{ range $p.features }}
-      <div class="feature-card reveal">
-        <div class="feature-card-header">
-          <div class="feature-icon" aria-hidden="true">{{ .icon }}</div>
-          <h3>{{ .title }}</h3>
-        </div>
-        <p>{{ .description }}</p>
+  <!-- ═══ INTEGRATIONS ══════════════════════════════════════════════════════════ -->
+  <section class="section" aria-label="Supported integrations">
+    <div class="section-inner">
+      <p class="section-label">Tested with these LLM providers &amp; frameworks</p>
+      <div class="chips-row reveal">
+        <span class="chip">🤖 Anthropic</span>
+        <span class="chip">✦ OpenAI</span>
+        <span class="chip">◆ Google Gemini</span>
+        <span class="chip">🦙 Ollama</span>
+        <span class="chip">⇄ Agent-to-Agent (A2A)</span>
+        <span class="chip">⛓🦜 LangChain4j</span>
+        <span class="chip">🌱 Spring AI</span>
       </div>
-      {{ end }}
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ═══ CONTENT ═══════════════════════════════════════════════════════════════ -->
-{{ if .Content }}
-<section class="section">
-  <div class="section-inner">
-    <div class="docs-content">{{ .Content }}</div>
-  </div>
-</section>
-{{ end }}
+  <!-- ═══ FEATURES ══════════════════════════════════════════════════════════════ -->
+  <section class="section" id="features" aria-label="Features">
+    <div class="section-inner">
+      <div class="reveal">
+        <p class="section-label">Why Mokksy</p>
+        <h2 class="section-title">Everything WireMock isn't<br>for AI testing</h2>
+        <p class="section-sub">
+          Built for the unique challenges of testing LLM-powered applications —
+          streaming, chunked responses, and non-determinism included.
+        </p>
+      </div>
 
-<!-- ═══ CTA ═══════════════════════════════════════════════════════════════════ -->
-<section class="section" aria-label="Call to action">
-  <div class="section-inner">
-    <div class="cta-banner-inner reveal">
-      <h2>Start mocking today</h2>
-      <p>Open-source, MIT licensed, built for Kotlin &amp; Java teams.</p>
-      <div class="cta-buttons">
-        <a href="/docs/" class="btn btn-primary btn-lg">Read the Documentation</a>
-        {{ with $p.github }}
-        <a href="{{ . }}" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
-          Star on GitHub ★
-        </a>
+      <div class="feature-grid">
+        {{ range $p.features }}
+        <div class="feature-card reveal">
+          <div class="feature-card-header">
+            <div class="feature-icon" aria-hidden="true">{{ .icon }}</div>
+            <h3>{{ .title }}</h3>
+          </div>
+          <p>{{ .description }}</p>
+        </div>
         {{ end }}
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- ═══ MOKKSY & AI-MOCKS ═════════════════════════════════════════════════════ -->
+  <section class="section" aria-label="Mokksy and AI-Mocks">
+    <div class="section-inner reveal">
+      <p class="section-label">Next-level mocking</p>
+      <h2 class="section-title">Mokksy &amp; AI-Mocks</h2>
+      <p class="section-sub">
+        <em>Mokksy</em> and <em>AI-Mocks</em> bring realistic behavior to HTTP and LLM API testing.
+        They let you test streaming, delays, retries, and failures — not just static responses.
+      </p>
+
+      <div class="feature-grid reveal">
+        <a href="/docs/mokksy/">
+          <div class="feature-card reveal" style="animation-delay:0.1s">
+            <div class="feature-card-header">
+              <h3>Mokksy</h3>
+            </div>
+            <p>A Kotlin + Ktor mock HTTP server with streaming and Server-Side Events (SSE).</p>
+          </div>
+        </a>
+
+        <a href="/docs/ai-mocks/">
+          <div class="feature-card reveal" style="animation-delay:0.3s">
+            <div class="feature-card-header">
+              <h3>AI-Mocks</h3>
+            </div>
+            <p>Built on Mokksy, providing ready-to-use mocks for OpenAI, Anthropic, Google Gemini, Ollama, and
+              Agent-to-Agent APIs.</p>
+          </div>
+        </a>
+      </div>
+
+      <ul class="feature-list reveal" style="animation-delay:0.5s">
+        <li><strong>Streaming &amp; SSE:</strong> realistic response streams</li>
+        <li><strong>Fine-grained control:</strong> define behaviour programmatically</li>
+        <li><strong>Delay simulation:</strong> chunk-level or total latency</li>
+        <li><strong>Failure scenarios:</strong> test errors, slow responses, corrupted streams</li>
+        <li><strong>Kotlin DSL:</strong> concise API designed for tests</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ CONTENT (disabled) ═══════════════════════════════════════════════════ -->
+  {{ if false }}
+  <section class="section">
+    <div class="section-inner">
+      <div class="docs-content">{{ .Content }}</div>
+    </div>
+  </section>
+  {{ end }}
+
+  <!-- ═══ CTA ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section" aria-label="Call to action">
+    <div class="section-inner">
+      <div class="cta-banner-inner reveal">
+        <h2>Start mocking today</h2>
+        <p>Open-source, MIT licensed, built for Kotlin &amp; Java teams.</p>
+        <div class="cta-buttons">
+          <a href="/docs/" class="btn btn-primary btn-lg">Read the Documentation</a>
+          {{ with $p.github }}
+          <a href="{{ . }}" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
+            Star on GitHub ★
+          </a>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </section>
 
 </div><!-- /landing-wrap -->
 {{ end }}

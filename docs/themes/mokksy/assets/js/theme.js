@@ -1,6 +1,6 @@
 /* ─── Theme Toggle (3-state: light / dark / auto) ────────────────── */
 (function () {
-  var KEY = 'mokksy-theme';
+  const KEY = 'mokksy-theme';
 
   function resolve(pref) {
     if (!pref || pref === 'auto') {
@@ -22,10 +22,10 @@
   }
 
   function updateBtn(pref) {
-    var btn = document.getElementById('theme-toggle');
+    const btn = document.getElementById('theme-toggle');
     if (!btn) return;
-    var next = { light: 'Switch to dark', dark: 'Switch to auto (system)', auto: 'Switch to light' };
-    var label = (next[pref] || 'Toggle theme') + ' theme';
+    const labels = {light: 'Switch to dark', dark: 'Switch to auto (system)', auto: 'Switch to light'};
+    const label = (labels[pref] || 'Toggle theme') + ' theme';
     btn.setAttribute('aria-label', label);
     btn.setAttribute('title', label);
   }
@@ -37,7 +37,7 @@
   }
 
   // Boot
-  var stored = localStorage.getItem(KEY);
+  const stored = localStorage.getItem(KEY);
   apply(stored || 'auto');
 
   // Follow OS changes while in auto mode
@@ -48,7 +48,7 @@
   });
 
   document.addEventListener('DOMContentLoaded', function () {
-    var btn = document.getElementById('theme-toggle');
+    const btn = document.getElementById('theme-toggle');
     if (!btn) return;
     updateBtn(document.documentElement.getAttribute('data-theme-pref') || 'auto');
     btn.addEventListener('click', function () {
@@ -143,9 +143,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 /* ─── Language labels on Hugo code blocks ─────────────────────────────────────── */
-  var SKIP_LANGS = new Set(['text', 'plain', 'plaintext', '']);
+  const SKIP_LANGS = new Set(['text', 'plain', 'plaintext', '']);
   document.querySelectorAll('.highlight code[data-lang]').forEach(function (code) {
-    var lang = (code.getAttribute('data-lang') || '').trim().toLowerCase();
+    const lang = (code.getAttribute('data-lang') || '').trim().toLowerCase();
     if (!SKIP_LANGS.has(lang)) {
       code.closest('.highlight').setAttribute('data-lang', lang);
     }

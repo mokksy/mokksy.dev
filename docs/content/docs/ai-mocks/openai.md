@@ -3,6 +3,7 @@ title: "OpenAI"
 #weight: 30
 toc: true
 ---
+[![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-openai.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-openai)
 
 AI-Mocks OpenAI is a specialized mock server implementation for mocking the OpenAI API, built using Mokksy.
 

@@ -3,6 +3,7 @@ title: "Agent2Agent Protocol"
 #weight: 50
 toc: true
 ---
+[![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-a2a.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-a2a)
 
 [MockAgentServer](https://github.com/mokksy/ai-mocks/blob/main/ai-mocks-a2a/src/commonMain/kotlin/me/kpavlov/aimocks/a2a/MockAgentServer.kt) provides a local mock server for simulating [A2A (Agent-to-Agent) API](https://a2a-protocol.org/latest/specification/) endpoints.
 It simplifies testing by allowing you to define request expectations and responses without making real network calls.

@@ -4,124 +4,165 @@ weight: 20
 #toc: true
 #featureImage: "mokksy-mascot-256.png"
 ---
+[![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy/mokksy.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy/mokksy)
 
-_Mokksy_ is a mock HTTP server built with [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.io/).
+## Why Mokksy?
 
-**Why?** Wiremock does not support true SSE and streaming responses. Mokksy is here to address those limitations. It's particularly useful for integration testing LLM clients.
+Wiremock does not support true SSE and streaming responses.
 
-## Core Features
+Mokksy is here to address those limitations.
+Particularly, it might be useful for integration testing LLM clients.
 
-- Flexibility to control server response directly via `ApplicationCall` object
-- Built with [Kotest Assertions](https://kotest.io/docs/assertions/assertions.html)
-- Fluent modern Kotlin DSL API
-- Support for simulating streamed responses and [Server-Side Events (SSE)](https://html.spec.whatwg.org/multipage/server-sent-events.html)
+## Key Features
 
-## Installation
+- **Streaming Support**: True support for streaming responses and [Server-Side Events (SSE)][sse]
+- **Response Control**: Flexibility to control server responses directly via `ApplicationCall` object
+- **Delay Simulation**: Support for simulating response delays and delays between chunks
+- **Modern API**: Fluent Kotlin DSL API with [Kotest Assertions](https://kotest.io/docs/assertions/assertions.html)
+- **Error Simulation**: Ability to mock negative scenarios and error responses
+- **Specificity-Based Matching**: When multiple stubs match a request, Mokksy automatically selects the most specific
+  one — no explicit priority configuration required for common cases
+- **Ktor Integration**: Embed Mokksy into any existing Ktor application via `Application.mokksy()` and `Route.mokksy()`
+  extension functions — including behind authentication middleware
 
-Add Mokksy to your project dependencies:
-  
-For Gradle project:
+## Quick start
+
+1. Add dependencies:
+
+   Gradle _build.gradle.kts:_
+
+   ```kotlin
+   dependencies {               
+        // for multiplatform projects
+       implementation("dev.mokksy:mokksy:$latestVersion")
+        // for JVM projects
+       implementation("dev.mokksy:mokksy-jvm:$latestVersion")
+   }
+   ``` 
+
+   Maven _pom.xml:_
+   ```xml
+    <dependency>
+        <groupId>dev.mokksy</groupId>
+        <artifactId>mokksy-jvm</artifactId>
+        <version>[LATEST_VERSION]</version>
+        <scope>test</scope>
+    </dependency>
+   ```
+
+
+2. Create and start Mokksy server:
+
+   **Kotlin — all platforms (coroutine-based):**
+
+   ```kotlin
+   import dev.mokksy.mokksy.Mokksy
+
+   val mokksy = Mokksy()
+   mokksy.startSuspend()
+   mokksy.awaitStarted() // port() and baseUrl() are safe after this point
+   ```
+
+   **Kotlin — JVM blocking:**
+
+   ```kotlin
+   import dev.mokksy.mokksy.Mokksy
+
+   val mokksy = Mokksy().start()
+   ```
+
+   **Java** — see [Java API](#java-api) below.
+
+3. Configure http client using Mokksy server's as baseUrl in your application:
+
 ```kotlin
-// For JVM projects
-testImplementation("dev.mokksy:mokksy-jvm:$latestVersion")
-
-// For Kotlin Multiplatform projects
-testImplementation("dev.mokksy:mokksy:$latestVersion")
+val client = HttpClient {
+  install(DefaultRequest) {
+    url(mokksy.baseUrl())
+  }
+  install(ContentNegotiation) {
+    json()
+  }
+}
 ```
 
-For Maven project:
-```xml
+## Responding with predefined responses
 
-<dependency>
-  <groupId>dev.mokksy</groupId>
-  <artifactId>mokksy-jvm</artifactId>
-  <version>[LATEST_VERSION]</version>
-  <scope>test</scope>
-</dependency>
-```
+Mokksy supports all HTTP verbs. Here are some examples.
 
-## Basic Usage
+### GET request
 
-### Creating Mokksy Server
+GET request example:
 
 <!--- CLEAR -->
 <!--- INCLUDE
 import dev.mokksy.mokksy.Mokksy
-import dev.mokksy.mokksy.shutdown
-fun main() {
--->
-```kotlin
-// Create and start Mokksy instance
-val mokksy = Mokksy()
-
-// Configure a response for a GET request
-mokksy.get {
-  path("/ping")
-} respondsWith {
-  // language=json
-  body = """{"response": "Pong"}"""
-}
-
-// Use the server URL in your client
-val serverUrl = mokksy.baseUrl()
-
-// [create a client and send a request here]
-
-// Shutdown Mokksy when done
-mokksy.shutdown()
-```
-
-<!--- SUFFIX
-}
--->
-<!--- KNIT example-mokksy-docs-01.kt -->
-
-This snippet shows how to use the Mokksy server for testing.  
-It starts and configures a server so that any HTTP GET request to `/ping` returns `{"response": "Pong"}`.  
-It also retrieves the server’s base URL for client requests and demonstrates how to shut down the server after testing.
-
-## Responding with Predefined Responses
-
-### GET Request
-
-<!--- INCLUDE
-import dev.mokksy.mokksy.Mokksy
+import dev.mokksy.mokksy.MokksyServer
+import dev.mokksy.mokksy.post
+import dev.mokksy.mokksy.start
 import io.kotest.matchers.equals.beEqual
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.runBlocking
-val mokksy = Mokksy()
-val client = HttpClient {
-    install(DefaultRequest) {
-        url(mokksy.baseUrl())
-    }
-}
-fun main() = runBlocking {
+import io.ktor.http.withCharsetIfNeeded
+import io.ktor.sse.ServerSentEvent
+import kotlin.random.Random
+import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
+import kotlinx.serialization.Serializable
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.http.contentType
+import io.ktor.serialization.kotlinx.json.json
+import org.junit.jupiter.api.Test
+
+class ReadmeTest {
+    val mokksy: MokksyServer = Mokksy(verbose = true).start()
+    val client: HttpClient =
+        HttpClient {
+            install(DefaultRequest) {
+                url(mokksy.baseUrl())
+            }
+            install(ContentNegotiation) {
+                json()
+            }
+        }
 -->
+<!--- INCLUDE
+  @Test
+  suspend fun testGet() {
+-->
+
 ```kotlin
 // given
 val expectedResponse =
-    // language=json
-    """
+  // language=json
+  """
     {
         "response": "Pong"
+
     }
     """.trimIndent()
 
 mokksy.get {
-    path = beEqual("/ping")
-    containsHeader("Foo", "bar")
+  path = beEqual("/ping")
+  containsHeader("Foo", "bar")
 } respondsWith {
-    body = expectedResponse
+  body = expectedResponse
 }
 
 // when
 val result = client.get("/ping") {
-    headers.append("Foo", "bar")
+  headers.append("Foo", "bar")
 }
 
 // then
@@ -129,40 +170,35 @@ result.status shouldBe HttpStatusCode.OK
 result.bodyAsText() shouldBe expectedResponse
 ```
 
-<!--- SUFFIX
-}
--->
-<!--- KNIT example-mokksy-docs-02.kt -->
+When the request does not match - Mokksy server returns `404 (Not Found)`:
 
-### POST Request
+```kotlin
+val notFoundResult = client.get("/ping") {
+  headers.append("Foo", "baz")
+}
+
+notFoundResult.status shouldBe HttpStatusCode.NotFound
+```
 
 <!--- INCLUDE
-import dev.mokksy.mokksy.Mokksy
-import io.kotest.matchers.equals.beEqual
-import io.ktor.client.HttpClient
-import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.request.post
-import io.ktor.client.request.setBody
-import io.ktor.client.statement.bodyAsText
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.runBlocking
-import kotlin.random.Random
-import org.assertj.core.api.Assertions.assertThat
-val mokksy = Mokksy()
-val client = HttpClient {
-    install(DefaultRequest) {
-        url(mokksy.baseUrl())
-    }
-}
-fun main() = runBlocking {
+  }
 -->
+
+### POST request
+
+POST request example:
+
+<!--- INCLUDE
+  @Test
+  suspend fun testPost() {
+-->
+
 ```kotlin
 // given
 val id = Random.nextInt()
 val expectedResponse =
-    // language=json
-    """
+  // language=json
+  """
     {
         "id": "$id",
         "name": "thing-$id"
@@ -170,136 +206,345 @@ val expectedResponse =
     """.trimIndent()
 
 mokksy.post {
-    path = beEqual("/things")
-    bodyContains("\"$id\"")
+  path = beEqual("/things")
+  bodyContains("\"$id\"")
 } respondsWith {
-    body = expectedResponse
-    httpStatus = HttpStatusCode.Created
-    headers {
-        // type-safe builder style
-        append(HttpHeaders.Location, "/things/$id")
-    }
-    headers += "Foo" to "bar" // list style
+  body = expectedResponse
+  httpStatus = HttpStatusCode.Created
+  headers {
+    // type-safe builder style
+    append(HttpHeaders.Location, "/things/$id")
+  }
+  headers += "Foo" to "bar" // list style
 }
 
 // when
 val result =
-    client.post("/things") {
-        headers.append("Content-Type", "application/json")
-        setBody(
-            // language=json
-            """
+  client.post("/things") {
+    headers.append("Content-Type", "application/json")
+    setBody(
+      // language=json
+      """
             {
                 "id": "$id"
             }
             """.trimIndent(),
-        )
-    }
+    )
+  }
 
 // then
-assertThat(result.status).isEqualTo(HttpStatusCode.Created)
-assertThat(result.bodyAsText()).isEqualTo(expectedResponse)
-assertThat(result.headers["Location"]).isEqualTo("/things/$id")
-assertThat(result.headers["Foo"]).isEqualTo("bar")
+result shouldNotBeNull {
+  status shouldBe HttpStatusCode.Created
+  bodyAsText() shouldBe expectedResponse
+  headers["Location"] shouldBe "/things/$id"
+  headers["Foo"] shouldBe "bar"
+}
 ```
 
-<!--- SUFFIX
-}
+<!--- INCLUDE
+  }
 -->
-<!--- KNIT example-mokksy-docs-03.kt -->
 
-### Request Specification Matchers
+### Typed request body
 
-Mokksy provides various matcher types to specify conditions for matching incoming HTTP requests:
+When the request body type is known at compile time, use the **reified** overloads to let the compiler infer the type —
+no explicit `::class` argument required:
 
-* **Path Matchers**
-  * `path` - Exact match for request path
-  * Example: `path("/things")`
+```kotlin
+@Serializable
+@JvmRecord
+data class CreateItemRequest(val name: String)
 
-* **Content Matchers**
-  * `bodyContains` - Checks if the body contains specific text
-  * Example: `bodyContains("value")` or `bodyString += contain("value")`
-
-* **Header Matchers**
-  * `containsHeader` - Checks if the request contains a specific header with value
-  * Example: `containsHeader("X-Request-ID", "RequestID")`
-
-* **Predicate Matchers**
-  * `predicateMatcher` - Custom predicate function to match against request body
-  * Example: `bodyMatchesPredicate { it?.name == "foo" }`
-
-* **Call Matchers**
-  * `successCallMatcher` - Matches if a function call with the request body succeeds
-  * Example: `requestSatisfies { input -> input.shouldNotBeNull() }`
-
-## Server-Side Events (SSE) Response
-
-[Server-Side Events (SSE)](https://html.spec.whatwg.org/multipage/server-sent-events.html) is a technology that allows a server to push updates to the client over a single, long-lived HTTP connection. This enables real-time updates without requiring the client to continuously poll the server for new data.
-
-SSE streams events in a standardized format, making it easy for clients to consume the data and handle events as they arrive. It's lightweight and efficient, particularly well-suited for applications requiring real-time updates like live notifications or feed updates.
+@Serializable
+@JvmRecord
+data class CreateItemResponse(val message: String)
+```
 
 <!--- INCLUDE
-import dev.mokksy.mokksy.Mokksy
-import io.kotest.matchers.equals.beEqual
-import io.ktor.client.HttpClient
-import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.request.post
-import io.ktor.client.statement.bodyAsText
-import io.ktor.http.ContentType
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.contentType
-import io.ktor.http.withCharset
-import io.ktor.sse.ServerSentEvent
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
-import kotlin.time.Duration.Companion.milliseconds
-import org.assertj.core.api.Assertions.assertThat
-val mokksy = Mokksy()
-val client = HttpClient {
-    install(DefaultRequest) {
-        url(mokksy.baseUrl())
-    }
-}
-fun main() = runBlocking {
+  @Test
+  suspend fun testReified() {
 -->
+
+```kotlin
+val itemName = "Widget"
+
+mokksy.post<CreateItemRequest>(name = "create-item") {
+  path("/items")
+  bodyMatchesPredicate("name should match") { it?.name == itemName }
+} respondsWith {
+  body = CreateItemResponse("Hello, $itemName!")
+  httpStatus = HttpStatusCode.Created
+  headers += "Foo" to "bar"
+}
+
+val result =
+  client.post("/items") {
+    contentType(ContentType.Application.Json)
+    setBody(CreateItemRequest(itemName))
+  }
+
+result shouldNotBeNull {
+  status shouldBe HttpStatusCode.Created
+  headers["Foo"] shouldBe "bar"
+  body<CreateItemResponse>().message shouldBe "Hello, $itemName!"
+}
+```
+
+<!--- INCLUDE
+  }
+-->
+
+Reified overloads are provided for all HTTP verbs (`get`, `post`, `put`, `delete`, `patch`, `head`,
+`options`) and the generic `method` function. Two overloads exist per verb: one taking an optional
+stub name (`name: String? = null`) and one taking a [`StubConfiguration`](#stub-specificity).
+
+The deserialized request body is accessible inside the response lambda as `request.body()`.
+
+When the type is determined at runtime or when you want an explicit name on the stub,
+pass a `KClass` token using the named `requestType` parameter:
+
+<!--- INCLUDE
+  @Test
+  suspend fun testKClass() {
+-->
+
+```kotlin
+mokksy.post(requestType = CreateItemRequest::class) {
+  path("/items")
+  bodyMatchesPredicate { it?.name == "widget" }
+} respondsWith {
+  body = CreateItemResponse("Hello, widget!")
+  httpStatus = HttpStatusCode.Created
+}
+
+val result =
+  client.post("/items") {
+    contentType(ContentType.Application.Json)
+    setBody(CreateItemRequest("widget"))
+  }
+
+result.status shouldBe HttpStatusCode.Created
+result.body<CreateItemResponse>().message shouldBe "Hello, widget!"
+```
+
+<!--- INCLUDE
+  }
+-->
+
+Java callers use `CreateItemRequest.class` via the [Java API](#java-api):
+`mokksy.post(CreateItemRequest.class, spec -> spec.path("/items").bodyMatchesPredicate(req -> "widget".equals(req.getName())))`.
+
+Deserialization uses Ktor's `ContentNegotiation` plugin. For projects that use Jackson instead of
+`kotlinx.serialization`, create the server with `MokksyJackson.create()` (Java API) —
+see [Jackson support](#jackson-support).
+
+When no stub matches and verbose mode is on (`Mokksy(verbose = true)`), Mokksy logs the closest
+partial match and its failed conditions to help diagnose the mismatch.
+
+### Status-only responses
+
+Use `respondsWithStatus` when the test only needs to verify a status code — no body needed.
+It's an infix function, so it reads naturally next to the stub definition:
+`mokksy.get { path("/ping") } respondsWithStatus HttpStatusCode.NoContent`.
+
+Java callers use the `int` overload on `JavaBuildingStep`:
+
+```java
+mokksy.get(spec ->spec.
+
+path("/ping")).
+
+respondsWithStatus(204);
+mokksy.
+
+delete(spec ->spec.
+
+path("/item")).
+
+respondsWithStatus(410);
+```
+
+## Server-Side Events (SSE) response
+
+[Server-Side Events (SSE)](https://html.spec.whatwg.org/multipage/server-sent-events.html) is a technology that allows a
+server to push updates to the client over a single, long-lived HTTP connection. This enables real-time updates without
+requiring the client to continuously poll the server for new data.
+
+SSE streams events in a standardized format, making it easy for clients to consume the data and handle events as they
+arrive. It's lightweight and efficient, particularly well-suited for applications requiring real-time updates like live
+notifications or feed updates.
+
+Server-Side Events (SSE) example:
+
+<!--- INCLUDE 
+  @Test
+  suspend fun testSse() {
+-->
+
 ```kotlin
 mokksy.post {
-    path = beEqual("/sse")
+  path = beEqual("/sse")
 } respondsWithSseStream {
-    flow =
-        flow {
-            delay(200.milliseconds)
-            emit(
-                ServerSentEvent(
-                    data = "One",
-                ),
-            )
-            delay(50.milliseconds)
-            emit(
-                ServerSentEvent(
-                    data = "Two",
-                ),
-            )
-        }
+  flow =
+    flow {
+      delay(200.milliseconds)
+      emit(
+        ServerSentEvent(
+          data = "One",
+        ),
+      )
+      delay(50.milliseconds)
+      emit(
+        ServerSentEvent(
+          data = "Two",
+        ),
+      )
+    }
 }
 
 // when
 val result = client.post("/sse")
 
 // then
-assertThat(result.status)
-    .isEqualTo(HttpStatusCode.OK)
-assertThat(result.contentType())
-    .isEqualTo(ContentType.Text.EventStream.withCharset(Charsets.UTF_8))
-assertThat(result.bodyAsText())
-    .isEqualTo("data: One\r\ndata: Two\r\n")
+result shouldNotBeNull {
+  status shouldBe HttpStatusCode.OK
+  contentType() shouldBe ContentType.Text.EventStream.withCharsetIfNeeded(Charsets.UTF_8)
+  bodyAsText() shouldBe "data: One\r\n\r\ndata: Two\r\n\r\n"
+}
 ```
 
+<!--- INCLUDE
+  }
+-->
+
+### Long-lived SSE streams
+
+By default, the SSE stream closes when the flow completes. 
+
+To keep it open (e.g. for clients that reconnect on close), end the flow with `awaitCancellation()`:
+
+```
+flow = flow {
+    emit(ServerSentEvent(data = "hello"))
+    awaitCancellation() // stream stays open until client disconnects
+}
+```
+
+## Request Specification Matchers
+
+Mokksy provides various matcher types to specify conditions for matching incoming HTTP requests:
+
+- **Path matchers** — `path("/things")` or `path = beEqual("/things")`
+- **Header matchers** — `containsHeader("X-Request-ID", "abc")` checks for a header with an exact value
+- **Content matchers** — `bodyContains("value")` checks if the raw body string contains a substring;
+  `bodyString += contain("value")` adds a Kotest matcher directly
+- **Predicate matchers** — `bodyMatchesPredicate { it?.name == "foo" }` matches against the typed,
+  deserialized request body — see [Typed request body](#typed-request-body) for the full API
+- **Call matchers** — `successCallMatcher` matches if a function called with the body does not throw
+- **Priority** — `priority = 10` on `RequestSpecificationBuilder` sets the `RequestSpecification.priority`
+  of the stub; higher values indicate higher priority. Default is `0`.
+  Use negative values (e.g. `priority = -1`) for catch-all / fallback stubs.
+  Priority is a tiebreaker: it applies only when two stubs match with an equal number of conditions satisfied.
+  For most cases, specificity-based matching (see below) selects the right stub automatically.
+
+### Stub Specificity
+
+When multiple stubs could match the same request, Mokksy scores each one by counting how many conditions
+it satisfies, then selects the highest-scoring stub. A stub with two matching conditions beats a stub with one,
+regardless of registration order.
+
+<!--- INCLUDE 
+  @Test
+  suspend fun testSpecificity() {
+-->
+
+```kotlin
+// Generic: matches any POST to /users
+mokksy.post {
+  path("/users")
+} respondsWith {
+  body = "any user"
+}
+
+// Specific: matches only requests whose body contains "admin" — two conditions
+mokksy.post {
+  path("/users")
+  bodyContains("admin")
+} respondsWith {
+  body = "admin user"
+}
+
+// Admin request → specific stub wins (score 2 beats score 1)
+val adminResult = client.post("/users") { setBody("admin") }
+adminResult.bodyAsText() shouldBe "admin user"
+
+// Other request → only the generic stub matches
+val genericResult = client.post("/users") { setBody("regular") }
+genericResult.bodyAsText() shouldBe "any user"
+```
+
+<!--- INCLUDE
+  }
+-->
+<!--- INCLUDE
+  @Test
+  suspend fun testRespondsWithStatus() {
+-->
+
+```kotlin
+mokksy.get { path("/ping") } respondsWithStatus HttpStatusCode.NoContent
+
+val response = client.get("/ping")
+
+response.status shouldBe HttpStatusCode.NoContent
+```
+
+<!--- INCLUDE
+  }
+-->
 <!--- SUFFIX
 }
 -->
-<!--- KNIT example-mokksy-docs-04.kt -->
+<!--- KNIT example-readme-01.kt -->
+
+### Priority Example
+
+If multiple stubs match with the same specificity score, the one with the higher `priority` value wins:
+
+<!--- INCLUDE
+  @Test
+  suspend fun testPriority() {
+-->
+
+```kotlin
+// Catch-all stub with low priority (negative value)
+mokksy.get {
+  path = contain("/things")
+  priority = -1
+} respondsWith {
+  body = "Generic Thing"
+}
+
+// Specific stub with high priority (positive value)
+mokksy.get {
+  path = beEqual("/things/special")
+  priority = 1
+} respondsWith {
+  body = "Special Thing"
+}
+
+// when
+val generic = client.get("/things/123")
+val special = client.get("/things/special")
+
+// then
+generic.bodyAsText() shouldBe "Generic Thing"
+special.bodyAsText() shouldBe "Special Thing"
+```
+
+<!--- INCLUDE
+  }
+-->
 
 ## Verifying Requests
 
@@ -307,66 +552,110 @@ Mokksy provides two complementary verification methods that check opposite sides
 
 ### Verify all stubs were triggered
 
-`verifyNoUnmatchedStubs()` fails if any registered stub was never matched by an incoming request. Use this to catch
-stubs you set up but that were never actually called — a sign the code under test took a different path than expected.
+`verifyNoUnmatchedStubs()` fails if any registered stub was never matched by an incoming request.
+Use this to catch stubs you set up but that were never actually called — a sign the code under test took
+a different path than expected.
 
-<!--- INCLUDE
-import dev.mokksy.mokksy.Mokksy
-val mokksy = Mokksy()
-fun main() {
--->
 ```kotlin
-// Fails if any stub has matchCount == 0
+// Fails if any stub has never been matched
 mokksy.verifyNoUnmatchedStubs()
 ```
 
-Be careful if you are running tests in parallel against a single MokksyServer instance.
-Some stubs might be unmatched after one test is completed. Don't verify in `@AfterEach`/`@AfterTest`.
+> **Note:** Be careful when running tests in parallel against a single `MokksyServer` instance.
+> Some stubs might be unmatched when one test completes. Avoid calling this in `@AfterEach`/`@AfterTest`
+> unless each test owns its own server instance.
 
 ### Verify no unexpected requests arrived
 
-`verifyNoUnexpectedRequests()` fails if any HTTP request arrived at the server but no stub matched it. These requests are
-recorded in the `RequestJournal` and reported together.
+`verifyNoUnexpectedRequests()` fails if any HTTP request arrived at the server but no stub matched it.
+These requests are recorded in the `RequestJournal` and reported together.
 
 ```kotlin
-// Fails if any request arrived with no matching stub (unexpected request)
+// Fails if any request arrived with no matching stub
 mokksy.verifyNoUnexpectedRequests()
 ```
 
-<!--- SUFFIX
-}
--->
-<!--- KNIT example-mokksy-docs-05.kt -->
-
-If there is an unexpected request to the mock, then `AssertionError` will be thrown.
-
 ### Recommended AfterEach setup
 
-Run both checks after every test to catch a mismatch in either direction:
+Always run `verifyNoUnexpectedRequests()` in `@AfterEach` to catch requests that arrived but
+matched no stub. For `verifyNoUnmatchedStubs()`, the right placement depends on your fixture strategy:
 
+- **Per-test instance** (`@TestInstance(Lifecycle.PER_METHOD)` or a fresh server per test): call
+  both checks in `@AfterEach` — every stub registered during that test should have been matched
+  before the server is torn down.
+- **Shared instance** (`@TestInstance(Lifecycle.PER_CLASS)` or a companion-object server): call
+  `verifyNoUnmatchedStubs()` in `@AfterAll`, immediately before `shutdown()`. Calling it after
+  each individual test would falsely report stubs registered for _later_ tests as unmatched.
+
+<!--- CLEAR -->
 <!--- INCLUDE
-import dev.mokksy.mokksy.Mokksy
-import kotlin.test.AfterTest
-import kotlin.test.Test
+import dev.mokksy.Mokksy
+import io.kotest.matchers.equals.beEqual
+import io.kotest.matchers.shouldBe
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.request.get
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpStatusCode
+import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.delay
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 -->
+
 ```kotlin
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MyTest {
 
-    private val mokksy = Mokksy()
+  val mokksy = Mokksy.create()
+  lateinit var client: HttpClient
 
-    @AfterTest
-    fun afterEach() {
-      mokksy.verifyNoUnexpectedRequests() // no unexpected HTTP calls
+  @BeforeAll
+  suspend fun setup() {
+    mokksy.startSuspend()
+    mokksy.awaitStarted() // port() and baseUrl() are safe after this point
+    client = HttpClient {
+      install(DefaultRequest) {
+        url(mokksy.baseUrl())
+      }
+    }
+  }
+
+  @Test
+  suspend fun testSomething() {
+    mokksy.get {
+      path("/hi")
+    } respondsWith {
+      delay = 100.milliseconds // wait 100ms, then reply
+      body = "Hello"
     }
 
-    @Test
-    fun testSomething() {
-        // write your test here
-    }
+    // when
+    val response = client.get("/hi")
+
+    // then
+    response.status shouldBe HttpStatusCode.OK
+    response.bodyAsText() shouldBe "Hello"
+  }
+
+  @AfterEach
+  fun afterEach() {
+    mokksy.verifyNoUnexpectedRequests()
+  }
+
+  @AfterAll
+  suspend fun afterAll() {
+    client.close()
+    mokksy.verifyNoUnmatchedStubs() // shared instance: check once, after all tests ran
+    mokksy.shutdownSuspend()
+  }
 }
 ```
-<!--- KNIT example-mokksy-docs-06.kt -->
 
+<!--- KNIT example-readme-02.kt -->
 
 ### Inspecting unmatched items
 
@@ -374,45 +663,119 @@ Use the `find*` variants to retrieve the unmatched items directly for custom ass
 
 ```kotlin
 // List<RecordedRequest> — HTTP requests with no matching stub
-val unmatchedRequests: List<RecordedRequest> = mokksy.findAllUnmatchedRequests()
+val unmatchedRequests: List<RecordedRequest> = mokksy.findAllUnexpectedRequests()
 
 // List<RequestSpecification<*>> — stubs that were never triggered
 val unmatchedStubs: List<RequestSpecification<*>> = mokksy.findAllUnmatchedStubs()
 ```
 
-`RecordedRequest` is an immutable snapshot that captures the `method`, `uri`, and `headers` of the incoming request.
+`RecordedRequest` is an immutable snapshot that captures `method`, `uri`, and `headers` of the incoming request.
 
 ## Request Journal
 
 Mokksy records incoming requests in a `RequestJournal`. The recording mode is controlled by `JournalMode` in
 `ServerConfiguration`:
 
-| Mode                           | Behaviour                                                                                                  |
-|--------------------------------|------------------------------------------------------------------------------------------------------------|
-| `JournalMode.LEAN` *(default)* | Records only requests with no matching stub. Lower overhead. Sufficient for `checkForUnmatchedRequests()`. |
-| `JournalMode.FULL`             | Records all incoming requests — both matched and unmatched.                                                |
+- **JournalMode.NONE** - Disables request recording entirely. `findAllUnexpectedRequests()`, `findAllMatchedRequests()`, and `verifyNoUnexpectedRequests()` throw `IllegalStateException`.
+- **JournalMode.LEAN** _(default)_ – Records only requests with no matching stub. Lower overhead; sufficient for
+  `verifyNoUnexpectedRequests()`.
+- **JournalMode.FULL** - Records all incoming requests, both matched and unmatched.
 
 ```kotlin
-val mokksy = Mokksy(
+val mokksy = MokksyServer(
   configuration = ServerConfiguration(
-    journalMode = JournalMode.FULL
-  )
+    journalMode = JournalMode.FULL,
+  ),
 )
 ```
 
-Use `FULL` mode when you need a complete picture of traffic, for example to debug unexpected call patterns by combining
-both lists:
-
-```kotlin
-val unmatched = mokksy.findAllUnmatchedRequests()
-// unmatched is empty only if every request found a matching stub
-```
-
-Call `resetMatchCounts()` between tests to clear both stub match counts and the journal:
+Call `resetMatchState()` between scenarios to clear stub match state and the journal:
 
 ```kotlin
 @AfterTest
 fun afterEach() {
-  mokksy.resetMatchCounts()
+  mokksy.resetMatchState()
 }
 ```
+
+> **Note:** Stubs configured with `eventuallyRemove = true` are permanently removed from the registry
+> on first match and cannot be re-armed by `resetMatchState()`. Re-register them before the next scenario.
+
+## Embedding in an existing Ktor application
+
+If you already own a Ktor `Application` — a test harness with authentication middleware, custom
+plugins, or routes that must coexist with stubs — use the `mokksy` extension functions to mount
+stub handling directly, without allocating a second embedded server.
+
+### Application-level installation
+
+`Application.mokksy(server)` installs [SSE][sse], `DoubleReceive`, and `ContentNegotiation`
+automatically, then mounts a catch-all route that dispatches every incoming request through the
+stub registry:
+
+```kotlin
+import dev.mokksy.mokksy.MokksyServer
+import dev.mokksy.mokksy.mokksy
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
+
+val server = MokksyServer()
+server.get { path("/ping") } respondsWith { body = "pong" }
+
+embeddedServer(Netty, port = 8080) {
+  mokksy(server)
+}.start(wait = true)
+```
+
+Use this overload when Mokksy owns the entire application and you want the simplest possible setup.
+
+### Route-level installation
+
+`Route.mokksy(server)` mounts the stub handler inside an existing route scope. Unlike the
+application-level overload, it does **not** install plugins — you are responsible for installing
+`SSE`, `DoubleReceive`, and `ContentNegotiation` on the surrounding application. This makes it
+suitable when Mokksy stubs coexist with real routes:
+
+```kotlin
+routing {
+  get("/health") { call.respondText("OK") }
+  mokksy(server)
+}
+```
+
+To place stubs behind an authentication check, install the required plugins and wrap `mokksy` in
+an `authenticate` block:
+
+```kotlin
+install(SSE)
+install(DoubleReceive)
+install(ContentNegotiation) { json() }
+install(Authentication) {
+  basic("auth-basic") {
+    validate { credentials ->
+      if (credentials.name == "user" && credentials.password == "pass") {
+        UserIdPrincipal(credentials.name)
+      } else null
+    }
+  }
+}
+
+routing {
+  authenticate("auth-basic") {
+    mokksy(server)
+  }
+}
+```
+
+Both extension functions accept any `path` pattern as a second parameter (default: `"{...}"`,
+which matches all routes). Narrow the scope by passing a prefix:
+
+```kotlin
+mokksy(server, path = "/api/{...}")
+```
+
+[sse]: https://html.spec.whatwg.org/multipage/server-sent-events.html "Server-Side Events Specification"
+
+[ai-mocks]: https://github.com/mokksy/ai-mocks/ "AI-Mock: Mokksy extensions for AI integrations"
+
+[a2a]: https://a2a-protocol.org/ "Agent2Agent (A2A) Protocol, an open standard designed to enable seamless communication and collaboration between AI agents."

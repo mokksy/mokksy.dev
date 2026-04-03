@@ -3,6 +3,7 @@ title: "Ollama"
 #weight: 30
 toc: true
 ---
+[![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-ollama.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-ollama) 
 
 AI-Mocks Ollama is a specialized mock server implementation for mocking
 the [Ollama API](https://github.com/ollama/ollama/blob/main/docs/api.md), built using Mokksy.

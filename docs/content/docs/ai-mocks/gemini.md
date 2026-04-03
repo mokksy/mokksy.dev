@@ -3,6 +3,7 @@ title: "Gemini"
 #weight: 30
 toc: true
 ---
+[![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-gemini.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-gemini)
 
 AI-Mocks Gemini is a specialized mock server implementation for mocking the Google Vertex AI Gemini API, built using Mokksy.
 

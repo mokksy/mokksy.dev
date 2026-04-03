@@ -2,6 +2,7 @@
 title: "AI-Mocks"
 weight: 30
 ---
+[![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-core)](https://repo1.maven.org/maven2/dev/mokksy/aimocks/ai-mocks-core/)     
 
 AI-Mocks provides specialized mock server implementations built on top of Mokksy for testing and development with LLM APIs.
 

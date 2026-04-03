@@ -3,6 +3,7 @@ title: "Anthropic"
 #weight: 40
 toc: true
 ---
+[![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-anthropic.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-anthropic) 
 
 [MockAnthropic](https://github.com/mokksy/ai-mocks/blob/main/ai-mocks-anthropic/src/commonMain/kotlin/me/kpavlov/aimocks/anthropic/MockAnthropic.kt)
 provides a local mock server for simulating [Anthropic API endpoints](https://docs.anthropic.com/en/api). It simplifies

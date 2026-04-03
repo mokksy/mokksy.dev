@@ -1,0 +1,21 @@
+{{/*
+Inner shortcode for {{< code-tabs >}}.
+
+Params:
+  lang     — language key for Chroma (default "text")
+  filename — optional filename shown in header (default "")
+*/}}
+
+{{ $lang     := .Get "lang"     | default "text" }}
+{{ $filename := .Get "filename" | default "" }}
+
+<div class="tab-panel" data-lang="{{ $lang }}" role="tabpanel">
+  <div class="code-body">
+    {{ if $filename }}
+    <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);">
+      {{ $filename }}
+    </div>
+    {{ end }}
+    {{ highlight (trim .Inner "\n") $lang "" }}
+  </div>
+</div>

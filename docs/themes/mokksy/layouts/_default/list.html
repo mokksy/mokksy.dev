@@ -1,0 +1,63 @@
+{{ define "main" }}
+{{ $isDocs := eq .Section "docs" }}
+
+{{ if $isDocs }}
+<div class="docs-layout">
+
+  {{ partial "sidebar.html" . }}
+
+  <article class="docs-content" role="main">
+
+    {{ partial "breadcrumb.html" . }}
+
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}
+    <p style="font-size:18px;color:var(--text-muted);margin-bottom:2rem;">{{ . }}</p>
+    {{ end }}
+
+    {{ if .Content }}
+    {{ .Content }}
+    <hr>
+    {{ end }}
+
+    <!-- Child pages grid -->
+    {{ if .Pages }}
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:2rem;">
+      {{ range .Pages.ByParam "sidebar_order" }}
+      {{ if not (.Params.sidebar_hide) }}
+      <a href="{{ .RelPermalink }}" class="page-card">
+        <h3 style="font-size:16px;margin-bottom:6px;">
+          {{ .Params.sidebar_title | default .Title }}
+        </h3>
+        {{ with .Description }}
+        <p style="font-size:13px;color:var(--text-muted);margin:0;line-height:1.5;">{{ . }}</p>
+        {{ end }}
+      </a>
+      {{ end }}
+      {{ end }}
+    </div>
+    {{ end }}
+
+  </article>
+
+  {{ partial "toc.html" . }}
+
+</div>
+{{ else }}
+<!-- Generic list -->
+<div style="max-width:860px;margin:0 auto;padding:64px 32px 96px;">
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+  <ul style="margin-top:2rem;list-style:none;padding:0;">
+    {{ range .Pages }}
+    <li style="margin-bottom:12px;">
+      <a href="{{ .RelPermalink }}" style="font-size:16px;font-weight:500;">{{ .Title }}</a>
+      {{ with .Description }}
+      <p style="font-size:14px;color:var(--text-muted);margin:4px 0 0;">{{ . }}</p>
+      {{ end }}
+    </li>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}
+{{ end }}

@@ -1,0 +1,26 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">{{ .Site.Title | default "mokksy" }}</p>
+      <p class="footer-copy">
+        &copy; {{ now.Year }}
+        {{ with .Site.Params.author }}
+          {{ with .url }}
+            <a href="{{ . }}" target="_blank" rel="noopener">{{ $.Site.Params.author.name }}</a>
+          {{ else }}
+            {{ $.Site.Params.author.name }}
+          {{ end }}
+        {{ end }}
+        &nbsp;&middot;&nbsp; MIT Licence
+      </p>
+    </div>
+    <nav class="footer-links" aria-label="Footer links">
+      {{ range .Site.Menus.footer }}
+      <a href="{{ .URL }}"
+         {{ if .Params.external }}target="_blank" rel="noopener noreferrer"{{ end }}>
+        {{ .Name }}
+      </a>
+      {{ end }}
+    </nav>
+  </div>
+</footer>

@@ -1,0 +1,239 @@
+/* ─── Design Tokens ─────────────────────────────────────────────────────────── */
+:root {
+  /* Accent — derived from logo palette (#8f3ee3 vivid, #4a1c71 deep) */
+  --accent:          #8f3ee3;
+  --accent-dim:      rgba(143, 62, 227, 0.12);
+  --accent-border:   rgba(143, 62, 227, 0.28);
+  --accent-2:        #c084fc;  /* lighter purple for gradients */
+
+  /* Typography */
+  --font-sans:   'Inter', system-ui, sans-serif;
+  --font-display:'Figtree', system-ui, sans-serif;
+  --font-mono:   'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Radius */
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
+  --radius-pill:980px;
+
+  /* Transitions */
+  --transition: 0.2s ease;
+}
+
+/* ─── Light Theme ────────────────────────────────────────────────────────────── */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg:            #ffffff;
+  --bg-secondary:  #f5f5f7;
+  --bg-tertiary:   #ebebed;
+  --bg-card:       #ffffff;
+  --bg-elevated:   #f9f9fb;
+  --bg-code:        #1e1f22;  /* code blocks — always dark for contrast */
+  --bg-code-inline: rgba(143, 62, 227, 0.08);  /* inline code tint */
+  --bg-nav:        rgba(255, 255, 255, 0.82);
+
+  --text:          #1d1d1f;
+  --text-heading:  #1d1d1f;
+  --text-secondary:#48484a;
+  --text-muted:    #6e6e73;
+  --text-dim:      #aeaeb2;
+
+  --border:        rgba(0, 0, 0, 0.08);
+  --border-hover:  rgba(0, 0, 0, 0.15);
+  --border-strong: rgba(0, 0, 0, 0.22);
+
+  --shadow-sm:     0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:     0 4px 16px rgba(0,0,0,0.08);
+
+  --callout-note:  #e8f4fd;
+  --callout-note-border: #b3d9f5;
+  --callout-note-text: #0c5a8a;
+  --callout-warn:  #fff8e6;
+  --callout-warn-border: #ffd470;
+  --callout-warn-text: #7a5200;
+  --callout-tip:   #f3eafd;
+  --callout-tip-border: #c99af5;
+  --callout-tip-text: #5a1ea6;
+  --callout-danger:#fef0f0;
+  --callout-danger-border:#f5b8b8;
+  --callout-danger-text: #8b1c1c;
+}
+
+/* ─── Dark Theme (IDEA Dracula palette) ─────────────────────────────────────── */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /*
+   * Surface ramp — mirrors IDEA Dracula:
+   *   #2b2b2b  editor / page background
+   *   #313335  secondary surfaces (hover rows, inset areas)
+   *   #3c3f41  tool-window / sidebar panels
+   *   #474a4d  elevated cards, code block headers, borders
+   */
+  --bg:            #252526;
+  --bg-secondary:  #313335;
+  --bg-tertiary:   #3c3f41;
+  --bg-card:       #313335;
+  --bg-elevated:   #474a4d;
+  --bg-code:        #1a1b1e;  /* slightly darker than page bg for depth */
+  --bg-code-inline: rgba(143, 62, 227, 0.15);
+  --bg-nav:        rgba(43, 43, 43, 0.88);
+
+  /* IDEA Dracula default text: #a9b7c6 */
+  --text:          #a9b7c6;
+  --text-heading:  #d0d8e4;  /* brighter for large headings */
+  --text-secondary:#9da5b0;
+  --text-muted:    #8a9099;
+  --text-dim:      #4e5254;
+
+  --border:        #474a4d;
+  --border-hover:  #5a5d60;
+  --border-strong: #6b6e70;
+
+  --shadow-sm:     0 1px 3px rgba(0,0,0,0.35);
+  --shadow-md:     0 4px 16px rgba(0,0,0,0.45);
+
+  --callout-note:  rgba(104, 151, 187, 0.12);
+  --callout-note-border: rgba(104, 151, 187, 0.35);
+  --callout-note-text: #8ab4d4;
+  --callout-warn:  rgba(187, 181, 41, 0.12);
+  --callout-warn-border: rgba(187, 181, 41, 0.35);
+  --callout-warn-text: #bbb529;
+  --callout-tip:   rgba(143, 62, 227, 0.10);
+  --callout-tip-border: rgba(143, 62, 227, 0.28);
+  --callout-tip-text: #b87af5;
+  --callout-danger:rgba(188, 63, 60, 0.12);
+  --callout-danger-border:rgba(188, 63, 60, 0.35);
+  --callout-danger-text: #e07070;
+}
+
+/* ─── Reset & Base ───────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* ─── Typography ─────────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--text);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; color: var(--text-heading); }
+h2 { font-size: clamp(24px, 3vw, 36px); font-weight: 800; color: var(--text-heading); }
+h3 { font-size: 22px; font-weight: 700; }
+h4 { font-size: 18px; font-weight: 600; }
+h5 { font-size: 16px; font-weight: 600; }
+h6 { font-size: 14px; font-weight: 600; }
+
+p { color: var(--text-secondary); margin-bottom: 1rem; }
+p:last-child { margin-bottom: 0; }
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity var(--transition);
+}
+a:hover { opacity: 0.75; }
+
+strong { color: var(--text); font-weight: 600; }
+em { font-style: italic; }
+
+ul, ol { padding-left: 1.5rem; color: var(--text-secondary); }
+li { margin-bottom: 0.35rem; }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* ─── Inline Code ────────────────────────────────────────────────────────────── */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  font-weight: 600;
+  background: var(--bg-code-inline);
+  color: var(--accent);
+  padding: 0.18em 0.5em;
+  border-radius: var(--radius-sm);
+}
+
+pre {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* ─── Tables ─────────────────────────────────────────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin: 1.5rem 0;
+}
+th {
+  text-align: left;
+  padding: 10px 14px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-strong);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg-secondary); }
+
+/* ─── Blockquote ─────────────────────────────────────────────────────────────── */
+blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem 1.25rem;
+  margin: 1.5rem 0;
+  background: var(--accent-dim);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* ─── Focus ──────────────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}

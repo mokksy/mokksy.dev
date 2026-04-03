@@ -6,6 +6,16 @@ clean:
 	@echo "🧽 Cleaning..."
 	@./gradlew clean
 
+.PHONY: hugo
+hugo:
+	(cd docs && hugo server --watch \
+			--gc \
+			--disableFastRender \
+			--cleanDestinationDir \
+			--templateMetricsHints \
+			--logLevel debug \
+			--buildDrafts)
+
 .PHONY: docs
 docs:
 	git submodule sync && \

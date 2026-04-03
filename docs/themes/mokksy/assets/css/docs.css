@@ -1,0 +1,410 @@
+/* ─── Code Block ─────────────────────────────────────────────────────────────── */
+.code-wrap {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: 1.25rem 0;
+  position: relative;
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 16px;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+  min-height: 42px;
+}
+
+.code-lang {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.code-filename {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.copy-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text);
+}
+.copy-btn.copied {
+  color: var(--accent);
+  border-color: var(--accent-border);
+}
+.copy-btn svg { width: 13px; height: 13px; }
+
+.code-body {
+  padding: 20px 22px;
+  overflow-x: auto;
+}
+.code-body pre { margin: 0; }
+
+/* ─── Code Tabs (Kotlin / Java shortcode) ────────────────────────────────────── */
+.code-tabs-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: 1.25rem 0;
+}
+
+.code-tabs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  min-height: 44px;
+}
+
+.tab-list {
+  display: flex;
+  gap: 2px;
+}
+
+.tab-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.tab-btn:hover { color: var(--text-muted); background: var(--bg-code); }
+.tab-btn.active {
+  background: var(--bg-code);
+  color: var(--text);
+}
+
+.tab-copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.tab-copy-btn:hover { border-color: var(--border-hover); color: var(--text); }
+.tab-copy-btn.copied { color: var(--accent); border-color: var(--accent-border); }
+
+.tab-panel {
+  display: none;
+  background: var(--bg-code);
+}
+.tab-panel.active { display: block; }
+.tab-panel .code-body { padding: 20px 22px; }
+
+/* ─── Chroma Syntax Highlighting — Light ─────────────────────────────────────── */
+/* ─── Chroma base ─────────────────────────────────────────────────────────────────── */
+.highlight { margin: 1.25rem 0; }
+.highlight pre.chroma {
+  margin: 0;
+  padding: 18px 0;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+/* Line wrapper */
+.chroma .line  { display: flex; }
+
+/* Line numbers */
+.chroma .ln {
+  display: inline-block;
+  min-width: 2.2em;
+  padding-right: 1.2em;
+  padding-left: 1em;
+  margin-right: 1.2em;
+  text-align: right;
+  border-right: 1px solid var(--border);
+  opacity: 0.38;
+  user-select: none;
+  -webkit-user-select: none;
+  flex-shrink: 0;
+}
+
+/* Code content column */
+.chroma .cl { padding-right: 22px; flex: 1; }
+
+/* Language label — populated by JS via data-lang on .highlight */
+.highlight {
+  position: relative;
+  margin: 1.25rem 0;
+}
+.highlight[data-lang]::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 9px;
+  right: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-muted);
+  padding: 0;
+  pointer-events: none;
+  z-index: 1;
+  line-height: 1.6;
+}
+/* Language label — readable on dark code bg in both themes */
+.highlight[data-lang]::before {
+  color: #6b7280;
+}
+
+/* ─── Chroma — Light theme / VS Code Dark syntax (dark bg) ──────────────────────── */
+/* ─── Chroma — Light theme / IntelliJ IDEA Light syntax ───────────────────────── */
+/* ─── Chroma — Light theme / IntelliJ IDEA Modern Light ───────────────────────── */
+/* ─── Chroma — Light theme / IntelliJ Kotlin–Java highlighting ───────────────── */
+
+[data-theme="light"] .chroma .k,
+[data-theme="light"] .chroma .kd,
+[data-theme="light"] .chroma .kn,
+[data-theme="light"] .chroma .kt,
+[data-theme="light"] .chroma .kr,
+[data-theme="light"] .chroma .ow  { color: #0033b3; }                      /* keywords — IntelliJ blue */
+[data-theme="light"] .chroma .nf  { color: #00627a; }                      /* function/method — teal */
+[data-theme="light"] .chroma .nc  { color: #2b91af; }                      /* class/interface — blue-teal */
+[data-theme="light"] .chroma .nn  { color: #000000; }                      /* package/namespace */
+[data-theme="light"] .chroma .nd  { color: #7a7a43; }                      /* annotation */
+[data-theme="light"] .chroma .na  { color: #871094; }                      /* field/property — purple */
+[data-theme="light"] .chroma .py  { color: #871094; }                      /* property */
+[data-theme="light"] .chroma .nb  { color: #000000; }                      /* built-ins / types */
+[data-theme="light"] .chroma .n,
+[data-theme="light"] .chroma .nx  { color: #1f1f1f; }                      /* identifiers */
+[data-theme="light"] .chroma .nt  { color: #0033b3; }                      /* XML/HTML tags */
+[data-theme="light"] .chroma .s,
+[data-theme="light"] .chroma .s1,
+[data-theme="light"] .chroma .s2,
+[data-theme="light"] .chroma .sb  { color: #067d17; }                      /* strings */
+[data-theme="light"] .chroma .se,
+[data-theme="light"] .chroma .si  { color: #0033b3; }                      /* string escape/interpolation */
+[data-theme="light"] .chroma .c,
+[data-theme="light"] .chroma .c1,
+[data-theme="light"] .chroma .cm  { color: #8c8c8c; font-style: italic; }  /* comments */
+[data-theme="light"] .chroma .mi,
+[data-theme="light"] .chroma .mf,
+[data-theme="light"] .chroma .mh  { color: #1750eb; }                      /* numbers */
+[data-theme="light"] .chroma .o,
+[data-theme="light"] .chroma .p   { color: #1f1f1f; }                      /* operators */
+[data-theme="light"] .code-body,
+[data-theme="light"] .tab-panel   { color: #1f1f1f; }
+[data-theme="light"] .tab-btn.active { background: var(--accent-dim); color: var(--accent); }
+[data-theme="light"] .tab-btn:hover  { background: var(--bg-secondary); color: var(--text); }
+
+/* ─── Chroma — Dark theme / IDEA Dracula syntax (dark bg) ───────────────────────── */
+[data-theme="dark"] .chroma .k,
+[data-theme="dark"] .chroma .kd,
+[data-theme="dark"] .chroma .kn,
+[data-theme="dark"] .chroma .kw   { color: #cc7832; }                      /* keyword — IDEA orange */
+[data-theme="dark"] .chroma .nf   { color: #ffc66d; }                      /* function name — IDEA yellow */
+[data-theme="dark"] .chroma .nc   { color: #ffc66d; }                      /* class name */
+[data-theme="dark"] .chroma .nd   { color: #bbb529; }                      /* annotation */
+[data-theme="dark"] .chroma .na   { color: #bababa; }                      /* attr name */
+[data-theme="dark"] .chroma .py   { color: #9876aa; }                      /* property/field — IDEA lavender */
+[data-theme="dark"] .chroma .n,
+[data-theme="dark"] .chroma .nx   { color: #a9b7c6; }                      /* identifier — IDEA default */
+[data-theme="dark"] .chroma .nt   { color: #e8bf6a; }                      /* XML tag — IDEA amber */
+[data-theme="dark"] .chroma .s,
+[data-theme="dark"] .chroma .s1,
+[data-theme="dark"] .chroma .s2,
+[data-theme="dark"] .chroma .sb   { color: #6a8759; }                      /* string — IDEA green */
+[data-theme="dark"] .chroma .si,
+[data-theme="dark"] .chroma .se   { color: #cc7832; }                      /* string interpolation */
+[data-theme="dark"] .chroma .c,
+[data-theme="dark"] .chroma .c1,
+[data-theme="dark"] .chroma .cm   { color: #606060; font-style: italic; }  /* comment */
+[data-theme="dark"] .chroma .mi,
+[data-theme="dark"] .chroma .mf,
+[data-theme="dark"] .chroma .mh   { color: #6897bb; }                      /* number — IDEA blue */
+[data-theme="dark"] .chroma .o,
+[data-theme="dark"] .chroma .p    { color: #a9b7c6; }                      /* operator / punctuation */
+[data-theme="dark"] .code-body,
+[data-theme="dark"] .tab-panel    { color: #a9b7c6; }                      /* IDEA default text */
+
+/* ─── Callouts ───────────────────────────────────────────────────────────────── */
+.callout {
+  display: flex;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  margin: 1.5rem 0;
+  border: 1px solid;
+}
+.callout-icon {
+  font-size: 17px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.callout-body { flex: 1; min-width: 0; }
+.callout-body p:last-child { margin-bottom: 0; }
+
+.callout-note {
+  background: var(--callout-note);
+  border-color: var(--callout-note-border);
+  color: var(--callout-note-text);
+}
+.callout-note p { color: var(--callout-note-text); }
+
+.callout-tip {
+  background: var(--callout-tip);
+  border-color: var(--callout-tip-border);
+  color: var(--callout-tip-text);
+}
+.callout-tip p { color: var(--callout-tip-text); }
+
+.callout-warning {
+  background: var(--callout-warn);
+  border-color: var(--callout-warn-border);
+  color: var(--callout-warn-text);
+}
+.callout-warning p { color: var(--callout-warn-text); }
+
+.callout-danger {
+  background: var(--callout-danger);
+  border-color: var(--callout-danger-border);
+  color: var(--callout-danger-text);
+}
+.callout-danger p { color: var(--callout-danger-text); }
+
+/* ─── Breadcrumb ─────────────────────────────────────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.breadcrumb a,
+.breadcrumb span {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.breadcrumb a { transition: color var(--transition); }
+.breadcrumb a:hover { color: var(--text-muted); opacity: 1; }
+.breadcrumb .sep { color: var(--text-dim); }
+.breadcrumb .current { color: var(--text-muted); }
+
+/* ─── Prev / Next ────────────────────────────────────────────────────────────── */
+.doc-pagination {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 64px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+.pagination-link {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 18px 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition);
+  text-decoration: none;
+}
+.pagination-link:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-dim);
+  opacity: 1;
+}
+.pagination-link.next { text-align: right; }
+.pagination-dir {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+.pagination-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  font-family: var(--font-display);
+}
+
+/* ─── Version Badge ──────────────────────────────────────────────────────────── */
+.version-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 500;
+}
+.version-badge.since {
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+}
+.version-badge.deprecated {
+  background: var(--callout-warn);
+  border: 1px solid var(--callout-warn-border);
+  color: var(--callout-warn-text);
+}
+
+/* ─── Anchor Links ───────────────────────────────────────────────────────────── */
+.docs-content h2 .anchor,
+.docs-content h3 .anchor,
+.docs-content h4 .anchor {
+  opacity: 0;
+  margin-left: 8px;
+  color: var(--text-dim);
+  font-size: 0.75em;
+  transition: opacity var(--transition);
+}
+.docs-content h2:hover .anchor,
+.docs-content h3:hover .anchor,
+.docs-content h4:hover .anchor { opacity: 1; }
+
+/* ─── Last updated ───────────────────────────────────────────────────────────── */
+.doc-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.doc-meta-item {
+  font-size: 13px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

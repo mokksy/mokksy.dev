@@ -1,0 +1,35 @@
+{{ $pages := .CurrentSection.Pages.ByParam "sidebar_order" }}
+{{ $current := . }}
+{{ $prev := "" }}
+{{ $next := "" }}
+
+{{ range $i, $page := $pages }}
+  {{ if eq $page.RelPermalink $current.RelPermalink }}
+    {{ if gt $i 0 }}
+      {{ $prev = index $pages (sub $i 1) }}
+    {{ end }}
+    {{ if lt $i (sub (len $pages) 1) }}
+      {{ $next = index $pages (add $i 1) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ if or $prev $next }}
+<nav class="doc-pagination" aria-label="Documentation navigation">
+  {{ if $prev }}
+  <a href="{{ $prev.RelPermalink }}" class="pagination-link prev" rel="prev">
+    <span class="pagination-dir">← Previous</span>
+    <span class="pagination-title">{{ $prev.Params.sidebar_title | default $prev.Title }}</span>
+  </a>
+  {{ else }}
+  <div></div>
+  {{ end }}
+
+  {{ if $next }}
+  <a href="{{ $next.RelPermalink }}" class="pagination-link next" rel="next">
+    <span class="pagination-dir">Next →</span>
+    <span class="pagination-title">{{ $next.Params.sidebar_title | default $next.Title }}</span>
+  </a>
+  {{ end }}
+</nav>
+{{ end }}

@@ -1,4 +1,41 @@
-baseURL = 'https://mokksy.dev/'
-languageCode = 'en-us'
-title = 'Mokksy & AI-Mocks'
-theme = 'compose'
+baseURL       = 'https://mokksy.dev/'
+languageCode  = 'en-us'
+title         = 'Mokksy'
+theme         = 'mokksy'
+enableRobotsTXT = true
+
+[params]
+  description       = 'Mokksy & AI-Mocks — mock HTTP and LLM servers for Kotlin & JVM'
+  github            = 'https://github.com/mokksy'
+  api_docs_mokksy   = 'https://mokksy.github.io/mokksy/'
+  api_docs_ai_mocks = 'https://mokksy.github.io/ai-mocks/'
+
+  [[params.features]]
+    icon        = '⚡'
+    title       = 'True Streaming'
+    description = 'Native Server-Side Events support. Simulate chunked token delivery just like real LLM APIs — with configurable delays between chunks.'
+
+  [[params.features]]
+    icon        = '🎯'
+    title       = 'Request Matching'
+    description = 'Fluent Kotlin DSL for matching requests by model, prompt content, parameters, and headers. Return different responses per scenario.'
+
+  [[params.features]]
+    icon        = '💥'
+    title       = 'Error Simulation'
+    description = 'Mock rate limits, token exhaustion, network timeouts, and provider-specific error formats. Test unhappy paths reliably.'
+
+  [[params.features]]
+    icon        = '⏱'
+    title       = 'Latency Control'
+    description = 'Add configurable delays at request level or between individual streaming chunks. Reproduce real-world performance conditions in tests.'
+
+  [[params.features]]
+    icon        = '🔌'
+    title       = 'Drop-in Compatible'
+    description = 'Point your existing Anthropic, OpenAI, or Gemini SDK client at the mock server URL. No code changes needed in your application.'
+
+  [[params.features]]
+    icon        = '🧪'
+    title       = 'Kotest Ready'
+    description = 'First-class Kotest integration with fluent assertions, concise test DSL, and full JUnit 5 support for Java teams.'

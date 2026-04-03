@@ -1,0 +1,102 @@
+{{/*
+  Sidebar: walks the content tree under /docs.
+  Renders section groups with their child pages.
+
+  Front matter controls:
+    sidebar_title: "Custom Title"   — override page title in nav
+    sidebar_order: 10               — sort order within section
+    sidebar_hide: true              — exclude from sidebar
+*/}}
+
+{{- $currentPage := . }}
+{{- $docsSection := .Site.GetPage "section" "docs" }}
+{{- if not $docsSection }}{{ return }}{{ end }}
+
+<aside class="docs-sidebar" aria-label="Documentation navigation">
+
+  <!-- Top-level docs link -->
+  <div class="sidebar-section">
+    <nav aria-label="Documentation">
+      <ul class="sidebar-nav">
+        <li>
+          <a href="{{ $docsSection.RelPermalink }}"
+             {{ if eq $currentPage.RelPermalink $docsSection.RelPermalink }}class="active" aria-current="page"{{ end }}>
+            Overview
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  {{/* Walk each top-level section under /docs */}}
+  {{ range $docsSection.Sections.ByParam "sidebar_order" }}
+    {{- if not (.Params.sidebar_hide) }}
+    <div class="sidebar-section">
+      <p class="sidebar-section-title">
+        {{ .Params.sidebar_title | default .Title }}
+      </p>
+      <nav aria-label="{{ .Title }} navigation">
+        <ul class="sidebar-nav">
+
+          {{/* Section index page itself */}}
+          {{ if .Content }}
+          <li>
+            <a href="{{ .RelPermalink }}"
+               {{ if eq $currentPage.RelPermalink .RelPermalink }}class="active" aria-current="page"{{ end }}>
+              Overview
+            </a>
+          </li>
+          {{ end }}
+
+          {{/* Child pages sorted by sidebar_order then title */}}
+          {{ range (.Pages.ByParam "sidebar_order") }}
+            {{ if not (.Params.sidebar_hide) }}
+            <li>
+              <a href="{{ .RelPermalink }}"
+                 {{ if eq $currentPage.RelPermalink .RelPermalink }}class="active" aria-current="page"{{ end }}>
+                {{ .Params.sidebar_title | default .Title }}
+              </a>
+
+              {{/* One level of sub-sections */}}
+              {{ if and (.Sections) (eq $currentPage.Parent.RelPermalink .RelPermalink) }}
+              <ul class="sidebar-nav">
+                {{ range .Sections }}
+                <li>
+                  <a href="{{ .RelPermalink }}"
+                     {{ if eq $currentPage.RelPermalink .RelPermalink }}class="active" aria-current="page"{{ end }}>
+                    {{ .Params.sidebar_title | default .Title }}
+                  </a>
+                </li>
+                {{ end }}
+              </ul>
+              {{ end }}
+
+            </li>
+            {{ end }}
+          {{ end }}
+
+        </ul>
+      </nav>
+    </div>
+    {{- end }}
+  {{ end }}
+
+  <!-- External links -->
+  <div class="sidebar-section">
+    <p class="sidebar-section-title">More</p>
+    <nav>
+      <ul class="sidebar-nav">
+        {{ with .Site.Params.api_docs_mokksy }}
+        <li><a href="{{ . }}" target="_blank" rel="noopener">Mokksy API ↗</a></li>
+        {{ end }}
+        {{ with .Site.Params.api_docs_ai_mocks }}
+        <li><a href="{{ . }}" target="_blank" rel="noopener">AI-Mocks API ↗</a></li>
+        {{ end }}
+        {{ with .Site.Params.github }}
+        <li><a href="{{ . }}" target="_blank" rel="noopener">GitHub ↗</a></li>
+        {{ end }}
+      </ul>
+    </nav>
+  </div>
+
+</aside>

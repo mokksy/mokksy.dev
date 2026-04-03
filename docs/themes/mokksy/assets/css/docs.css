@@ -175,15 +175,11 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  color: var(--text-muted);
+  color: `#6b7280`;
   padding: 0;
   pointer-events: none;
   z-index: 1;
   line-height: 1.6;
-}
-/* Language label — readable on dark code bg in both themes */
-.highlight[data-lang]::before {
-  color: #6b7280;
 }
 
 /* ─── Chroma — Light theme / VS Code Dark syntax (dark bg) ──────────────────────── */

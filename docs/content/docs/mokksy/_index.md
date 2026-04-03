@@ -80,7 +80,18 @@ Particularly, it might be useful for integration testing LLM clients.
 {{< /tab >}}
 {{< /code-tabs >}}
 
-   **Java** — see [Java API](#java-api) below.
+   **Java:**
+
+{{< code-tabs >}}
+{{< tab lang="java" >}}
+```java
+import dev.mokksy.Mokksy;
+
+Mokksy mokksy = Mokksy.create();
+mokksy.start(); // baseUrl() is safe after start() returns
+```
+{{< /tab >}}
+{{< /code-tabs >}}
 
 3. Configure http client using Mokksy server's as baseUrl in your application:
 
@@ -185,6 +196,31 @@ result.status shouldBe HttpStatusCode.OK
 result.bodyAsText() shouldBe expectedResponse
 ```
 {{< /tab >}}
+{{< tab lang="java" >}}
+```java
+// given
+var expectedResponse = "{\"response\": \"Pong\"}";
+
+mokksy.get(spec -> {
+    spec.path("/ping");
+    spec.containsHeader("Foo", "bar");
+}).respondsWith(builder -> builder.body(expectedResponse));
+
+// when
+var response = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/ping"))
+        .header("Foo", "bar")
+        .GET()
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+
+// then
+assertThat(response.statusCode()).isEqualTo(200);
+assertThat(response.body()).isEqualTo(expectedResponse);
+```
+{{< /tab >}}
 {{< /code-tabs >}}
 
 When the request does not match - Mokksy server returns `404 (Not Found)`:
@@ -197,6 +233,21 @@ val notFoundResult = client.get("/ping") {
 }
 
 notFoundResult.status shouldBe HttpStatusCode.NotFound
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+// Request without the required header → 404
+var notFound = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/ping"))
+        .header("Foo", "baz")
+        .GET()
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+
+assertThat(notFound.statusCode()).isEqualTo(404);
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
@@ -264,6 +315,37 @@ result shouldNotBeNull {
 }
 ```
 {{< /tab >}}
+{{< tab lang="java" >}}
+```java
+// given
+var expectedBody = "{\"id\":\"42\",\"name\":\"thing-42\"}";
+
+mokksy.post(spec -> {
+    spec.path("/things");
+    spec.bodyContains("\"42\"");
+}).respondsWith(builder -> builder
+    .body(expectedBody)
+    .status(201)
+    .header("Location", "/things/42")
+    .header("Foo", "bar"));
+
+// when
+var response = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/things"))
+        .header("Content-Type", "application/json")
+        .POST(HttpRequest.BodyPublishers.ofString("{\"id\":\"42\"}"))
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+
+// then
+assertThat(response.statusCode()).isEqualTo(201);
+assertThat(response.body()).isEqualTo(expectedBody);
+assertThat(response.headers().firstValue("Location")).hasValue("/things/42");
+assertThat(response.headers().firstValue("Foo")).hasValue("bar");
+```
+{{< /tab >}}
 {{< /code-tabs >}}
 
 <!--- INCLUDE
@@ -280,7 +362,7 @@ no explicit `::class` argument required:
 ```kotlin
 @Serializable
 @JvmRecord
-data class CreateItemRequest(val name: String)
+data class CreateItemRequest(val name: String, val quantity: Int)
 
 @Serializable
 @JvmRecord
@@ -311,7 +393,7 @@ mokksy.post<CreateItemRequest>(name = "create-item") {
 val result =
   client.post("/items") {
     contentType(ContentType.Application.Json)
-    setBody(CreateItemRequest(itemName))
+    setBody(CreateItemRequest(itemName, quantity = 3))
   }
 
 result shouldNotBeNull {
@@ -319,6 +401,34 @@ result shouldNotBeNull {
   headers["Foo"] shouldBe "bar"
   body<CreateItemResponse>().message shouldBe "Hello, $itemName!"
 }
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+record CreateItemRequest(String name, int quantity) {}
+
+mokksy.post(
+    CreateItemRequest.class,
+    spec -> spec
+        .path("/items")
+        .bodyMatchesPredicate(request -> "widget".equals(request.name()))
+).respondsWith(builder -> builder
+    .body("{\"message\":\"Hello, widget!\"}")
+    .status(201)
+    .header("Foo", "bar"));
+
+var response = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/items"))
+        .header("Content-Type", "application/json")
+        .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"widget\",\"quantity\":3}"))
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+
+assertThat(response.statusCode()).isEqualTo(201);
+assertThat(response.body()).isEqualTo("{\"message\":\"Hello, widget!\"}");
+assertThat(response.headers().firstValue("Foo")).hasValue("bar");
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
@@ -345,21 +455,47 @@ pass a `KClass` token using the named `requestType` parameter:
 {{< tab lang="kotlin" >}}
 ```kotlin
 mokksy.post(requestType = CreateItemRequest::class) {
-  path("/items")
-  bodyMatchesPredicate { it?.name == "widget" }
+  path("/items/validated")
+  bodyMatchesPredicate("name=widget and quantity>=5") {
+    it?.name == "widget" && (it.quantity) >= 5
+  }
 } respondsWith {
-  body = CreateItemResponse("Hello, widget!")
+  body = "accepted"
   httpStatus = HttpStatusCode.Created
 }
 
-val result =
-  client.post("/items") {
+val accepted =
+  client.post("/items/validated") {
     contentType(ContentType.Application.Json)
-    setBody(CreateItemRequest("widget"))
+    setBody(CreateItemRequest("widget", quantity = 10))
   }
 
-result.status shouldBe HttpStatusCode.Created
-result.body<CreateItemResponse>().message shouldBe "Hello, widget!"
+accepted.status shouldBe HttpStatusCode.Created
+accepted.bodyAsText() shouldBe "accepted"
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+mokksy.post(
+    CreateItemRequest.class,
+    spec -> spec
+        .path("/items/validated")
+        .bodyMatchesPredicate(
+            "name=widget and quantity>=5",
+            request -> "widget".equals(request.name()) && request.quantity() >= 5
+        )
+).respondsWith(builder -> builder.body("accepted").status(201));
+
+var accepted = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/items/validated"))
+        .header("Content-Type", "application/json")
+        .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"widget\",\"quantity\":10}"))
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+
+assertThat(accepted.statusCode()).isEqualTo(201);
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
@@ -389,18 +525,8 @@ Java callers use the `int` overload on `JavaBuildingStep`:
 {{< code-tabs >}}
 {{< tab lang="java" >}}
 ```java
-mokksy.get(spec ->spec.
-
-path("/ping")).
-
-respondsWithStatus(204);
-mokksy.
-
-delete(spec ->spec.
-
-path("/item")).
-
-respondsWithStatus(410);
+mokksy.get(spec -> spec.path("/status-only"))
+    .respondsWithStatus(204);
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
@@ -454,6 +580,25 @@ result shouldNotBeNull {
   contentType() shouldBe ContentType.Text.EventStream.withCharsetIfNeeded(Charsets.UTF_8)
   bodyAsText() shouldBe "data: One\r\n\r\ndata: Two\r\n\r\n"
 }
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+mokksy.post(spec -> spec.path("/sse"))
+    .respondsWithSseStream(builder -> builder
+        .chunk(SseEvent.data("One"))
+        .chunk(SseEvent.data("Two")));
+
+var response = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/sse"))
+        .POST(HttpRequest.BodyPublishers.noBody())
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+
+assertThat(response.statusCode()).isEqualTo(200);
+assertThat(response.body()).isEqualTo("data: One\r\n\r\ndata: Two\r\n\r\n");
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
@@ -601,6 +746,49 @@ generic.bodyAsText() shouldBe "Generic Thing"
 special.bodyAsText() shouldBe "Special Thing"
 ```
 {{< /tab >}}
+{{< tab lang="java" >}}
+```java
+// Catch-all stub: matches any POST, returns 400
+mokksy.post(spec -> {
+    spec.path("/v1/chat/completions");
+    spec.bodyMatchesPredicate(body -> true);
+    spec.priority(-1);
+}).respondsWith(builder -> builder
+    .body("{\"error\":\"unsupported request\"}")
+    .status(400));
+
+// Specific stub: matches only when body contains "gpt-4", returns 200
+mokksy.post(spec -> {
+    spec.path("/v1/chat/completions");
+    spec.bodyContains("gpt-4");
+    spec.priority(1);
+}).respondsWith(builder -> builder
+    .body("{\"model\":\"gpt-4\"}")
+    .status(200));
+
+// Specific request → specific stub wins
+var specific = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/v1/chat/completions"))
+        .header("Content-Type", "application/json")
+        .POST(HttpRequest.BodyPublishers.ofString("{\"model\":\"gpt-4\"}"))
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+assertThat(specific.statusCode()).isEqualTo(200);
+
+// Unmatched request → catch-all fallback kicks in
+var fallback = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/v1/chat/completions"))
+        .header("Content-Type", "application/json")
+        .POST(HttpRequest.BodyPublishers.ofString("{\"model\":\"other\"}"))
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+assertThat(fallback.statusCode()).isEqualTo(400);
+```
+{{< /tab >}}
 {{< /code-tabs >}}
 
 <!--- INCLUDE
@@ -726,6 +914,52 @@ class MyTest {
 }
 ```
 {{< /tab >}}
+{{< tab lang="java" >}}
+```java
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class MyTest {
+
+    private final Mokksy mokksy = Mokksy.create();
+    private HttpClient httpClient;
+
+    @BeforeAll
+    void setUp() {
+        mokksy.start();
+        httpClient = HttpClient.newHttpClient();
+    }
+
+    @Test
+    void testSomething() throws Exception {
+        mokksy.get(spec -> spec.path("/hi"))
+            .respondsWith(builder -> builder
+                .body("Hello")
+                .delayMillis(100L));
+
+        var response = httpClient.send(
+            HttpRequest.newBuilder()
+                .uri(URI.create(mokksy.baseUrl() + "/hi"))
+                .GET()
+                .build(),
+            HttpResponse.BodyHandlers.ofString()
+        );
+
+        assertThat(response.statusCode()).isEqualTo(200);
+        assertThat(response.body()).isEqualTo("Hello");
+    }
+
+    @AfterEach
+    void afterEach() {
+        mokksy.verifyNoUnexpectedRequests();
+    }
+
+    @AfterAll
+    void afterAll() {
+        mokksy.verifyNoUnmatchedStubs(); // shared instance: check once, after all tests ran
+        mokksy.shutdown();
+    }
+}
+```
+{{< /tab >}}
 {{< /code-tabs >}}
 
 <!--- KNIT example-readme-02.kt -->
@@ -742,6 +976,15 @@ val unmatchedRequests: List<RecordedRequest> = mokksy.findAllUnexpectedRequests(
 
 // List<RequestSpecification<*>> — stubs that were never triggered
 val unmatchedStubs: List<RequestSpecification<*>> = mokksy.findAllUnmatchedStubs()
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+// List of HTTP requests with no matching stub
+var unmatchedRequests = mokksy.findAllUnexpectedRequests();
+
+// List of stubs that were never triggered
+var unmatchedStubs = mokksy.findAllUnmatchedStubs();
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
@@ -778,6 +1021,14 @@ Call `resetMatchState()` between scenarios to clear stub match state and the jou
 @AfterTest
 fun afterEach() {
   mokksy.resetMatchState()
+}
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+@AfterEach
+void afterEach() {
+    mokksy.resetMatchState();
 }
 ```
 {{< /tab >}}

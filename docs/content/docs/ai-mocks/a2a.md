@@ -1570,7 +1570,7 @@ val a2aServer = MockAgentServer(verbose = true)
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
 ```kotlin
-a2aServer.verifyNoUnmatchedRequests()
+a2aServer.verifyNoUnexpectedRequests()
 ```
 {{< /tab >}}
 {{< /code-tabs >}}

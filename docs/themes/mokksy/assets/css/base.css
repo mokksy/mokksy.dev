@@ -128,6 +128,11 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+`@media` (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  body { transition: none; }
+}
+
 /* ─── Typography ─────────────────────────────────────────────────────────────── */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);

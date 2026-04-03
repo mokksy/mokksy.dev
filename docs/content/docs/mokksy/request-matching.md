@@ -1,11 +1,11 @@
 ---
 title: "Request matching"
-weight: 30
+weight: 20
 toc: true
+description: Match incoming requests with path, header, body, predicate, and call matchers, then resolve conflicts with specificity and priority.
 summary: |-
   Master request matching in Mokksy. Use path matchers, header verification, and body content matchers with a fluent Kotlin DSL to route mock HTTP requests accurately.
 ---
-
 ## Request specification matchers
 
 Mokksy provides various matcher types to specify conditions for matching incoming HTTP requests:

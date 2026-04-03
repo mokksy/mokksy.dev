@@ -1,11 +1,12 @@
 ---
 title: "Streaming and SSE"
-weight: 20
+weight: 40
 toc: true
+description: |-
+  Server-Sent Events (SSE) enable servers to push updates to clients over a single HTTP connection. The provided code demonstrates how to use mokksy to simulate an SSE stream and verify its response in both Kotlin and Java.
 summary: |-
   Mock true Server-Sent Events (SSE) and chunked streaming responses with Mokksy. Overcome WireMock limitations with native support for real-time data flow in Kotlin.
 ---
-
 ## Server-Sent Events (SSE)
 
 [Server-Sent Events (SSE)][sse] allow a server to push updates to the client over a single, long-lived HTTP connection.

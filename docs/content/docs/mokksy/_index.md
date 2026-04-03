@@ -1,8 +1,9 @@
 ---
 title: Mokksy
-weight: 20
+weight: 10
+description: Modern mock HTTP server for Kotlin & Java
 summary: |-
-  Mokksy: The modern mock HTTP server for Kotlin & Ktor. Unlike WireMock, Mokksy provides true SSE and streaming response support for advanced integration testing.
+  Mokksy: The modern mock HTTP server for Kotlin & Java build with Ktor. Unlike WireMock, Mokksy provides true SSE and streaming response support for advanced integration testing.
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy/mokksy.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy/mokksy)
 

@@ -4,6 +4,23 @@ title         = 'Mokksy'
 theme         = 'mokksy'
 enableRobotsTXT = true
 
+[outputFormats]
+  [outputFormats.llms]
+    name        = "llms"
+    baseName    = "llms"
+    mediaType   = "text/plain"
+    isPlainText = true
+    notAlternative = true
+  [outputFormats.llmsfull]
+    name        = "llmsfull"
+    baseName    = "llms-full"
+    mediaType   = "text/plain"
+    isPlainText = true
+    notAlternative = true
+
+[outputs]
+  home = ["HTML", "RSS", "llms", "llmsfull"]
+
 [markup]
   [markup.highlight]
     noClasses          = false

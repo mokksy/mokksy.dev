@@ -25,7 +25,7 @@ darkMode = "mokksy-logo.png"
 name = "GitHub"
 iconLight = "images/GitHubMarkLight.svg"
 iconDark = "images/GitHubMarkDark.svg"
-url = "https://github.com/mokksy"
+url = "https://github.com/mokksy/mokksy"
 
 [author]
 name = "Konstantin Pavlov"

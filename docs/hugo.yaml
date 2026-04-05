@@ -1,0 +1,34 @@
+baseURL: https://mokksy.dev/
+locale: en-US
+title: Mokksy
+theme: mokksy
+enableRobotsTXT: true
+
+outputFormats:
+  llms:
+    name: llms
+    baseName: llms
+    mediaType: text/plain
+    isPlainText: true
+    notAlternative: true
+  llmsfull:
+    name: llmsfull
+    baseName: llms-full
+    mediaType: text/plain
+    isPlainText: true
+    notAlternative: true
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - llms
+    - llmsfull
+
+services:
+  googleAnalytics:
+    ID: G-WKRE9Y25GP
+
+privacy:
+  googleAnalytics:
+    respectDoNotTrack: true

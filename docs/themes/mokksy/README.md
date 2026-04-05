@@ -15,11 +15,13 @@ themes/mokksy/
 │   ├── css/
 │   │   ├── base.css      ← design tokens, typography, reset
 │   │   ├── layout.css    ← nav, sidebar, docs grid, landing sections
-│   │   └── docs.css      ← code blocks, callouts, breadcrumbs, pagination
+│   │   ├── docs.css      ← code tabs UI, callouts, breadcrumbs, pagination
+│   │   └── chroma.css    ← Hugo Chroma (.highlight) layout + token colours
 │   └── js/
-│       └── theme.js      ← dark/light toggle, ToC spy, copy buttons
+│       └── theme.js      ← theme toggle, ToC spy, copy, home hero carousel
 ├── layouts/
-│   ├── index.html                  ← landing page
+│   ├── index.html                  ← composes partials/home/* (copy: data/home.yaml; hero code: content/home/examples/)
+│   ├── partials/home/              ← hero, sections, extract-code-fence (carousel from headless bundle)
 │   ├── _default/
 │   │   ├── baseof.html             ← root shell
 │   │   ├── single.html             ← docs single page
@@ -47,7 +49,7 @@ Copy this entire directory into your Hugo project root. No extra tools needed.
 
 ```bash
 cp -r mokksy-theme/themes/mokksy  <your-hugo-root>/themes/
-cp mokksy-theme/hugo.toml         <your-hugo-root>/hugo.toml
+cp mokksy-theme/hugo.yaml         <your-hugo-root>/hugo.yaml
 ```
 
 Run the dev server:
@@ -111,7 +113,7 @@ Types: `note` | `tip` | `warning` | `danger`
 ## Syntax highlighting
 
 Hugo's Chroma highlighter is used with `noClasses = false`.
-Theme CSS overrides Chroma class colours for both light and dark modes in `docs.css`.
+Theme CSS overrides Chroma class colours for both light and dark modes in `chroma.css`.
 
 Supported languages include `kotlin`, `java`, `groovy`, `json`, `yaml`, `bash`, `toml`.
 

@@ -1,0 +1,26 @@
+goldmark:
+  renderer:
+    unsafe: true
+  extensions:
+    typographer: false
+
+# Chroma (Hugo’s highlighter): with noClasses=false, output uses class names only;
+# colours are overridden in themes/mokksy/assets/css/chroma.css to match IntelliJ IDEA
+# — Default / New UI Light (data-theme=light) and Darcula / New UI Dark (data-theme=dark).
+# `style` is used if you ever set noClasses=true (inline styles); Chroma has no “intellij”
+# palette — `dracula` is the closest bundled scheme to IDEA Darcula for that fallback.
+highlight:
+  codeFences: true
+  guessSyntax: false
+  hl_Lines: ""
+  lineNoStart: 1
+  lineNos: true
+  lineNumbersInTable: false
+  noClasses: false
+  style: dracula
+  tabWidth: 2
+
+tableOfContents:
+  endLevel: 4
+  ordered: false
+  startLevel: 2

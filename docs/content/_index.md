@@ -1,10 +1,8 @@
 ---
 title: "Mokksy and AI-Mocks"
-#weight: 0
-featureImage: "mokksy-mascot-256.png"
 description: |-
   Mokksy & AI-Mocks: The modern mock HTTP server for Kotlin & Ktor. High-fidelity mocking for OpenAI, Anthropic, Gemini, and SSE streaming where WireMock falls short.
-Keywords: 
+Keywords:
   - Mokksy
   - AI-Mocks
   - Mock HTTP server
@@ -17,37 +15,4 @@ Keywords:
   - streaming
 ---
 
-_Mokksy_ and _AI-Mocks_ are mock HTTP and LLM (Large Language Model) servers inspired by WireMock, with support for
-response streaming and Server-Side Events (SSE). They are designed to build, test, and mock LLM API responses for
-development purposes.
-
-## Project Overview
-
-Mokksy and AI-Mocks are a suite of tools designed for mocking HTTP and LLM (Large Language Model) APIs for testing and development purposes.
-
-### Components
-
-1. **Mokksy**
-   - A mock HTTP server built with [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.io/)
-   - Supports true Server-Side Events (SSE) and streaming responses
-   - Designed to overcome limitations in existing tools like WireMock
-   - Provides a flexible, fluent Kotlin DSL API
-
-2. **AI-Mocks**
-   - Specialized mock server implementations built on top of Mokksy
-   - Currently supports:
-     - OpenAI API (`ai-mocks-openai`)
-     - Anthropic API (`ai-mocks-anthropic`)
-     - Google Gemini API (`ai-mocks-gemini`)
-     - Ollama API (`ai-mocks-ollama`)
-     - Agent-to-Agent protocol from Google (`ai-mocks-a2a`, `ai-mocks-a2a-models`)
-   - Allows developers to mock LLM API responses for testing and development
-
-### Key Features
-
-- **Streaming Support**: True support for streaming responses and Server-Side Events (SSE)
-- **Response Control**: Flexibility to control server responses directly
-- **Delay Simulation**: Support for simulating response delays and delays between chunks
-- **Modern API**: Fluent Kotlin DSL API with Kotest Assertions
-- **Error Simulation**: Ability to mock negative scenarios and error responses
-
+Root page metadata (`title`, `description`, keywords) lives here. Visible homepage sections and chip links are in **`data/home.yaml`**. Hero carousel **Kotlin/Java samples** are markdown pages under **`content/home/examples/`** (see that folder’s `_index.md` manifest). The six feature cards use **`params.features`** in **`config/_default/params.yaml`**. Layout: **`themes/mokksy/layouts/index.html`** and **`layouts/partials/home/*.html`**.

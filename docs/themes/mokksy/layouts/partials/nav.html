@@ -1,7 +1,8 @@
 <nav class="site-nav" role="navigation" aria-label="Main navigation">
 
+  {{- $navLogo := .Site.Params.logo.nav | default "/mokksy-mascot-round-64.png" -}}
   <a href="{{ "/" | relURL }}" class="nav-logo" aria-label="{{ .Site.Title }} home">
-    <img src="/mokksy-mascot-round-64.png"
+    <img src="{{ $navLogo | relURL }}"
          alt=""
          width="28" height="28"
          style="border-radius:50%;display:block;flex-shrink:0;">
@@ -10,9 +11,11 @@
 
   <ul class="nav-links">
     {{ range .Site.Menus.main }}
+    {{- $ext := or .Params.external (strings.HasPrefix .URL "http") -}}
     <li>
       <a href="{{ .URL }}"
-         {{ if $.IsMenuCurrent "main" . }}class="active" aria-current="page"{{ end }}>
+         {{ if $ext }}target="_blank" rel="noopener noreferrer"{{ end }}
+         {{ if and (not $ext) ($.IsMenuCurrent "main" .) }}class="active" aria-current="page"{{ end }}>
         {{ .Name }}
       </a>
     </li>

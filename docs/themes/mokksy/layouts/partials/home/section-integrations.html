@@ -1,0 +1,20 @@
+{{ $in := hugo.Data.home.integrations }}
+<section class="section" aria-label="{{ $in.aria_label }}">
+  <div class="section-inner">
+    <p class="section-label">{{ $in.label }}</p>
+    <div class="chips-row reveal">
+      {{ range $in.chips }}
+      {{- $u := .url -}}
+      {{- $href := $u -}}
+      {{- if findRE "#" $u 1 -}}
+        {{- $frag := index (split $u "#") 1 -}}
+        {{- $path := index (split $u "#") 0 -}}
+        {{- $href = printf "%s#%s" ($path | relURL) $frag -}}
+      {{- else -}}
+        {{- $href = relURL $u -}}
+      {{- end -}}
+      <a href="{{ $href }}"><span class="chip">{{ .text }}</span></a>
+      {{ end }}
+    </div>
+  </div>
+</section>

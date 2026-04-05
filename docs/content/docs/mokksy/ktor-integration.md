@@ -1,5 +1,6 @@
 ---
 title: "Ktor integration"
+slug: ktor
 weight: 50
 toc: true
 summary: |-
@@ -40,6 +41,18 @@ application-level overload, it does **not** install plugins — you are responsi
 `SSE`, `DoubleReceive`, and `ContentNegotiation` on the surrounding application. This makes it
 suitable when Mokksy stubs coexist with real routes:
 
+<!--- CLEAR -->
+<!--- INCLUDE
+import dev.mokksy.mokksy.MokksyServer
+import dev.mokksy.mokksy.mokksy
+import io.ktor.server.application.Application
+import io.ktor.server.response.respondText
+import io.ktor.server.routing.get
+import io.ktor.server.routing.routing
+
+val server = MokksyServer()
+fun Application.configure() {
+-->
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
 ```kotlin
@@ -50,6 +63,10 @@ routing {
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
+<!--- SUFFIX
+}
+-->
+<!--- KNIT example-mokksy-ktor-embedding-01.kt -->
 
 To place stubs behind an authentication check, install the required plugins and wrap `mokksy` in
 an `authenticate` block:
@@ -82,6 +99,17 @@ routing {
 Both extension functions accept any `path` pattern as a second parameter (default: `"{...}"`,
 which matches all routes). Narrow the scope by passing a prefix:
 
+<!--- CLEAR -->
+<!--- INCLUDE
+import dev.mokksy.mokksy.MokksyServer
+import dev.mokksy.mokksy.mokksy
+import io.ktor.server.application.Application
+import io.ktor.server.routing.routing
+
+val server = MokksyServer()
+fun Application.configureNarrow() {
+    routing {
+-->
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
 ```kotlin
@@ -89,6 +117,11 @@ mokksy(server, path = "/api/{...}")
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
+<!--- SUFFIX
+    }
+}
+-->
+<!--- KNIT example-mokksy-ktor-embedding-02.kt -->
 
 [sse]: https://html.spec.whatwg.org/multipage/server-sent-events.html "Server-Side Events Specification"
 [ktor]: https://ktor.io

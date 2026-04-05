@@ -1,0 +1,18 @@
+{{ $c := hugo.Data.home.cta }}
+{{ $p := .Site.Params }}
+<section class="section" aria-label="{{ $c.aria_label }}">
+  <div class="section-inner">
+    <div class="cta-banner-inner reveal">
+      <h2>{{ $c.title }}</h2>
+      <p>{{ $c.sub }}</p>
+      <div class="cta-buttons">
+        <a href="{{ $c.primary.url | relURL }}" class="btn btn-primary btn-lg">{{ $c.primary.label }}</a>
+        {{ with $p.github }}
+        <a href="{{ . }}" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
+          {{ $c.github_secondary.label }}
+        </a>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</section>

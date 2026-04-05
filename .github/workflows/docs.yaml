@@ -44,10 +44,18 @@ jobs:
       - name: Run Knit
         run: make knit
 
+      - uses: actions/cache@v3
+        with:
+          path: /home/runner/.cache/hugo_cache    # <-- with hugo version v0.116.0 and above
+          # path: /tmp/hugo_cache                 # <-- with hugo version < v0.116.0
+          key: ${{ runner.os }}-hugomod-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-hugomod-
+
       - name: Build Hugo Site
         run: |
           cd docs
-          hugo --minify
+          hugo --cleanDestinationDir --minify
 
       - name: Upload PR artifact
         if: github.event_name == 'pull_request'

@@ -1,0 +1,27 @@
+{{ $pr := hugo.Data.home.products }}
+<section class="section" aria-label="{{ $pr.aria_label }}">
+  <div class="section-inner reveal">
+    <p class="section-label">{{ $pr.label }}</p>
+    <h2 class="section-title">{{ $pr.title }}</h2>
+    <p class="section-sub">{{ $pr.sub_html | safeHTML }}</p>
+
+    <div class="feature-grid reveal">
+      {{ range $pr.cards }}
+      <a href="{{ .href | relURL }}">
+        <div class="feature-card reveal" style="animation-delay:{{ .delay }}">
+          <div class="feature-card-header">
+            <h3>{{ .title }}</h3>
+          </div>
+          <p>{{ .description }}</p>
+        </div>
+      </a>
+      {{ end }}
+    </div>
+
+    <ul class="feature-list reveal" style="animation-delay:{{ $pr.bullets_delay }}">
+      {{ range $pr.bullets }}
+      <li>{{ . | safeHTML }}</li>
+      {{ end }}
+    </ul>
+  </div>
+</section>

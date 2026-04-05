@@ -1,0 +1,19 @@
+main:
+  - name: Documentation
+    url: /docs/
+    weight: 2
+
+footer:
+  - name: Docs
+    url: /docs/
+    weight: 10
+  - name: GitHub
+    url: https://github.com/mokksy/mokksy/
+    weight: 30
+    params:
+      external: true
+  - name: Author
+    url: https://kpavlov.me
+    weight: 40
+    params:
+      external: true

@@ -1,0 +1,39 @@
+{{ $c := hugo.Data.home.hero.carousel }}
+{{- $examples := site.GetPage "home/examples" -}}
+{{- if not $examples }}{{ errorf "Missing headless bundle content/home/examples/_index.md" }}{{ end -}}
+<div class="hero-carousel" id="hero-carousel" aria-label="{{ $c.aria_label }}">
+  <div class="carousel-slides">
+    {{ range $i, $page := sort $examples.Pages "Weight" }}
+    {{- $kt := partial "home/extract-code-fence.html" (dict "page" $page "lang" "kotlin") -}}
+    {{- $jv := partial "home/extract-code-fence.html" (dict "page" $page "lang" "java") -}}
+    <div class="carousel-slide{{ if eq $i 0 }} active{{ end }}" data-slide="{{ $i }}">
+      <div class="carousel-slide-title section-label">{{ $page.Title }}</div>
+      <div class="hero-terminal code-tabs-wrap">
+        <div class="code-tabs-header">
+          <div class="hero-dots" aria-hidden="true">
+            <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
+          </div>
+          <div class="tab-list" role="tablist"></div>
+          <button type="button" class="tab-copy-btn" aria-label="{{ $c.copy_aria }}">{{ $c.copy_label }}</button>
+        </div>
+        <div class="tab-panel active" data-lang="kotlin" role="tabpanel">
+          <div class="code-body">
+{{ highlight $kt "kotlin" "" }}
+          </div>
+        </div>
+        <div class="tab-panel" data-lang="java" role="tabpanel">
+          <div class="code-body">
+{{ highlight $jv "java" "" }}
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+
+  <div class="carousel-nav">
+    <button type="button" class="carousel-arrow carousel-prev" aria-label="{{ $c.prev_aria }}">‹</button>
+    <div class="carousel-dots"></div>
+    <button type="button" class="carousel-arrow carousel-next" aria-label="{{ $c.next_aria }}">›</button>
+  </div>
+</div>

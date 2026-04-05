@@ -6,7 +6,8 @@
   <section class="hero" aria-label="Hero">
     <div class="hero-glow" aria-hidden="true"></div>
 
-    <img src="/mokksy-mascot-256.png"
+    {{- $hero := .Site.Params.logo.hero | default "/mokksy-mascot-256.png" -}}
+    <img src="{{ $hero | relURL }}"
          alt="Mokksy mascot"
          width="256" height="256"
          style="border-radius:16%;margin-bottom:24px;animation:fade-up 0.5s ease both;">
@@ -316,7 +317,7 @@ System.out.println(response.body()); // Hello World` "java" "" }}
           <a href="/docs/" class="btn btn-primary btn-lg">Read the Documentation</a>
           {{ with $p.github }}
           <a href="{{ . }}" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
-            Star on GitHub ★
+            Star on GitHub ⭐️
           </a>
           {{ end }}
         </div>

@@ -1,0 +1,97 @@
+# Example / theme-local defaults when developing the theme in isolation.
+# The site at docs/ uses the root hugo.yaml; this file documents sensible theme-level markup defaults.
+
+baseURL: https://mokksy.dev/
+title: mokksy
+locale: en-GB
+theme: mokksy
+paginate: 20
+enableRobotsTXT: true
+
+markup:
+  highlight:
+    # See docs/config/_default/markup.yaml — colours from theme CSS (IDEA-style); style is fallback if noClasses=true.
+    style: dracula
+    lineNos: true
+    lineNumbersInTable: false
+    noClasses: false
+    tabWidth: 2
+  goldmark:
+    renderer:
+      unsafe: true
+  tableOfContents:
+    startLevel: 2
+    endLevel: 4
+    ordered: false
+
+params:
+  description: >-
+    Mokksy & AI-Mocks — mock HTTP and LLM servers for Kotlin & JVM
+  author: Konstantin Pavlov
+  author_url: https://kpavlov.me
+  github: https://github.com/mokksy
+  api_docs_mokksy: https://mokksy.github.io/mokksy/
+  api_docs_ai_mocks: https://mokksy.github.io/ai-mocks/
+  features:
+    - icon: ⚡
+      title: True Streaming
+      description: >-
+        Native Server-Side Events support. Simulate chunked token delivery just like real LLM APIs — with configurable delays between chunks.
+    - icon: 🎯
+      title: Request Matching
+      description: >-
+        Fluent Kotlin DSL for matching requests by model, prompt content, parameters, and headers. Return different responses per scenario.
+    - icon: 💥
+      title: Error Simulation
+      description: >-
+        Mock rate limits, token exhaustion, network timeouts, and provider-specific error formats. Test unhappy paths reliably.
+    - icon: ⏱
+      title: Latency Control
+      description: >-
+        Add configurable delays at request level or between individual streaming chunks. Reproduce real-world performance conditions in tests.
+    - icon: 🔌
+      title: Drop-in Compatible
+      description: >-
+        Point your existing Anthropic, OpenAI, or Gemini SDK client at the mock server URL. No code changes needed in your application.
+    - icon: 🧪
+      title: Kotest Ready
+      description: >-
+        First-class Kotest integration with fluent assertions, concise test DSL, and full JUnit 5 support for Java teams.
+
+menus:
+  main:
+    - name: Features
+      url: /#features
+      weight: 10
+    - name: Docs
+      url: /docs/
+      weight: 20
+    - name: Mokksy API
+      url: https://mokksy.github.io/mokksy/
+      weight: 30
+      params:
+        external: true
+    - name: AI-Mocks API
+      url: https://mokksy.github.io/ai-mocks/
+      weight: 40
+      params:
+        external: true
+  footer:
+    - name: Docs
+      url: /docs/
+      weight: 10
+    - name: API Reference
+      url: https://mokksy.github.io/mokksy/
+      weight: 20
+      params:
+        external: true
+    - name: GitHub
+      url: https://github.com/mokksy
+      weight: 30
+      params:
+        external: true
+    - name: Author
+      url: https://kpavlov.me
+      weight: 40
+      params:
+        external: true

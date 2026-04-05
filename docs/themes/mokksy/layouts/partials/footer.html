@@ -1,7 +1,9 @@
+{{- $copy := default true .Site.Params.enableCopyright -}}
 <footer class="site-footer" role="contentinfo">
   <div class="footer-inner">
     <div>
       <p class="footer-brand">{{ .Site.Title | default "mokksy" }}</p>
+      {{ if $copy }}
       <p class="footer-copy">
         &copy; {{ now.Year }}
         {{ with .Site.Params.author }}
@@ -13,11 +15,13 @@
         {{ end }}
         &nbsp;&middot;&nbsp; MIT Licence
       </p>
+      {{ end }}
     </div>
     <nav class="footer-links" aria-label="Footer links">
       {{ range .Site.Menus.footer }}
+      {{- $ext := or .Params.external (strings.HasPrefix .URL "http") -}}
       <a href="{{ .URL }}"
-         {{ if .Params.external }}target="_blank" rel="noopener noreferrer"{{ end }}>
+         {{ if $ext }}target="_blank" rel="noopener noreferrer"{{ end }}>
         {{ .Name }}
       </a>
       {{ end }}

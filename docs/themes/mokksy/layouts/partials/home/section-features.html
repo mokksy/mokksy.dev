@@ -1,0 +1,23 @@
+{{ $f := hugo.Data.home.features_section }}
+{{ $p := .Site.Params }}
+<section class="section" id="{{ $f.id }}" aria-label="{{ $f.aria_label }}">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">{{ $f.label }}</p>
+      <h2 class="section-title">{{ $f.title_line1 }}<br>{{ $f.title_line2 }}</h2>
+      <p class="section-sub">{{ $f.sub | replaceRE `\n+` " " | strings.TrimSpace }}</p>
+    </div>
+
+    <div class="feature-grid">
+      {{ range $p.features }}
+      <div class="feature-card reveal">
+        <div class="feature-card-header">
+          <div class="feature-icon" aria-hidden="true">{{ .icon }}</div>
+          <h3>{{ .title }}</h3>
+        </div>
+        <p>{{ .description }}</p>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>

@@ -257,4 +257,44 @@ document.addEventListener('DOMContentLoaded', function () {
       h.appendChild(a);
     });
 
+  /* ─── Home hero code carousel ──────────────────────────────────────────────── */
+  const heroCarousel = document.getElementById('hero-carousel');
+  if (heroCarousel) {
+    const slides = heroCarousel.querySelectorAll('.carousel-slide');
+    const dotsWrap = heroCarousel.querySelector('.carousel-dots');
+    let current = 0;
+
+    slides.forEach(function (_, i) {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.type = 'button';
+      dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      dot.dataset.index = String(i);
+      dotsWrap.appendChild(dot);
+    });
+
+    function goTo(idx) {
+      if (idx < 0) idx = slides.length - 1;
+      if (idx >= slides.length) idx = 0;
+      slides.forEach(function (s, i) {
+        s.classList.toggle('active', i === idx);
+      });
+      dotsWrap.querySelectorAll('.carousel-dot').forEach(function (d, i) {
+        d.classList.toggle('active', i === idx);
+      });
+      current = idx;
+    }
+
+    heroCarousel.querySelector('.carousel-prev').addEventListener('click', function () {
+      goTo(current - 1);
+    });
+    heroCarousel.querySelector('.carousel-next').addEventListener('click', function () {
+      goTo(current + 1);
+    });
+    dotsWrap.addEventListener('click', function (e) {
+      const dot = e.target.closest('.carousel-dot');
+      if (dot) goTo(parseInt(dot.dataset.index, 10));
+    });
+  }
+
 });

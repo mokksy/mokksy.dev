@@ -11,6 +11,42 @@ summary: |-
 
 [Server-Sent Events (SSE)][sse] allow a server to push updates to the client over a single, long-lived HTTP connection.
 
+<!--- CLEAR -->
+<!--- INCLUDE
+import dev.mokksy.mokksy.Mokksy
+import dev.mokksy.mokksy.MokksyServer
+import dev.mokksy.mokksy.start
+import io.kotest.matchers.equals.beEqual
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.request.post
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
+import io.ktor.http.withCharsetIfNeeded
+import io.ktor.sse.ServerSentEvent
+import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
+import org.junit.jupiter.api.Test
+
+class StreamingTest {
+    val mokksy: MokksyServer = Mokksy(verbose = true).start()
+    val client: HttpClient =
+        HttpClient {
+            install(DefaultRequest) {
+                url(mokksy.baseUrl())
+            }
+        }
+-->
+<!--- INCLUDE
+    @Test
+    suspend fun testSse() {
+-->
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
 ```kotlin
@@ -72,6 +108,12 @@ By default, the SSE stream closes when the flow completes.
 
 To keep it open (e.g. for clients that reconnect on close), end the flow with `awaitCancellation()`:
 
+<!--- INCLUDE
+    }
+    @Test
+    suspend fun testLongLivedSse() {
+        mokksy.post { path = beEqual("/sse-ll") } respondsWithSseStream {
+-->
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
 ```kotlin
@@ -82,5 +124,13 @@ flow = flow {
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
+<!--- INCLUDE
+        }
+    }
+-->
+<!--- SUFFIX
+}
+-->
+<!--- KNIT example-mokksy-streaming-01.kt -->
 
 [sse]: https://html.spec.whatwg.org/multipage/server-sent-events.html "Server-Side Events Specification"

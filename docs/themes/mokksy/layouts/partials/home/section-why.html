@@ -1,0 +1,8 @@
+{{ $w := hugo.Data.home.why }}
+<section class="section" aria-label="{{ $w.aria_label }}">
+  <div class="section-inner reveal">
+    <p class="section-label">{{ $w.label }}</p>
+    <h2 class="section-title">{{ $w.title }}</h2>
+    <p class="section-sub">{{ $w.sub | replaceRE `\n+` " " | strings.TrimSpace }}</p>
+  </div>
+</section>

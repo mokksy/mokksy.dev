@@ -1,0 +1,32 @@
+{{ $h := hugo.Data.home.hero }}
+{{ $p := .Site.Params }}
+{{- $heroImg := $p.logo.hero | default "/mokksy-mascot-256.png" -}}
+<section class="hero" aria-label="{{ $h.aria_label }}">
+  <div class="hero-glow" aria-hidden="true"></div>
+
+  <img src="{{ $heroImg | relURL }}"
+       alt="{{ $h.mascot_alt }}"
+       width="256" height="256"
+       style="border-radius:16%;margin-bottom:24px;animation:fade-up 0.5s ease both;">
+
+  <div class="hero-badge">
+    <span aria-hidden="true"
+          style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;"></span>
+    {{ $h.badge }}
+  </div>
+
+  <h1>{{ $h.title.prefix }}<span>{{ $h.title.highlight }}</span><br>{{ $h.title.suffix }}</h1>
+
+  <p class="hero-sub">{{ $h.sub | replaceRE `\n+` " " | strings.TrimSpace }}</p>
+
+  <div class="hero-actions">
+    <a href="{{ $h.primary_cta.url | relURL }}" class="btn btn-primary btn-lg">{{ $h.primary_cta.label }}</a>
+    {{ with $p.github }}
+    <a href="{{ . }}" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
+      {{ $h.github_cta.label }}
+    </a>
+    {{ end }}
+  </div>
+
+  {{ partial "home/section-carousel.html" . }}
+</section>

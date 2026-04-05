@@ -13,6 +13,15 @@ Mokksy provides two complementary verification methods that check opposite sides
 Use this to catch stubs you set up but that were never actually called — a sign the code under test took
 a different path than expected.
 
+<!--- CLEAR -->
+<!--- INCLUDE
+import dev.mokksy.mokksy.Mokksy
+import dev.mokksy.mokksy.MokksyServer
+import dev.mokksy.mokksy.start
+
+val mokksy: MokksyServer = Mokksy(verbose = true).start()
+fun main() {
+-->
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
 ```kotlin
@@ -39,6 +48,10 @@ mokksy.verifyNoUnexpectedRequests()
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
+<!--- SUFFIX
+}
+-->
+<!--- KNIT example-mokksy-verification-01.kt -->
 
 ## Recommended AfterEach setup
 
@@ -170,12 +183,23 @@ class MyTest {
 {{< /tab >}}
 {{< /code-tabs >}}
 
-<!--- KNIT example-mokksy-verification-01.kt -->
+<!--- KNIT example-mokksy-verification-02.kt -->
 
 ## Inspecting unmatched items
 
 Use the `find*` variants to retrieve the unmatched items directly for custom assertions:
 
+<!--- CLEAR -->
+<!--- INCLUDE
+import dev.mokksy.mokksy.Mokksy
+import dev.mokksy.mokksy.MokksyServer
+import dev.mokksy.mokksy.start
+import dev.mokksy.mokksy.request.RecordedRequest
+import dev.mokksy.mokksy.request.RequestSpecification
+
+val mokksy: MokksyServer = Mokksy(verbose = true).start()
+fun main() {
+-->
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
 ```kotlin
@@ -196,6 +220,10 @@ var unmatchedStubs = mokksy.findAllUnmatchedStubs();
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
+<!--- SUFFIX
+}
+-->
+<!--- KNIT example-mokksy-verification-03.kt -->
 
 `RecordedRequest` is an immutable snapshot that captures `method`, `uri`, and `headers` of the incoming request.
 
@@ -209,6 +237,12 @@ Mokksy records incoming requests in a `RequestJournal`. The recording mode is co
   `verifyNoUnexpectedRequests()`.
 - **JournalMode.FULL** - Records all incoming requests, both matched and unmatched.
 
+<!--- CLEAR -->
+<!--- INCLUDE
+import dev.mokksy.mokksy.JournalMode
+import dev.mokksy.mokksy.MokksyServer
+import dev.mokksy.mokksy.ServerConfiguration
+-->
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
 ```kotlin
@@ -220,9 +254,20 @@ val mokksy = MokksyServer(
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
+<!--- KNIT example-mokksy-verification-04.kt -->
 
 Call `resetMatchState()` between scenarios to clear stub match state and the journal:
 
+<!--- CLEAR -->
+<!--- INCLUDE
+import dev.mokksy.mokksy.Mokksy
+import dev.mokksy.mokksy.MokksyServer
+import dev.mokksy.mokksy.start
+import kotlin.test.AfterTest
+
+class ResetTest {
+    val mokksy: MokksyServer = Mokksy(verbose = true).start()
+-->
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
 ```kotlin
@@ -241,6 +286,10 @@ void afterEach() {
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
+<!--- SUFFIX
+}
+-->
+<!--- KNIT example-mokksy-verification-05.kt -->
 
 > **Note:** Stubs configured with `eventuallyRemove = true` are permanently removed from the registry
 > on first match and cannot be re-armed by `resetMatchState()`. Re-register them before the next scenario.

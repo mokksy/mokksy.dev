@@ -1,0 +1,19 @@
+{{- /*
+  Extract first fenced block for a language tag from page markdown body.
+  Expects: dict "page" $page "lang" "kotlin"
+  Returns: trimmed code string (partial return).
+*/ -}}
+{{- $p := .page -}}
+{{- $lang := .lang -}}
+{{- $raw := $p.RawContent -}}
+{{- if not $raw -}}
+  {{- errorf "home/examples: empty RawContent (missing body?) in %s" $p.File.Path -}}
+{{- end -}}
+{{- $tag := printf "```%s" $lang -}}
+{{- $parts := split $raw $tag -}}
+{{- if lt (len $parts) 2 -}}
+  {{- errorf "home/examples: no ```%s fence in %s" $lang $p.File.Path -}}
+{{- end -}}
+{{- $rest := index $parts 1 -}}
+{{- $code := index (split $rest "```") 0 | strings.TrimSpace -}}
+{{- return $code -}}

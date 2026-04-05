@@ -1,0 +1,92 @@
+# Homepage marketing copy (Hugo: hugo.Data.home). Hero carousel code: content/home/examples/*.md
+# Layout: themes/mokksy/layouts/index.html + partials/home/*.html
+# Feature grid cards: params.features in config/_default/params.yaml
+
+hero:
+  aria_label: Hero
+  mascot_alt: Mokksy mascot
+  badge: "Kotlin & JVM · Open Source · Integration Testing"
+  title:
+    prefix: "Mock "
+    highlight: HTTP APIs
+    suffix: with real-world behavior
+  sub: |
+    Mokksy is a mock HTTP server for integration testing — with true streaming,
+    SSE, and failure simulation. Test your services as they behave in production.
+  primary_cta:
+    label: Read the Docs
+    url: /docs/
+  github_cta:
+    label: View on GitHub
+  carousel:
+    aria_label: Code examples carousel
+    prev_aria: Previous example
+    next_aria: Next example
+    copy_label: Copy
+    copy_aria: Copy code
+
+why:
+  aria_label: What problem Mokksy solves
+  label: Why it matters
+  title: Catch failures before production
+  sub: |
+    Unit tests don’t cover timeouts, retries, or streaming behavior.
+    Mokksy lets you test real HTTP interactions — including slow responses,
+    partial streams, and connection drops — in a deterministic way.
+
+integrations:
+  aria_label: Supported integrations
+  label: "Tested with these LLM providers & frameworks"
+  chips:
+    - { text: "🤖 Anthropic", url: /docs/ai-mocks/anthropic/ }
+    - { text: "✦ OpenAI", url: /docs/ai-mocks/openai/ }
+    - { text: "♊️ Google Gemini", url: /docs/ai-mocks/gemini/ }
+    - { text: "🦙 Ollama", url: /docs/ai-mocks/ollama/ }
+    - { text: "⇄ Agent-to-Agent (A2A)", url: /docs/ai-mocks/a2a/ }
+    - { text: "⛓🦜 LangChain4j", url: "/docs/ai-mocks/openai/#integration-with-langchain4j" }
+    - { text: "🌱 Spring AI", url: "/docs/ai-mocks/openai/#integration-with-spring-ai" }
+
+features_section:
+  aria_label: Features
+  id: features
+  label: Why Mokksy
+  title_line1: "Everything WireMock isn't"
+  title_line2: for AI testing
+  sub: |
+    Built for the unique challenges of testing LLM-powered applications —
+    streaming, chunked responses, and non-determinism included.
+
+products:
+  aria_label: Mokksy and AI-Mocks
+  label: Next-level mocking
+  title: "Mokksy & AI-Mocks"
+  sub_html: |
+    <em>Mokksy</em> and <em>AI-Mocks</em> bring realistic behavior to HTTP and LLM API testing.
+    They let you test streaming, delays, retries, and failures — not just static responses.
+  cards:
+    - href: /docs/mokksy/
+      title: Mokksy
+      description: A Kotlin + Ktor mock HTTP server with streaming and Server-Side Events (SSE).
+      delay: "0.1s"
+    - href: /docs/ai-mocks/
+      title: AI-Mocks
+      description: Built on Mokksy, providing ready-to-use mocks for OpenAI, Anthropic, Google Gemini, Ollama, and Agent-to-Agent APIs.
+      delay: "0.3s"
+  bullets:
+    - "<strong>Streaming & SSE:</strong> realistic response streams"
+    - "<strong>Fine-grained control:</strong> define behaviour programmatically"
+    - "<strong>Delay simulation:</strong> chunk-level or total latency"
+    - "<strong>Failure scenarios:</strong> test errors, slow responses, corrupted streams"
+    - "<strong>Kotlin DSL:</strong> concise API designed for tests"
+  bullets_delay: "0.5s"
+
+cta:
+  aria_label: Call to action
+  title: Start mocking today
+  sub: "Open-source, MIT licensed, built for Kotlin & Java teams."
+  primary:
+    label: Read the Documentation
+    url: /docs/
+  github_secondary:
+    label: Star on GitHub ⭐️
+

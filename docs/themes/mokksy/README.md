@@ -18,9 +18,10 @@ themes/mokksy/
 │   │   ├── docs.css      ← code tabs UI, callouts, breadcrumbs, pagination
 │   │   └── chroma.css    ← Hugo Chroma (.highlight) layout + token colours
 │   └── js/
-│       └── theme.js      ← dark/light toggle, ToC spy, copy buttons
+│       └── theme.js      ← theme toggle, ToC spy, copy, home hero carousel
 ├── layouts/
-│   ├── index.html                  ← landing page
+│   ├── index.html                  ← composes partials/home/* (copy: data/home.yaml; hero code: content/home/examples/)
+│   ├── partials/home/              ← hero, sections, extract-code-fence (carousel from headless bundle)
 │   ├── _default/
 │   │   ├── baseof.html             ← root shell
 │   │   ├── single.html             ← docs single page

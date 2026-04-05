@@ -298,3 +298,37 @@
   align-items: center;
   gap: 5px;
 }
+
+/* ─── Callout Title ──────────────────────────────────────────────────────────── */
+.callout-title {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+/* ─── Lead Paragraph (generic pages) ─────────────────────────────────────────── */
+.lead {
+  font-size: 19px;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+/* ─── Child Pages Grid (docs list) ───────────────────────────────────────────── */
+.child-pages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 2rem;
+}
+.page-card-title {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+.page-card-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.5;
+}

@@ -8,7 +8,7 @@
     <div class="feature-grid reveal">
       {{ range $pr.cards }}
       <a href="{{ .href | relURL }}">
-        <div class="feature-card reveal" style="animation-delay:{{ .delay }}">
+        <div class="feature-card reveal" style="--delay:{{ .delay }}">
           <div class="feature-card-header">
             <h3>{{ .title }}</h3>
           </div>
@@ -17,11 +17,12 @@
       </a>
       {{ end }}
     </div>
-
-    <ul class="feature-list reveal" style="animation-delay:{{ $pr.bullets_delay }}">
+<!--
+    <ul class="feature-list reveal" style="--delay:{{ $pr.bullets_delay }}">
       {{ range $pr.bullets }}
       <li>{{ . | safeHTML }}</li>
       {{ end }}
     </ul>
+-->
   </div>
 </section>

@@ -213,7 +213,26 @@ document.addEventListener('DOMContentLoaded', function () {
           const id = entry.target.id;
           tocLinks.forEach(function (link) {
             link.classList.toggle('active', link.getAttribute('href') === '#' + id);
-          });
+  /* ─── GitHub Button Title Toggle ─────────────────────────────────────── */
+  const ghBtn = document.querySelector('.btn-github');
+  if (ghBtn) {
+    const defaultTitle = 'Open on GitHub';
+    const promoTitle = 'Give a star on GitHub';
+    const promoStart = 45000;
+    const promoEnd = 57000;
+    const cycle = 60000;
+    let started = null;
+
+    function updateTitle() {
+      if (!started) started = performance.now();
+      const elapsed = (performance.now() - started) % cycle;
+      ghBtn.setAttribute('title', elapsed >= promoStart && elapsed < promoEnd ? promoTitle : defaultTitle);
+      requestAnimationFrame(updateTitle);
+    }
+    requestAnimationFrame(updateTitle);
+  }
+
+});
         }
       });
     }, {rootMargin: '-60px 0px -70% 0px', threshold: 0});

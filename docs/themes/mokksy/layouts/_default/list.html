@@ -22,15 +22,15 @@
 
     <!-- Child pages grid -->
     {{ if .Pages }}
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:2rem;">
+    <div class="child-pages-grid">
       {{ range .Pages.ByParam "sidebar_order" }}
       {{ if not (.Params.sidebar_hide) }}
       <a href="{{ .RelPermalink }}" class="page-card">
-        <h3 style="font-size:16px;margin-bottom:6px;">
+        <h3 class="page-card-title">
           {{ .Params.sidebar_title | default .Title }}
         </h3>
         {{ with .Description }}
-        <p style="font-size:13px;color:var(--text-muted);margin:0;line-height:1.5;">{{ . }}</p>
+        <p class="page-card-desc">{{ . }}</p>
         {{ end }}
       </a>
       {{ end }}
@@ -45,15 +45,15 @@
 </div>
 {{ else }}
 <!-- Generic list -->
-<div style="max-width:860px;margin:0 auto;padding:64px 32px 96px;">
+<div class="generic-page-wrap generic-page-wrap--wide">
   <h1>{{ .Title }}</h1>
   {{ .Content }}
-  <ul style="margin-top:2rem;list-style:none;padding:0;">
+  <ul class="generic-page-list">
     {{ range .Pages }}
-    <li style="margin-bottom:12px;">
-      <a href="{{ .RelPermalink }}" style="font-size:16px;font-weight:500;">{{ .Title }}</a>
+    <li>
+      <a href="{{ .RelPermalink }}" class="generic-page-link">{{ .Title }}</a>
       {{ with .Description }}
-      <p style="font-size:14px;color:var(--text-muted);margin:4px 0 0;">{{ . }}</p>
+      <p class="generic-page-desc">{{ . }}</p>
       {{ end }}
     </li>
     {{ end }}

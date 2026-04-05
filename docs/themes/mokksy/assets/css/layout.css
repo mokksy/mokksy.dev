@@ -85,6 +85,40 @@
   color: var(--text);
 }
 
+/* GitHub button star animation */
+.btn-github-icon-wrap {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+}
+.btn-github .icon-github {
+  grid-area: 1 / 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  animation: github-hide 60s ease-in-out 60s infinite;
+}
+.btn-github .icon-star {
+  grid-area: 1 / 1;
+  opacity: 0;
+  font-size: 16px;
+  line-height: 0;
+  pointer-events: none;
+  animation: star-promo 60s ease-in-out 60s infinite;
+}
+@keyframes star-promo {
+  0%, 75%  { opacity: 0; transform: translateY(-50%) scale(0.8); }
+  78%      { opacity: 1; transform: translateY(-50%) scale(1); }
+  97%      { opacity: 1; transform: translateY(-50%) scale(1); }
+  100%     { opacity: 0; transform: translateY(-50%) scale(0.8); }
+}
+@keyframes github-hide {
+  0%, 75%  { opacity: 1; transform: scale(1); }
+  78%      { opacity: 0; transform: scale(0.8); }
+  97%      { opacity: 0; transform: scale(0.8); }
+  100%     { opacity: 1; transform: scale(1); }
+}
+
 .btn-primary {
   background: var(--accent);
   color: #fff;

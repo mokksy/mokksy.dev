@@ -4,6 +4,9 @@ github: https://github.com/mokksy/mokksy
 api_docs_mokksy: https://mokksy.github.io/mokksy/
 api_docs_ai_mocks: https://mokksy.github.io/ai-mocks/
 
+funding:
+  buy_me_a_coffee: https://buymeacoffee.com/mailsk
+
 uniqueHomePage: false
 repo: https://github.com/mokksy/mokksy.dev
 enableCopyright: true

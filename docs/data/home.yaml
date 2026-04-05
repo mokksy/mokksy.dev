@@ -85,11 +85,10 @@ products:
 
 cta:
   aria_label: Call to action
-  title: Start mocking today
+  title: Start testing today
   sub: "Open-source, MIT licensed, built for Kotlin & Java teams."
   primary:
     label: Read the Documentation
     url: /docs/
   github_secondary:
-    label: Star on GitHub ⭐️
-
+    label: ⭐ Star on GitHub

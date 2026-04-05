@@ -79,7 +79,7 @@ products:
     - "<strong>Streaming & SSE:</strong> realistic response streams"
     - "<strong>Fine-grained control:</strong> define behaviour programmatically"
     - "<strong>Delay simulation:</strong> chunk-level or total latency"
-    - "<strong>Failure scenarios:</strong> test errors, slow responses, corrupted streams"
+    - "<strong>Failure scenarios:</strong> test errors and slow responses"
     - "<strong>Kotlin DSL:</strong> concise API designed for tests"
   bullets_delay: "0.5s"
 

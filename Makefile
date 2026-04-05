@@ -1,5 +1,5 @@
 .PHONY: all
-all: format lint docs
+all: format lint knit docs
 
 .PHONY: clean
 clean:

@@ -1,6 +1,6 @@
 description: >-
   Mokksy & AI-Mocks — mock HTTP and LLM servers for Kotlin & JVM
-github: https://github.com/mokksy
+github: https://github.com/mokksy/mokksy
 api_docs_mokksy: https://mokksy.github.io/mokksy/
 api_docs_ai_mocks: https://mokksy.github.io/ai-mocks/
 

@@ -52,10 +52,10 @@
 
 {{ else }}
 <!-- ═══ GENERIC SINGLE PAGE ════════════════════════════════════════════════ -->
-<div style="max-width:760px;margin:0 auto;padding:64px 32px 96px;">
+<div class="generic-page-wrap">
   <article class="docs-content">
     <h1>{{ .Title }}</h1>
-    {{ with .Description }}<p class="lead" style="font-size:19px;color:var(--text-muted);margin-top:12px;">{{ . }}</p>{{ end }}
+    {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
     <hr>
     {{ .Content }}
   </article>

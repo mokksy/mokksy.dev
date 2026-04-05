@@ -28,7 +28,7 @@ Usage:
 <div class="callout callout-{{ $type }}" role="note" aria-label="{{ $titleLabel }}">
   <span class="callout-icon" aria-hidden="true">{{ $icon }}</span>
   <div class="callout-body">
-    <strong style="display:block;margin-bottom:4px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;">
+    <strong class="callout-title">
       {{ $titleLabel }}
     </strong>
     {{ .Inner | markdownify }}

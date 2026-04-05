@@ -7,12 +7,13 @@
   <img src="{{ $heroImg | relURL }}"
        alt="{{ $h.mascot_alt }}"
        width="256" height="256"
-       style="border-radius:16%;margin-bottom:24px;animation:fade-up 0.5s ease both;">
+       class="hero-mascot">
 
   <div class="hero-badge">
-    <span aria-hidden="true"
-          style="border-radius:50%;background:var(--accent);display:inline-block;"></span>
-    {{ $h.badge }}
+    {{ range $i, $item := $h.badge }}
+    {{ if $i }}<span class="hero-badge-dot" aria-hidden="true"></span>{{ end }}
+    <span>{{ $item }}</span>
+    {{ end }}
   </div>
 
   <h1>{{ $h.title.prefix }}<span>{{ $h.title.highlight }}</span><br>{{ $h.title.suffix }}</h1>

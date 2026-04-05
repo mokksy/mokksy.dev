@@ -5,7 +5,10 @@
 hero:
   aria_label: Hero
   mascot_alt: Mokksy mascot
-  badge: "Kotlin & JVM · Open Source · Integration Testing"
+  badge:
+    - "Kotlin & JVM"
+    - "Integration Testing"
+    - "Open Source"
   title:
     prefix: "Mock "
     highlight: HTTP APIs

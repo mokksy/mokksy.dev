@@ -9,7 +9,7 @@
     </ul>
   </nav>
   {{/* Render Hugo ToC and inject into our styled container via JS */}}
-  <div id="toc-raw" style="display:none">{{ .TableOfContents }}</div>
+  <div id="toc-raw" class="u-hidden">{{ .TableOfContents }}</div>
   <script>
   (function(){
     var raw = document.getElementById('toc-raw');

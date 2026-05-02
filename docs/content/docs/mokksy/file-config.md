@@ -152,17 +152,20 @@ mokksy.loadStubsFromFile("stubs.yaml");       // relative to working directory
 
 ### Environment variable or system property
 
-`loadStubsFromEnv()` checks `MOKKSY_CONFIG` first, then the `-Dmokksy.config` system property:
+`loadStubsFromEnv()` checks `MOKKSY_CONFIG` first, then the `-Dmokksy.config` system property.
+When either is set, `start()` loads the stubs automatically — you do not need to call `loadStubsFromEnv()` explicitly in that case.
 
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
 ```kotlin
+// explicit load — useful when MOKKSY_CONFIG is not in the environment
 val mokksy = Mokksy().start()
 mokksy.loadStubsFromEnv()
 ```
 {{< /tab >}}
 {{< tab lang="java" >}}
 ```java
+// explicit load — useful when MOKKSY_CONFIG is not in the environment
 Mokksy mokksy = Mokksy.create().start();
 mokksy.loadStubsFromEnv();
 ```
@@ -170,37 +173,11 @@ mokksy.loadStubsFromEnv();
 {{< /code-tabs >}}
 
 ```bash
-# via environment variable
+# via environment variable — stubs are loaded automatically on start()
 MOKKSY_CONFIG=/app/stubs.yaml java -jar app.jar
 
 # via system property
 java -Dmokksy.config=/app/stubs.yaml -jar app.jar
-```
-
-## Docker example
-
-Mount the YAML file and set `MOKKSY_CONFIG` in your `docker-compose.yml`:
-
-```yaml
-services:
-  mock-server:
-    image: eclipse-temurin:21-jre
-    volumes:
-      - ./stubs.yaml:/app/stubs.yaml
-    environment:
-      MOKKSY_CONFIG: /app/stubs.yaml
-    command: java -jar /app/mock-server.jar
-```
-
-Or pass it as a system property:
-
-```yaml
-services:
-  mock-server:
-    image: eclipse-temurin:21-jre
-    volumes:
-      - ./stubs.yaml:/app/stubs.yaml
-    command: java -Dmokksy.config=/app/stubs.yaml -jar /app/mock-server.jar
 ```
 
 ## Validation errors

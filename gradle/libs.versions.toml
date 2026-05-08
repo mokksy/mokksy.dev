@@ -31,7 +31,7 @@ openai = "4.35.0"
 openrewrite = "7.32.2"
 slf4j = "2.0.17"
 spring = "6.2.18"
-spring-ai = "1.1.5"
+spring-ai = "1.1.6"
 system-stubs = "2.1.8"
 knit = "0.5.1"
 

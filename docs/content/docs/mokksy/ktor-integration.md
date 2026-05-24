@@ -26,7 +26,7 @@ val server = MokksyServer()
 server.get { path("/ping") } respondsWith { body = "pong" }
 
 embeddedServer(Netty, port = 8080) {
-  mokksy(server)
+    mokksy(server)
 }.start(wait = true)
 ```
 {{< /tab >}}
@@ -57,8 +57,8 @@ fun Application.configure() {
 {{< tab lang="kotlin" >}}
 ```kotlin
 routing {
-  get("/health") { call.respondText("OK") }
-  mokksy(server)
+    get("/health") { call.respondText("OK") }
+    mokksy(server)
 }
 ```
 {{< /tab >}}
@@ -78,19 +78,19 @@ install(SSE)
 install(DoubleReceive)
 install(ContentNegotiation) { json() }
 install(Authentication) {
-  basic("auth-basic") {
-    validate { credentials ->
-      if (credentials.name == "user" && credentials.password == "pass") {
-        UserIdPrincipal(credentials.name)
-      } else null
-    }
+    basic("auth-basic") {
+        validate { credentials ->
+            if (credentials.name == "user" && credentials.password == "pass") {
+              UserIdPrincipal(credentials.name)
+            } else null
+        }
   }
 }
 
 routing {
-  authenticate("auth-basic") {
-    mokksy(server)
-  }
+    authenticate("auth-basic") { 
+        mokksy(server)
+    }
 }
 ```
 {{< /tab >}}

@@ -88,6 +88,37 @@ val genericResult = client.post("/users") { setBody("regular") }
 genericResult.bodyAsText() shouldBe "any user"
 ```
 {{< /tab >}}
+{{< tab lang="java" >}}
+```java
+// Generic: matches any POST to /users
+mokksy.post(spec -> spec.path("/users"))
+    .respondsWith(response -> response.body("any user"));
+
+// Specific: matches only requests whose body contains "admin"
+mokksy.post(spec -> spec
+    .path("/users")
+    .bodyContains("admin")
+).respondsWith(response -> response.body("admin user"));
+
+var adminResult = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/users"))
+        .POST(HttpRequest.BodyPublishers.ofString("admin"))
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+assertThat(adminResult.body()).isEqualTo("admin user");
+
+var genericResult = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/users"))
+        .POST(HttpRequest.BodyPublishers.ofString("regular"))
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+assertThat(genericResult.body()).isEqualTo("any user");
+```
+{{< /tab >}}
 {{< /code-tabs >}}
 
 <!--- INCLUDE

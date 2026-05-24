@@ -1,32 +1,50 @@
 ---
 title: Mokksy
 weight: 10
-description: Modern mock HTTP server for Kotlin & Java
+description: Mock HTTP APIs with real-world behavior in Kotlin and Java integration tests.
 summary: |-
-  Mokksy: The modern mock HTTP server for Kotlin and Java built with Ktor. Unlike WireMock, Mokksy provides true SSE and streaming response support for advanced integration testing.
+  Mokksy is a mock HTTP server for Kotlin and Java integration testing. Use it to test real HTTP behavior, SSE, streaming APIs, deterministic failures, retries, and timeouts.
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy/mokksy.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy/mokksy)
+[![GitHub stars](https://img.shields.io/github/stars/mokksy/mokksy?style=social)](https://github.com/mokksy/mokksy)
 
 ## Why Mokksy?
 
-WireMock does not support true SSE and streaming responses.
+Mokksy replaces external HTTP dependencies in integration tests. Point your application or SDK client at a local Mokksy server, define the responses you expect, and run the test without real network calls.
 
-Mokksy is here to address those limitations.
-Particularly, it might be useful for integration testing LLM clients.
+It is especially useful when static JSON responses are not enough: streaming APIs, Server-Sent Events (SSE), delayed chunks, retry scenarios, file uploads, and failure paths.
 
 ## Key Features
 
-- **Streaming Support**: True support for streaming responses and [Server-Side Events (SSE)][sse]
-- **Response Control**: Flexibility to control server responses directly via `ApplicationCall` object
-- **Delay Simulation**: Support for simulating response delays and delays between chunks
-- **Modern API**: Fluent Kotlin DSL API with [Kotest Assertions](https://kotest.io/docs/assertions/assertions.html)
-- **Error Simulation**: Ability to mock negative scenarios and error responses
+- **Streaming Support**: true support for streaming responses and [Server-Side Events (SSE)][sse]
+- **Response Control**: define HTTP status, headers, body content, stream chunks, and delays in test code
+- **Delay Simulation**: simulate response delays and delays between individual chunks
+- **Failure Simulation**: model rate limits, retry-after responses, malformed payloads, hanging streams, and timeout paths
 - **Specificity-Based Matching**: When multiple stubs match a request, Mokksy automatically selects the most specific
   one — no explicit priority configuration required for common cases
 - **Ktor Integration**: Embed Mokksy into any existing Ktor application via `Application.mokksy()` and `Route.mokksy()`
   extension functions — including behind authentication middleware
+- **AI-Mocks Layer**: use provider-specific OpenAI, Anthropic, Gemini, Ollama, and A2A mocks when the dependency is an AI API
+
+## Product architecture
+
+```text
+Application under test -> Mokksy -> Stubbed external HTTP API
+```
+
+```text
+Client opens SSE connection -> Mokksy sends event chunks -> Client handles completion, delay, or timeout
+```
+
+```text
+AI-Mocks provider DSL -> Mokksy HTTP/SSE server -> OpenAI/Anthropic/Gemini-compatible responses
+```
+
+Mokksy is the core HTTP and SSE mock server. AI-Mocks is built on top of Mokksy and adds provider-specific APIs for AI SDKs.
 
 ## Quick start
+
+For the fastest path, start with [Quick Start (5 minutes)](./quick-start/).
 
 1. Add dependencies:
 {{< code-tabs >}}
@@ -104,15 +122,31 @@ val client = HttpClient {
 }
 ```
 {{< /tab >}}
+{{< tab lang="java" >}}
+```java
+var httpClient = HttpClient.newHttpClient();
+
+var request = HttpRequest.newBuilder()
+    .uri(URI.create(mokksy.baseUrl() + "/ping"))
+    .GET()
+    .build();
+```
+{{< /tab >}}
 {{< /code-tabs >}}
 
 ## Sections
 
+- [Quick Start (5 minutes)](./quick-start/) — install Mokksy and run the first stub
+- [First integration test](./first-integration-test/) — replace a real HTTP dependency
+- [Streaming test example](./streaming-test-example/) — test SSE and chunked responses
+- [Failure simulation recipes](./failure-simulation/) — delays, timeouts, rate limits, and malformed streams
+- [Mokksy vs WireMock](./wiremock-alternative/) — streaming-focused comparison
 - [Stubbing responses](./stubbing/) — GET, POST, typed body, status-only
 - [Multipart and file uploads](./multipart/) — forms, uploaded files, multipart/mixed
 - [Streaming and SSE](./streaming/) — SSE streams, long-lived connections
 - [Request matching](./request-matching/) — matchers, specificity, priority
 - [Verification and request journal](./verification/) — verify stubs, journal modes
 - [Ktor integration](./ktor/) — embed in existing Ktor applications
+- [Ecosystem integrations](./ecosystem-integrations/) — Spring Boot, Quarkus, SDKs, and AI frameworks
 
 [sse]: https://html.spec.whatwg.org/multipage/server-sent-events.html "Server-Side Events Specification"

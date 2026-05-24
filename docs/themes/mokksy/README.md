@@ -72,7 +72,7 @@ Control sidebar position with front matter:
 
 ```yaml
 ---
-sidebar_order: 10          # lower = higher in the list
+weight: 10                 # lower = higher in the list
 sidebar_title: "Custom"    # overrides page title in the nav
 sidebar_hide: true         # exclude from sidebar entirely
 ---

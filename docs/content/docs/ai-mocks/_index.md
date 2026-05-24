@@ -1,12 +1,14 @@
 ---
 title: "AI-Mocks"
 weight: 30
-sumamry: |-
-  Official Mokksy Documentation: Get started with mock HTTP and LLM servers. Setup guides for SSE streaming, error simulation, and agent-to-agent protocols.
+summary: |-
+  Provider-specific AI mocking toolkit built on Mokksy. Test OpenAI, Anthropic, Gemini, Ollama, and Agent-to-Agent clients without real provider calls.
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy.aimocks/ai-mocks-core.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy.aimocks/ai-mocks-core)
 
-AI-Mocks provides specialized mock server implementations built on top of Mokksy for testing and development with LLM APIs.
+AI-Mocks provides specialized mock server implementations built on top of Mokksy for testing and development with AI provider APIs.
+
+Use Mokksy directly when you need a general HTTP/SSE mock server. Use AI-Mocks when your dependency is an AI provider SDK and you want provider-specific request builders, response formats, streaming behavior, and error payloads.
 
 ## Supported Providers
 

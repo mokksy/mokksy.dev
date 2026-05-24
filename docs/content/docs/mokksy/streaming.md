@@ -123,6 +123,14 @@ flow = flow {
 }
 ```
 {{< /tab >}}
+{{< tab lang="java" >}}
+```java
+mokksy.post(spec -> spec.path("/sse-ll"))
+    .respondsWithSseStream(stream -> stream
+        .chunks(Stream.generate(() -> SseEvent.data("heartbeat")))
+        .delayBetweenChunksMillis(1_000));
+```
+{{< /tab >}}
 {{< /code-tabs >}}
 <!--- INCLUDE
         }

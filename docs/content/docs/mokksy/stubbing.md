@@ -259,6 +259,12 @@ data class CreateItemRequest(val name: String, val quantity: Int)
 data class CreateItemResponse(val message: String)
 ```
 {{< /tab >}}
+{{< tab lang="java" >}}
+```java
+record CreateItemRequest(String name, int quantity) {}
+record CreateItemResponse(String message) {}
+```
+{{< /tab >}}
 {{< /code-tabs >}}
 
 ### Reified overloads
@@ -499,6 +505,30 @@ mokksy.get(
 
 client.get("/once").status shouldBe HttpStatusCode.OK
 client.get("/once").status shouldBe HttpStatusCode.NotFound
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+mokksy.get(StubConfiguration.once("single-use"), spec -> spec.path("/once"))
+    .respondsWith(response -> response.body("First and only response"));
+
+var first = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/once"))
+        .GET()
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+assertThat(first.statusCode()).isEqualTo(200);
+
+var second = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/once"))
+        .GET()
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+assertThat(second.statusCode()).isEqualTo(404);
 ```
 {{< /tab >}}
 {{< /code-tabs >}}

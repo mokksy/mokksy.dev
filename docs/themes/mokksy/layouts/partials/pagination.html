@@ -1,4 +1,4 @@
-{{ $pages := .CurrentSection.Pages.ByParam "sidebar_order" }}
+{{ $pages := .CurrentSection.Pages.ByWeight }}
 {{ $current := . }}
 {{ $prev := "" }}
 {{ $next := "" }}

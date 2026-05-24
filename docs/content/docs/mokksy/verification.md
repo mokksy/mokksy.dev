@@ -29,6 +29,12 @@ fun main() {
 mokksy.verifyNoUnmatchedStubs()
 ```
 {{< /tab >}}
+{{< tab lang="java" >}}
+```java
+// Fails if any stub has never been matched
+mokksy.verifyNoUnmatchedStubs();
+```
+{{< /tab >}}
 {{< /code-tabs >}}
 
 > **Note:** Be careful when running tests in parallel against a single `MokksyServer` instance.
@@ -45,6 +51,12 @@ These requests are recorded in the `RequestJournal` and reported together.
 ```kotlin
 // Fails if any request arrived with no matching stub
 mokksy.verifyNoUnexpectedRequests()
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+// Fails if any request arrived with no matching stub
+mokksy.verifyNoUnexpectedRequests();
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
@@ -135,6 +147,46 @@ class MyTest {
 }
 ```
 {{< /tab >}}
+{{< tab lang="java" >}}
+```java
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class MyTest {
+
+    private final Mokksy mokksy = Mokksy.create().start();
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+
+    @Test
+    void testSomething() throws Exception {
+        mokksy.get(spec -> spec.path("/hi"))
+            .respondsWith(response -> response
+                .delayMillis(100)
+                .body("Hello"));
+
+        var response = httpClient.send(
+            HttpRequest.newBuilder()
+                .uri(URI.create(mokksy.baseUrl() + "/hi"))
+                .GET()
+                .build(),
+            HttpResponse.BodyHandlers.ofString()
+        );
+
+        assertThat(response.statusCode()).isEqualTo(200);
+        assertThat(response.body()).isEqualTo("Hello");
+    }
+
+    @AfterEach
+    void afterEach() {
+        mokksy.verifyNoUnexpectedRequests();
+    }
+
+    @AfterAll
+    void afterAll() {
+        mokksy.verifyNoUnmatchedStubs();
+        mokksy.shutdown();
+    }
+}
+```
+{{< /tab >}}
 {{< /code-tabs >}}
 
 <!--- KNIT example-mokksy-verification-02.kt -->
@@ -163,6 +215,15 @@ val unmatchedRequests: List<RecordedRequest> = mokksy.findAllUnexpectedRequests(
 
 // List<StubHandle> — stubs that were never triggered
 val unmatchedStubs: List<StubHandle> = mokksy.findAllUnmatchedStubs()
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+// List<RecordedRequest> - HTTP requests with no matching stub
+var unmatchedRequests = mokksy.findAllUnexpectedRequests();
+
+// List<StubHandle> - stubs that were never triggered
+var unmatchedStubs = mokksy.findAllUnmatchedStubs();
 ```
 {{< /tab >}}
 {{< /code-tabs >}}

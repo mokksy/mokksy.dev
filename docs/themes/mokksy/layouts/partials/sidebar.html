@@ -29,7 +29,7 @@
   </div>
 
   {{/* Walk each top-level section under /docs */}}
-  {{ range $docsSection.Sections.ByParam "sidebar_order" }}
+  {{ range $docsSection.Sections.ByWeight }}
     {{- if not (.Params.sidebar_hide) }}
     <div class="sidebar-section">
       <p class="sidebar-section-title">
@@ -49,7 +49,7 @@
           {{ end }}
 
           {{/* Child pages sorted by sidebar_order then title */}}
-          {{ range (.Pages.ByParam "sidebar_order") }}
+          {{ range (.Pages.ByWeight) }}
             {{ if not (.Params.sidebar_hide) }}
             <li>
               <a href="{{ .RelPermalink }}"

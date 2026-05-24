@@ -1,5 +1,5 @@
 description: >-
-  Mokksy & AI-Mocks — mock HTTP and LLM servers for Kotlin & JVM
+  Mokksy and AI-Mocks - mock HTTP APIs with real-world behavior for Java and Kotlin integration tests
 github: https://github.com/mokksy/mokksy
 api_docs_mokksy: https://mokksy.github.io/mokksy/
 api_docs_ai_mocks: https://mokksy.github.io/ai-mocks/
@@ -32,26 +32,26 @@ author:
 
 features:
   - icon: ⚡️
-    title: True Streaming
+    title: True SSE and Streaming
     description: >-
-      Native Server-Side Events support. Simulate chunked token delivery just like real LLM APIs — with configurable delays between chunks.
+      Native Server-Sent Events and chunked response streams with controllable timing between chunks.
   - icon: 🎯
     title: Request Matching
     description: >-
-      Fluent Kotlin DSL for matching requests by model, prompt content, parameters, and headers. Return different responses per scenario.
+      Match paths, headers, request bodies, multipart uploads, and typed payloads with a fluent Java API and Kotlin DSL.
   - icon: 💥
-    title: Error Simulation
+    title: Failure Simulation
     description: >-
-      Mock rate limits, token exhaustion, network timeouts, and provider-specific error formats. Test unhappy paths reliably.
+      Model slow responses, retry-after headers, rate limits, malformed payloads, hanging streams, and timeout paths.
   - icon: ⏱
-    title: Latency Control
+    title: Deterministic CI Tests
     description: >-
-      Add configurable delays at request level or between individual streaming chunks. Reproduce real-world performance conditions in tests.
+      Run integration tests locally and in CI without API keys, provider quotas, network flakiness, or rate limits.
   - icon: 🔌
-    title: Drop-in Compatible
+    title: Framework Friendly
     description: >-
-      Point your existing Anthropic, OpenAI, or Gemini SDK client at the mock server URL. No code changes needed in your application.
+      Use Mokksy with Spring Boot, Quarkus, Ktor, JVM SDK clients, and any HTTP client that accepts a base URL.
   - icon: 🧪
-    title: Kotest Ready
+    title: AI-Mocks Layer
     description: >-
-      First-class Kotest integration with fluent assertions, concise test DSL, and full JUnit 5 support for Java teams.
+      Add provider-specific OpenAI, Anthropic, Gemini, Ollama, and A2A mocks when the dependency is an AI API.

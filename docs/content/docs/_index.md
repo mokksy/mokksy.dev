@@ -1,20 +1,61 @@
 ---
 title: "Mokksy and AI-Mocks"
-#weight: 1
+weight: 1
 summary: |-
-  Integration guides for Mokksy: Set up mock servers for LangChain4j, Spring-AI, and Google Gen AI Java SDK. Complete documentation for AI response simulation.
+  Documentation for Mokksy and AI-Mocks. Start with HTTP integration testing, then add provider-specific AI mocks when your dependency is an LLM API.
 ---
 
-Welcome to the Mokksy and AI-Mocks documentation. This documentation will help you get started with using Mokksy and AI-Mocks for mocking HTTP and LLM APIs in your projects.
+Mokksy helps Kotlin and Java teams replace external HTTP services in integration tests. Use it for deterministic stubs, real request matching, streaming responses, SSE, and failure simulation.
 
-- [Mokksy](./mokksy/)
-- AI-Mocks
-  - [OpenAI](./ai-mocks/openai/)
-  - [Anthropic](./ai-mocks/anthropic/)
-  - [Gemini](./ai-mocks/gemini/)
-  - [Ollama](./ai-mocks/ollama/)
-  - [Agent-to-Agent Protocol (A2A)](./ai-mocks/a2a/)
+AI-Mocks is built on Mokksy. Use it when the external dependency is an AI provider and you want OpenAI, Anthropic, Gemini, Ollama, or Agent-to-Agent API behavior without API keys, rate limits, or provider outages.
+
+## Start here
+
+- [Quick Start (5 minutes)](./mokksy/quick-start/)
+- [First integration test](./mokksy/first-integration-test/)
+- [Streaming test example](./mokksy/streaming-test-example/)
+- [Failure simulation recipes](./mokksy/failure-simulation/)
+
+## Products
+
+- [Mokksy overview](./mokksy/)
+- [AI-Mocks overview](./ai-mocks/)
+
+## Mokksy guides, reference, and operations
+
+- [Stubbing responses](./mokksy/stubbing/)
+- [Request matching](./mokksy/request-matching/)
+- [Verification and request journal](./mokksy/verification/)
+- [Multipart and file uploads](./mokksy/multipart/)
+- [Streaming and SSE](./mokksy/streaming/)
+- [File-based configuration](./mokksy/file-config/)
+- [Docker](./mokksy/docker/)
+
+## Shared integrations
+
+- [Integrations overview](./integrations/)
+- [Spring Boot](./integrations/spring-boot/)
+- [Ktor](./mokksy/ktor/)
+- [Quarkus](./integrations/quarkus/)
+- [LangChain4j](./integrations/langchain4j/)
+- [Koog with OpenAI](./integrations/koog/)
+- [Spring AI](./integrations/spring-ai/)
+- [OpenAI SDK](./integrations/openai-sdk/)
+- [Anthropic SDK](./integrations/anthropic-sdk/)
+
+## Compare and migrate
+
+- [Mokksy vs WireMock](./compare/wiremock/)
+
+## AI-Mocks providers
+
+- [OpenAI](./ai-mocks/openai/)
+- [Anthropic](./ai-mocks/anthropic/)
+- [Gemini](./ai-mocks/gemini/)
+- [Ollama](./ai-mocks/ollama/)
+- [Agent-to-Agent Protocol (A2A)](./ai-mocks/a2a/)
 
 ## API Reference
 
-For detailed API documentation, please visit the [API Reference](https://mokksy.dev/apidocs/).
+- [Mokksy API](https://mokksy.github.io/mokksy/)
+- [AI Mocks API](https://mokksy.github.io/ai-mocks/)

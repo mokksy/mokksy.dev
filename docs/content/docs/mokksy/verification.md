@@ -29,6 +29,12 @@ fun main() {
 mokksy.verifyNoUnmatchedStubs()
 ```
 {{< /tab >}}
+{{< tab lang="java" >}}
+```java
+// Fails if any stub has never been matched
+mokksy.verifyNoUnmatchedStubs();
+```
+{{< /tab >}}
 {{< /code-tabs >}}
 
 > **Note:** Be careful when running tests in parallel against a single `MokksyServer` instance.
@@ -45,6 +51,12 @@ These requests are recorded in the `RequestJournal` and reported together.
 ```kotlin
 // Fails if any request arrived with no matching stub
 mokksy.verifyNoUnexpectedRequests()
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+// Fails if any request arrived with no matching stub
+mokksy.verifyNoUnexpectedRequests();
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
@@ -67,7 +79,7 @@ matched no stub. For `verifyNoUnmatchedStubs()`, the right placement depends on 
 
 <!--- CLEAR -->
 <!--- INCLUDE
-import dev.mokksy.Mokksy
+import dev.mokksy.mokksy.Mokksy
 import io.kotest.matchers.equals.beEqual
 import io.kotest.matchers.shouldBe
 import io.ktor.client.HttpClient
@@ -90,7 +102,7 @@ import org.junit.jupiter.api.TestInstance
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MyTest {
 
-  val mokksy = Mokksy.create()
+  val mokksy = Mokksy(verbose = true)
   lateinit var client: HttpClient
 
   @BeforeAll
@@ -140,21 +152,15 @@ class MyTest {
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MyTest {
 
-    private final Mokksy mokksy = Mokksy.create();
-    private HttpClient httpClient;
-
-    @BeforeAll
-    void setUp() {
-        mokksy.start();
-        httpClient = HttpClient.newHttpClient();
-    }
+    private final Mokksy mokksy = Mokksy.create().start();
+    private final HttpClient httpClient = HttpClient.newHttpClient();
 
     @Test
     void testSomething() throws Exception {
         mokksy.get(spec -> spec.path("/hi"))
-            .respondsWith(builder -> builder
-                .body("Hello")
-                .delayMillis(100L));
+            .respondsWith(response -> response
+                .delayMillis(100)
+                .body("Hello"));
 
         var response = httpClient.send(
             HttpRequest.newBuilder()
@@ -175,7 +181,7 @@ class MyTest {
 
     @AfterAll
     void afterAll() {
-        mokksy.verifyNoUnmatchedStubs(); // shared instance: check once, after all tests ran
+        mokksy.verifyNoUnmatchedStubs();
         mokksy.shutdown();
     }
 }
@@ -194,6 +200,7 @@ Use the `find*` variants to retrieve the unmatched items directly for custom ass
 import dev.mokksy.mokksy.Mokksy
 import dev.mokksy.mokksy.MokksyServer
 import dev.mokksy.mokksy.start
+import dev.mokksy.mokksy.StubHandle
 import dev.mokksy.mokksy.request.RecordedRequest
 import dev.mokksy.mokksy.request.RequestSpecification
 
@@ -206,16 +213,16 @@ fun main() {
 // List<RecordedRequest> — HTTP requests with no matching stub
 val unmatchedRequests: List<RecordedRequest> = mokksy.findAllUnexpectedRequests()
 
-// List<RequestSpecification<*>> — stubs that were never triggered
-val unmatchedStubs: List<RequestSpecification<*>> = mokksy.findAllUnmatchedStubs()
+// List<StubHandle> — stubs that were never triggered
+val unmatchedStubs: List<StubHandle> = mokksy.findAllUnmatchedStubs()
 ```
 {{< /tab >}}
 {{< tab lang="java" >}}
 ```java
-// List of HTTP requests with no matching stub
+// List<RecordedRequest> - HTTP requests with no matching stub
 var unmatchedRequests = mokksy.findAllUnexpectedRequests();
 
-// List of stubs that were never triggered
+// List<StubHandle> - stubs that were never triggered
 var unmatchedStubs = mokksy.findAllUnmatchedStubs();
 ```
 {{< /tab >}}

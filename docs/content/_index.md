@@ -1,18 +1,20 @@
 ---
-title: "Mokksy and AI-Mocks"
+title: "Mokksy: HTTP mock server for Kotlin and Java integration tests"
 description: |-
-  Mokksy & AI-Mocks: The modern mock HTTP server for Kotlin & Ktor. High-fidelity mocking for OpenAI, Anthropic, Gemini, and SSE streaming where WireMock falls short.
+  Mock HTTP APIs with real-world behavior. Mokksy is a Kotlin and Java HTTP mock server for integration testing, SSE testing, streaming API testing, and failure simulation.
 Keywords:
+  - mock HTTP server
+  - HTTP mocking for Kotlin
+  - HTTP mocking for Java
+  - integration testing
+  - SSE testing
+  - streaming API testing
+  - WireMock alternative
+  - failure simulation
+  - Kotlin
+  - Java
   - Mokksy
   - AI-Mocks
-  - Mock HTTP server
-  - Kotlin
-  - Ktor
-  - OpenAI
-  - Anthropic
-  - Gemini
-  - SSE
-  - streaming
 ---
 
 Root page metadata (`title`, `description`, keywords) lives here. Visible homepage sections and chip links are in **`data/home.yaml`**. Hero carousel **Kotlin/Java samples** are markdown pages under **`content/home/examples/`** (see that folder’s `_index.md` manifest). The six feature cards use **`params.features`** in **`config/_default/params.yaml`**. Layout: **`themes/mokksy/layouts/index.html`** and **`layouts/partials/home/*.html`**.

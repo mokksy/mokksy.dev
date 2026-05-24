@@ -477,7 +477,7 @@ val response =
 response?.result shouldNotBe null
 response?.result?.apply {
 metadata.finishReason shouldBe "STOP"
-output?.text shouldBe "Ahoy there, matey! Hello!"
+output.text shouldBe "Ahoy there, matey! Hello!"
 }
 ```
 {{< /tab >}}

@@ -11,6 +11,7 @@ Each page supplies **`title`** (slide label), **`weight`** (order), front matter
 | Page | Weight | Slide title |
 |------|--------|-------------|
 | [simple-post.md](simple-post.md) | 10 | Simple POST |
+| [multipart-file-upload.md](multipart-file-upload.md) | 15 | Multipart File Upload |
 | [streaming-response.md](streaming-response.md) | 20 | Streaming Response |
 | [openai-chat-completion.md](openai-chat-completion.md) | 30 | OpenAI Chat Completion |
 

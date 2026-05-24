@@ -1,6 +1,6 @@
 ---
 title: "Stubbing responses"
-weight: 30
+weight: 20
 toc: true
 summary: |-
   Learn how to stub HTTP responses in Mokksy. Define custom body content, status codes, and headers with a fluent Kotlin DSL. Perfect for simulating complex API behaviors.
@@ -13,12 +13,15 @@ Mokksy supports all HTTP verbs. Here are some examples.
 <!--- INCLUDE
 import dev.mokksy.mokksy.Mokksy
 import dev.mokksy.mokksy.MokksyServer
+import dev.mokksy.mokksy.ServerConfiguration
+import dev.mokksy.mokksy.StubConfiguration
 import dev.mokksy.mokksy.post
 import dev.mokksy.mokksy.start
 import io.kotest.matchers.equals.beEqual
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.ktor.client.HttpClient
+import io.ktor.client.engine.java.Java
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -37,10 +40,21 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.Serializable
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.contentType
+import io.ktor.serialization.jackson.jackson
 import io.ktor.serialization.kotlinx.json.json
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.junit.jupiter.api.Test
 
 class ReadmeTest {
+    data class JacksonInput(
+        @param:JsonProperty val name: String,
+    )
+
+    data class JacksonOutput(
+        @param:JsonProperty("pikka-hi")
+        val greeting: String,
+    )
+
     val mokksy: MokksyServer = Mokksy(verbose = true).start()
     val client: HttpClient =
         HttpClient {
@@ -66,7 +80,6 @@ val expectedResponse =
   """
     {
         "response": "Pong"
-
     }
     """.trimIndent()
 
@@ -188,10 +201,10 @@ val result =
     setBody(
       // language=json
       """
-            {
-                "id": "$id"
-            }
-            """.trimIndent(),
+      {
+          "id": "$id"
+      }
+      """.trimIndent(),
     )
   }
 
@@ -256,6 +269,12 @@ data class CreateItemRequest(val name: String, val quantity: Int)
 @Serializable
 @JvmRecord
 data class CreateItemResponse(val message: String)
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+record CreateItemRequest(String name, int quantity) {}
+record CreateItemResponse(String message) {}
 ```
 {{< /tab >}}
 {{< /code-tabs >}}
@@ -330,14 +349,14 @@ assertThat(response.headers().firstValue("Foo")).hasValue("bar");
 
 Reified overloads are provided for all HTTP verbs (`get`, `post`, `put`, `delete`, `patch`, `head`,
 `options`) and the generic `method` function. Two overloads exist per verb: one taking an optional
-stub name (`name: String? = null`) and one taking a [`StubConfiguration`](../matching/#stub-specificity).
+stub name (`name: String? = null`) and one taking a [`StubConfiguration`](../request-matching/#stub-specificity).
 
 The deserialized request body is accessible inside the response lambda as `request.body()`.
 
-### Explicit KClass token
+### Explicit Class token
 
 When the type is determined at runtime or when you want an explicit name on the stub,
-pass a `KClass` token using the named `requestType` parameter:
+pass a `kotlin.reflect.KClass` / `java.lang.Class` token using the named `requestType` parameter:
 
 <!--- INCLUDE
   @Test
@@ -397,7 +416,9 @@ assertThat(accepted.statusCode()).isEqualTo(201);
   }
 -->
 
-Java callers pass the class token directly — see the Java tab above.
+Java supports typed request bodies too. Pass the request class token directly, as shown in the
+Java tabs above, and use the Kotlin examples as the canonical shape for typed request-body
+matching.
 
 Deserialization uses Ktor's `ContentNegotiation` plugin. For projects that use Jackson instead of
 `kotlinx.serialization`, create the server with `MokksyJackson.create()` (Java API) —
@@ -408,8 +429,67 @@ partial match and its failed conditions to help diagnose the mismatch.
 
 ## Jackson support
 
-By default, Mokksy uses `kotlinx.serialization` for request body deserialization. For Java-first
-projects that prefer Jackson, use `MokksyJackson.create()`:
+By default, Mokksy uses `kotlinx.serialization` for request body deserialization. Kotlin projects
+that prefer Jackson can configure the server with Ktor's Jackson content negotiation. 
+In the example below `JacksonInput` is deserialized from the request body,
+and `JacksonOutput` is serialized to response body.
+
+<!--- INCLUDE
+  @Test
+  suspend fun testJackson() {
+-->
+
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
+```kotlin
+val jacksonMokksy =
+  MokksyServer(
+    configuration =
+      ServerConfiguration(
+        verbose = true,
+        contentNegotiationConfigurer = {
+          it.jackson { findAndRegisterModules() }
+        },
+      ),
+  ).apply { start() }
+
+val jacksonClient =
+  HttpClient(Java) {
+    install(ContentNegotiation) {
+      jackson()
+    }
+    install(DefaultRequest) {
+      url(jacksonMokksy.baseUrl())
+    }
+  }
+
+jacksonMokksy
+  .post(requestType = JacksonInput::class) {
+    path = beEqual("/jackson")
+  }.respondsWith(JacksonOutput::class) {
+    val input = request.body()
+    body = JacksonOutput("Hello, ${input.name}")
+  }
+
+val result =
+  jacksonClient.post("/jackson") {
+    contentType(ContentType.Application.Json)
+    setBody(JacksonInput("Bob"))
+  }
+
+result.status shouldBe HttpStatusCode.OK
+result.bodyAsText() shouldBe """{"pikka-hi":"Hello, Bob"}"""
+
+jacksonMokksy.verifyNoUnexpectedRequests()
+```
+{{< /tab >}}
+{{< /code-tabs >}}
+
+<!--- INCLUDE
+  }
+-->
+
+For Java-first projects that prefer Jackson, use `MokksyJackson.create()`:
 
 {{< code-tabs >}}
 {{< tab lang="java" >}}
@@ -461,6 +541,65 @@ response.status shouldBe HttpStatusCode.NoContent
 ```java
 mokksy.get(spec -> spec.path("/status-only"))
     .respondsWithStatus(204);
+```
+{{< /tab >}}
+{{< /code-tabs >}}
+
+<!--- INCLUDE
+  }
+-->
+
+## One-time stubs
+
+Use `StubConfiguration(eventuallyRemove = true)` when a stub should match exactly once and then
+become ineligible for future requests. This is the supported property for once-only behavior.
+
+<!--- INCLUDE
+  @Test
+  suspend fun testEventuallyRemove() {
+-->
+
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
+```kotlin
+mokksy.get(
+  configuration =
+    StubConfiguration(
+      name = "single-use",
+      eventuallyRemove = true,
+    ),
+) {
+  path("/once")
+} respondsWith {
+  body = "First and only response"
+}
+
+client.get("/once").status shouldBe HttpStatusCode.OK
+client.get("/once").status shouldBe HttpStatusCode.NotFound
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+mokksy.get(StubConfiguration.once("single-use"), spec -> spec.path("/once"))
+    .respondsWith(response -> response.body("First and only response"));
+
+var first = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/once"))
+        .GET()
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+assertThat(first.statusCode()).isEqualTo(200);
+
+var second = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/once"))
+        .GET()
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+assertThat(second.statusCode()).isEqualTo(404);
 ```
 {{< /tab >}}
 {{< /code-tabs >}}

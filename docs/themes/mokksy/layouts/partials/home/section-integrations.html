@@ -2,18 +2,26 @@
 <section class="section" aria-label="{{ $in.aria_label }}">
   <div class="section-inner">
     <p class="section-label">{{ $in.label }}</p>
-    <div class="chips-row reveal">
-      {{ range $in.chips }}
-      {{- $u := .url -}}
-      {{- $href := $u -}}
-      {{- if findRE "#" $u 1 -}}
-        {{- $frag := index (split $u "#") 1 -}}
-        {{- $path := index (split $u "#") 0 -}}
-        {{- $href = printf "%s#%s" ($path | relURL) $frag -}}
-      {{- else -}}
-        {{- $href = relURL $u -}}
-      {{- end -}}
-      <a href="{{ $href }}"><span class="chip">{{ .text }}</span></a>
+    <h2 class="section-title">{{ $in.title }}</h2>
+    <div class="integration-groups reveal">
+      {{ range $in.groups }}
+      <div class="integration-group">
+        <h3>{{ .title }}</h3>
+        <div class="chips-row">
+          {{ range .chips }}
+          {{- $u := .url -}}
+          {{- $href := $u -}}
+          {{- if findRE "#" $u 1 -}}
+            {{- $frag := index (split $u "#") 1 -}}
+            {{- $path := index (split $u "#") 0 -}}
+            {{- $href = printf "%s#%s" ($path | relURL) $frag -}}
+          {{- else -}}
+            {{- $href = relURL $u -}}
+          {{- end -}}
+          <a href="{{ $href }}"><span class="chip">{{ .text }}</span></a>
+          {{ end }}
+        </div>
+      </div>
       {{ end }}
     </div>
   </div>

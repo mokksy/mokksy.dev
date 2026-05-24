@@ -1,6 +1,6 @@
 ---
 title: "Streaming and SSE"
-weight: 40
+weight: 50
 toc: true
 description: |-
   Server-Sent Events (SSE) enable servers to push updates to clients over a single HTTP connection. The provided code demonstrates how to use mokksy to simulate an SSE stream and verify its response in both Kotlin and Java.
@@ -121,6 +121,14 @@ flow = flow {
     emit(ServerSentEvent(data = "hello"))
     awaitCancellation() // stream stays open until client disconnects
 }
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+mokksy.post(spec -> spec.path("/sse-ll"))
+    .respondsWithSseStream(stream -> stream
+        .chunks(Stream.generate(() -> SseEvent.data("heartbeat")))
+        .delayBetweenChunksMillis(1_000));
 ```
 {{< /tab >}}
 {{< /code-tabs >}}

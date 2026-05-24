@@ -7,13 +7,13 @@ footer:
   - name: Docs
     url: /docs/
     weight: 10
+
+  - name: Docs for Agents
+    url: /llms.txt
+    weight: 20
+
   - name: GitHub
-    url: https://github.com/mokksy/mokksy/
+    url: https://github.com/mokksy/
     weight: 30
-    params:
-      external: true
-  - name: Author
-    url: https://kpavlov.me
-    weight: 40
     params:
       external: true

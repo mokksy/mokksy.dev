@@ -8,13 +8,14 @@ clean:
 
 .PHONY: hugo
 hugo:
-	(cd docs && hugo server --watch \
+	@(cd docs && hugo server --watch \
 			--gc \
 			--disableFastRender \
 			--cleanDestinationDir \
 			--templateMetricsHints \
 			--logLevel debug \
-			--buildDrafts)
+			--buildDrafts \
+	)
 
 .PHONY: docs
 docs:
@@ -29,6 +30,10 @@ knit:
 	@rm -rf docs/build
 	@./gradlew knit test --rerun-tasks
 	@echo "✅ Knit completed!"
+
+.PHONY: build
+build: knit
+	cd docs && hugo --cleanDestinationDir --minify
 
 .PHONY: lint
 lint:

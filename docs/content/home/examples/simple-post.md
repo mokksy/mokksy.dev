@@ -7,7 +7,8 @@ build:
 
 <!--- CLEAR -->
 <!--- INCLUDE
-import dev.mokksy.mokksy.MokksyServer
+import dev.mokksy.mokksy.Mokksy
+import dev.mokksy.mokksy.start
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.java.Java
 import io.ktor.client.request.post
@@ -21,8 +22,7 @@ fun main() = runBlocking {
 -->
 ```kotlin
 // Create mock server
-val mokksy = MokksyServer()
-mokksy.startSuspend()
+val mokksy = Mokksy().start()
 
 // Stub a POST endpoint
 mokksy.post {

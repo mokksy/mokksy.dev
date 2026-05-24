@@ -13,6 +13,7 @@ Mokksy supports all HTTP verbs. Here are some examples.
 <!--- INCLUDE
 import dev.mokksy.mokksy.Mokksy
 import dev.mokksy.mokksy.MokksyServer
+import dev.mokksy.mokksy.StubConfiguration
 import dev.mokksy.mokksy.post
 import dev.mokksy.mokksy.start
 import io.kotest.matchers.equals.beEqual
@@ -330,7 +331,7 @@ assertThat(response.headers().firstValue("Foo")).hasValue("bar");
 
 Reified overloads are provided for all HTTP verbs (`get`, `post`, `put`, `delete`, `patch`, `head`,
 `options`) and the generic `method` function. Two overloads exist per verb: one taking an optional
-stub name (`name: String? = null`) and one taking a [`StubConfiguration`](../matching/#stub-specificity).
+stub name (`name: String? = null`) and one taking a [`StubConfiguration`](../request-matching/#stub-specificity).
 
 The deserialized request body is accessible inside the response lambda as `request.body()`.
 
@@ -397,7 +398,9 @@ assertThat(accepted.statusCode()).isEqualTo(201);
   }
 -->
 
-Java callers pass the class token directly — see the Java tab above.
+Java supports typed request bodies too. Pass the request class token directly, as shown in the
+Java tabs above, and use the Kotlin examples as the canonical shape for typed request-body
+matching.
 
 Deserialization uses Ktor's `ContentNegotiation` plugin. For projects that use Jackson instead of
 `kotlinx.serialization`, create the server with `MokksyJackson.create()` (Java API) —
@@ -461,6 +464,41 @@ response.status shouldBe HttpStatusCode.NoContent
 ```java
 mokksy.get(spec -> spec.path("/status-only"))
     .respondsWithStatus(204);
+```
+{{< /tab >}}
+{{< /code-tabs >}}
+
+<!--- INCLUDE
+  }
+-->
+
+## One-time stubs
+
+Use `StubConfiguration(eventuallyRemove = true)` when a stub should match exactly once and then
+become ineligible for future requests. This is the supported property for once-only behavior.
+
+<!--- INCLUDE
+  @Test
+  suspend fun testEventuallyRemove() {
+-->
+
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
+```kotlin
+mokksy.get(
+  configuration =
+    StubConfiguration(
+      name = "single-use",
+      eventuallyRemove = true,
+    ),
+) {
+  path("/once")
+} respondsWith {
+  body = "First and only response"
+}
+
+client.get("/once").status shouldBe HttpStatusCode.OK
+client.get("/once").status shouldBe HttpStatusCode.NotFound
 ```
 {{< /tab >}}
 {{< /code-tabs >}}

@@ -3,7 +3,7 @@ title: Mokksy
 weight: 10
 description: Modern mock HTTP server for Kotlin & Java
 summary: |-
-  Mokksy: The modern mock HTTP server for Kotlin & Java build with Ktor. Unlike WireMock, Mokksy provides true SSE and streaming response support for advanced integration testing.
+  Mokksy: The modern mock HTTP server for Kotlin and Java built with Ktor. Unlike WireMock, Mokksy provides true SSE and streaming response support for advanced integration testing.
 ---
 [![Maven Central](https://img.shields.io/maven-central/v/dev.mokksy/mokksy.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/dev.mokksy/mokksy)
 
@@ -109,9 +109,10 @@ val client = HttpClient {
 ## Sections
 
 - [Stubbing responses](./stubbing/) — GET, POST, typed body, status-only
+- [Multipart and file uploads](./multipart/) — forms, uploaded files, multipart/mixed
 - [Streaming and SSE](./streaming/) — SSE streams, long-lived connections
-- [Request matching](./matching/) — matchers, specificity, priority
+- [Request matching](./request-matching/) — matchers, specificity, priority
 - [Verification and request journal](./verification/) — verify stubs, journal modes
-- [Ktor integration](./ktor-embedding/) — embed in existing Ktor applications
+- [Ktor integration](./ktor/) — embed in existing Ktor applications
 
 [sse]: https://html.spec.whatwg.org/multipage/server-sent-events.html "Server-Side Events Specification"

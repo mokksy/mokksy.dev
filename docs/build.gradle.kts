@@ -50,6 +50,7 @@ dependencies {
     testImplementation(libs.ktor.client.content.negotiation)
     testImplementation(libs.ktor.client.core)
     testImplementation(libs.ktor.client.java)
+    testImplementation(libs.ktor.serialization.jackson)
     testImplementation(libs.ktor.serialization.kotlinx.json)
     testImplementation(libs.ktor.sse)
 

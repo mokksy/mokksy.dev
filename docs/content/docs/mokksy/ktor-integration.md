@@ -1,7 +1,7 @@
 ---
 title: "Ktor integration"
 slug: ktor
-weight: 50
+weight: 70
 toc: true
 summary: |-
   Documentation for embedding Mokksy in Ktor: Run a mock server as a Ktor module. Perfect for local development, internal API simulation, and testing SSE streams.

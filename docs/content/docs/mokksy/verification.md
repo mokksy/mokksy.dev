@@ -194,6 +194,7 @@ Use the `find*` variants to retrieve the unmatched items directly for custom ass
 import dev.mokksy.mokksy.Mokksy
 import dev.mokksy.mokksy.MokksyServer
 import dev.mokksy.mokksy.start
+import dev.mokksy.mokksy.StubHandle
 import dev.mokksy.mokksy.request.RecordedRequest
 import dev.mokksy.mokksy.request.RequestSpecification
 
@@ -206,8 +207,8 @@ fun main() {
 // List<RecordedRequest> — HTTP requests with no matching stub
 val unmatchedRequests: List<RecordedRequest> = mokksy.findAllUnexpectedRequests()
 
-// List<RequestSpecification<*>> — stubs that were never triggered
-val unmatchedStubs: List<RequestSpecification<*>> = mokksy.findAllUnmatchedStubs()
+// List<StubHandle> — stubs that were never triggered
+val unmatchedStubs: List<StubHandle> = mokksy.findAllUnmatchedStubs()
 ```
 {{< /tab >}}
 {{< tab lang="java" >}}

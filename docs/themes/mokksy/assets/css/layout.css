@@ -13,17 +13,23 @@
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   transition: background var(--transition), border-color var(--transition);
+  gap: 12px;
 }
 
 .nav-logo {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
+  flex: 1 1 auto;
   font-family: var(--font-display), sans-serif;
   font-weight: 700;
   font-size: 17px;
   color: var(--text);
   text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .nav-logo:hover { opacity: 1; }
 .nav-logo img {
@@ -55,6 +61,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 .nav-toggle {
@@ -165,7 +172,7 @@
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-dim);
+  color: var(--text-secondary);
   margin: 2px 0 12px;
   padding: 0 10px;
 }
@@ -324,7 +331,7 @@
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-dim);
+  color: var(--text-secondary);
   margin-bottom: 8px;
   padding: 0 8px;
 }
@@ -351,7 +358,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-dim);
+  color: var(--text-secondary);
   padding: 6px 8px;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -363,7 +370,7 @@
   content: "▾";
   font-size: 11px;
   line-height: 1;
-  color: var(--text-dim);
+  color: var(--text-secondary);
   transform: rotate(-90deg);
   transition: transform var(--transition), color var(--transition);
 }
@@ -887,6 +894,26 @@
   .site-body.mobile-nav-open { overflow: hidden; }
 }
 @media (max-width: 600px) {
+  .site-nav {
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .nav-logo {
+    gap: 8px;
+    font-size: 15px;
+  }
+  .nav-logo img {
+    width: 24px;
+    height: 24px;
+  }
+  .nav-actions {
+    gap: 8px;
+  }
+  .theme-toggle,
+  .nav-toggle {
+    width: 34px;
+    height: 34px;
+  }
   .hero-actions { flex-direction: column; align-items: center; }
   .hero-carousel { margin-top: 40px; }
   .hero-terminal .tab-panel { height: clamp(200px, 50vh, 340px); }

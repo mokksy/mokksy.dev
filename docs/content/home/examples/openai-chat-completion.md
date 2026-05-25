@@ -1,5 +1,5 @@
 ---
-title: OpenAI Chat Completion
+title: "AI-Mocks: OpenAI Chat Completion"
 weight: 30
 build:
   render: never

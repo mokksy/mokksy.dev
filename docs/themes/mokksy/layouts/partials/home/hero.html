@@ -22,12 +22,11 @@
 
   <div class="hero-actions">
     <a href="{{ $h.primary_cta.url | relURL }}" class="btn btn-primary btn-lg">{{ $h.primary_cta.label }}</a>
+    <a href="{{ $h.secondary_cta.url | relURL }}" class="btn btn-ghost btn-lg">{{ $h.secondary_cta.label }}</a>
     {{ with $p.github }}
     <a href="{{ . }}" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
       {{ $h.github_cta.label }}
     </a>
     {{ end }}
   </div>
-
-  {{ partial "home/section-carousel.html" . }}
 </section>

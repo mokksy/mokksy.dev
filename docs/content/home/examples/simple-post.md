@@ -1,5 +1,5 @@
 ---
-title: Simple POST
+title: "Mokksy: Simple POST"
 weight: 10
 build:
   render: never

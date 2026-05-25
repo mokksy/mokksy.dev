@@ -14,11 +14,15 @@ hero:
     highlight: HTTP APIs
     suffix: with real-world behavior
   sub: |
-    Mokksy is a mock HTTP server for integration testing — with true streaming,
-    SSE, and failure simulation. Test your services as they behave in production.
+    Mokksy is a mock Streaming HTTP and SSE server for deterministic Java and Kotlin
+    integration testing. Test streaming APIs, retries, timeouts, and failure paths
+    through real HTTP behavior. Testing AI providers? Use AI-Mocks, built on Mokksy.
   primary_cta:
-    label: Start in 5 minutes
+    label: Start with Mokksy
     url: /docs/mokksy/quick-start/
+  secondary_cta:
+    label: Explore AI-Mocks
+    url: /docs/ai-mocks/
   github_cta:
     label: ⭐ Star on GitHub
   carousel:
@@ -39,15 +43,21 @@ why:
 
 integrations:
   aria_label: Supported integrations
-  label: "Integrations"
-  chips:
-    - { text: "🧩 Ktor", url: /docs/mokksy/ktor/ }
-    - { text: "🌱 Spring Boot", url: /docs/integrations/spring-boot/ }
-    - { text: "🚀 Quarkus", url: /docs/integrations/quarkus/ }
-    - { text: "✦ OpenAI SDK", url: /docs/integrations/openai-sdk/ }
-    - { text: "🤖 Anthropic SDK", url: /docs/integrations/anthropic-sdk/ }
-    - { text: "⛓🦜 LangChain4j", url: /docs/integrations/langchain4j/ }
-    - { text: "🌿 Spring AI", url: /docs/integrations/spring-ai/ }
+  label: "Integration paths"
+  title: "Use the right layer for your dependency"
+  groups:
+    - title: "HTTP integration testing with Mokksy"
+      chips:
+        - { text: "🧩 Ktor", url: /docs/mokksy/ktor/ }
+        - { text: "🌱 Spring Boot", url: /docs/integrations/spring-boot/ }
+        - { text: "🚀 Quarkus", url: /docs/integrations/quarkus/ }
+    - title: "AI provider testing with AI-Mocks"
+      chips:
+        - { text: "✦ OpenAI SDK", url: /docs/integrations/openai-sdk/ }
+        - { text: "🤖 Anthropic SDK", url: /docs/integrations/anthropic-sdk/ }
+        - { text: "⛓🦜 LangChain4j", url: /docs/integrations/langchain4j/ }
+        - { text: "🧠 Koog with OpenAI", url: /docs/integrations/koog/ }
+        - { text: "🌿 Spring AI", url: /docs/integrations/spring-ai/ }
 
 features_section:
   aria_label: Features
@@ -60,20 +70,22 @@ features_section:
     connection-sensitive clients in repeatable Kotlin and Java integration tests.
 
 products:
-  label: Product architecture
-  title: "Mokksy and AI-Mocks"
+  label: Choose a product
+  title: "Choose the testing layer you need"
   aria_label: Mokksy and AI-Mocks
   sub_html: |
-    <em>Mokksy</em> is the core HTTP and SSE mock server for integration testing.
-    <em>AI-Mocks</em> is the provider-specific AI testing toolkit built on top of Mokksy.
+    <em>Mokksy</em> is the core HTTP and SSE mock server.
+    <em>AI-Mocks</em> adds provider-compatible AI testing on top of Mokksy.
   cards:
     - href: /docs/mokksy/
       title: Mokksy
-      description: Replace external HTTP services in tests with deterministic stubs, streaming responses, delays, and failure simulation.
+      description: Mock any HTTP or SSE dependency with controlled responses, streaming chunks, delays, failures, uploads, and request verification.
+      action: Start with Mokksy
       delay: "0.1s"
     - href: /docs/ai-mocks/
       title: AI-Mocks
-      description: Provider-specific mocks for OpenAI, Anthropic, Gemini, Ollama, and Agent-to-Agent APIs, using Mokksy underneath.
+      description: Test OpenAI, Anthropic, Gemini, Ollama, and A2A clients with provider-compatible behavior and no real API calls.
+      action: Start with AI-Mocks
       delay: "0.3s"
   bullets:
     - "<strong>Streaming & SSE:</strong> realistic response streams"
@@ -84,11 +96,14 @@ products:
   bullets_delay: "0.5s"
 
 cta:
-  title: Catch streaming failures early
-  sub: "Run deterministic HTTP integration tests in CI without external services, API keys, rate limits, or provider outages."
+  title: Test external services without external risk
+  sub: "Use Mokksy for real HTTP and streaming behavior. Use AI-Mocks for provider-compatible AI tests without API keys, rate limits, or provider outages."
   aria_label: Call to action
   primary:
-    label: Start in 5 minutes
+    label: Start with Mokksy
     url: /docs/mokksy/quick-start/
+  secondary:
+    label: Explore AI-Mocks
+    url: /docs/ai-mocks/
   github_secondary:
     label: ⭐ Star on GitHub

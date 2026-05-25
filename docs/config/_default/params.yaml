@@ -46,7 +46,7 @@ features:
   - icon: ⏱
     title: Deterministic CI Tests
     description: >-
-      Run integration tests locally and in CI without API keys, provider quotas, network flakiness, or rate limits.
+      Run integration tests locally and in CI without depending on external service availability or network stability.
   - icon: 🔌
     title: Framework Friendly
     description: >-

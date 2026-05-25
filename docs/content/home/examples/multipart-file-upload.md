@@ -1,5 +1,5 @@
 ---
-title: Multipart File Upload
+title: "Mokksy: Multipart File Upload"
 weight: 15
 build:
   render: never

@@ -7,6 +7,7 @@
       <p>{{ $c.sub }}</p>
       <div class="cta-buttons">
         <a href="{{ $c.primary.url | relURL }}" class="btn btn-primary btn-lg">{{ $c.primary.label }}</a>
+        <a href="{{ $c.secondary.url | relURL }}" class="btn btn-ghost btn-lg">{{ $c.secondary.label }}</a>
         {{ with $p.github }}
         <a href="{{ . }}" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
           {{ $c.github_secondary.label }}

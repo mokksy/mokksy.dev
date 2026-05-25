@@ -1,5 +1,5 @@
 ---
-title: Streaming Response
+title: "Mokksy: Streaming Response"
 weight: 20
 build:
   render: never

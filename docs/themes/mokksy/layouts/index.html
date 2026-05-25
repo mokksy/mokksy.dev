@@ -2,10 +2,15 @@
 {{- if not hugo.Data.home }}{{ errorf "Add docs/data/home.yaml (homepage content)." }}{{- end }}
 <div class="landing-wrap">
   {{ partial "home/hero.html" . }}
-  {{ partial "home/section-integrations.html" . }}
+  {{ partial "home/section-products.html" . }}
+  <section class="section home-examples" aria-label="Product examples">
+    <div class="section-inner">
+      {{ partial "home/section-carousel.html" . }}
+    </div>
+  </section>
   {{ partial "home/section-why.html" . }}
   {{ partial "home/section-features.html" . }}
-  {{ partial "home/section-products.html" . }}
+  {{ partial "home/section-integrations.html" . }}
   {{ partial "home/section-cta.html" . }}
 </div>
 {{ end }}

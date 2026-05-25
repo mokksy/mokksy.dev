@@ -54,7 +54,7 @@ features_section:
   id: features
   label: Why Mokksy
   title_line1: Test real HTTP behavior
-  title_line2: before production
+  title_line2: with confidence
   sub: |
     Mock streaming APIs, slow responses, retries, partial failures, and
     connection-sensitive clients in repeatable Kotlin and Java integration tests.
@@ -84,7 +84,7 @@ products:
   bullets_delay: "0.5s"
 
 cta:
-  title: Catch streaming failures before production
+  title: Catch streaming failures early
   sub: "Run deterministic HTTP integration tests in CI without external services, API keys, rate limits, or provider outages."
   aria_label: Call to action
   primary:

@@ -725,4 +725,4 @@ fullResponse shouldBe "Ahoy there, matey! Hello!"
 <!--- KNIT example-gemini-12.kt -->
 
 Check for examples in
-the [integration tests](https://github.com/mokksy/ai-mocks/tree/main/ai-mocks-gemini/src/jvmTest/kotlin/me/kpavlov/aimocks/gemini).
+the [integration tests](https://github.com/mokksy/ai-mocks/tree/main/ai-mocks-gemini/src/jvmTest/kotlin/dev/mokksy/aimocks/gemini).

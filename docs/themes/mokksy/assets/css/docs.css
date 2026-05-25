@@ -108,10 +108,13 @@
   cursor: pointer;
   transition: all var(--transition);
 }
-.tab-btn:hover { color: var(--text-muted); background: var(--bg-code); }
+.tab-btn:hover {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
 .tab-btn.active {
-  background: var(--bg-code);
-  color: var(--text);
+  background: var(--accent-dim);
+  color: var(--accent);
 }
 
 .tab-copy-btn {

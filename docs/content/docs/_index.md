@@ -7,7 +7,7 @@ summary: |-
 
 Mokksy helps Kotlin and Java teams replace external HTTP services in integration tests. Use it for deterministic stubs, real request matching, streaming responses, SSE, and failure simulation.
 
-AI-Mocks is built on Mokksy. Use it when the external dependency is an AI provider and you want OpenAI, Anthropic, Gemini, Ollama, or Agent-to-Agent API behavior without API keys, rate limits, or provider outages.
+AI-Mocks is built on Mokksy. Use it when the external dependency is an AI provider and you want OpenAI, Anthropic, Gemini, Ollama, or Agent-to-Agent API behavior without live provider credentials, rate limits, or provider outages.
 
 ## Start here
 
@@ -38,7 +38,7 @@ AI-Mocks is built on Mokksy. Use it when the external dependency is an AI provid
 - [Ktor](./mokksy/ktor/)
 - [Quarkus](./integrations/quarkus/)
 - [LangChain4j](./integrations/langchain4j/)
-- [Koog with OpenAI](./integrations/koog/)
+- [Koog](./integrations/koog/)
 - [Spring AI](./integrations/spring-ai/)
 - [OpenAI SDK](./integrations/openai-sdk/)
 - [Anthropic SDK](./integrations/anthropic-sdk/)

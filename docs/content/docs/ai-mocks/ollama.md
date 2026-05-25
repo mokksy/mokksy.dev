@@ -569,4 +569,4 @@ result.apply {
 <!--- KNIT example-ollama-08.kt -->
 
 Check for examples in
-the [integration tests](https://github.com/mokksy/ai-mocks/tree/main/ai-mocks-ollama/src/jvmTest/kotlin/me/kpavlov/aimocks/ollama).
+the [integration tests](https://github.com/mokksy/ai-mocks/tree/main/ai-mocks-ollama/src/jvmTest/kotlin/dev/mokksy/aimocks/ollama).

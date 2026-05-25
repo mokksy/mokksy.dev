@@ -12,9 +12,9 @@ HTTP and SSE behavior, and AI-Mocks adds provider-compatible request and respons
 
 ## Supported provider guides
 
-- [OpenAI with LangChain4j](../ai-mocks/openai/#integration-with-langchain4j)
-- [Anthropic with LangChain4j](../ai-mocks/anthropic/#integration-with-langchain4j)
-- [Ollama with LangChain4j](../ai-mocks/ollama/#integration-with-langchain4j)
+- [OpenAI with LangChain4j](../../ai-mocks/openai/#integration-with-langchain4j)
+- [Anthropic with LangChain4j](../../ai-mocks/anthropic/#integration-with-langchain4j)
+- [Ollama with LangChain4j](../../ai-mocks/ollama/#integration-with-langchain4j)
 
 ## Demo
 
@@ -23,5 +23,5 @@ HTTP and SSE behavior, and AI-Mocks adds provider-compatible request and respons
 
 ## Product choice
 
-- Use [Mokksy](../mokksy/) directly for generic HTTP dependencies.
-- Use [AI-Mocks](../ai-mocks/) for provider-backed LangChain4j tests.
+- Use [Mokksy](../../mokksy/) directly for generic HTTP dependencies.
+- Use [AI-Mocks](../../ai-mocks/) for provider-backed LangChain4j tests.

@@ -111,8 +111,6 @@
 [data-theme="light"] .chroma .hl  { background: rgba(0, 51, 179, 0.08); }   /* hl_lines */
 [data-theme="light"] .code-body,
 [data-theme="light"] .tab-panel   { color: #1f1f1f; }
-[data-theme="light"] .tab-btn.active { background: var(--accent-dim); color: var(--accent); }
-[data-theme="light"] .tab-btn:hover  { background: var(--bg-secondary); color: var(--text); }
 
 /* ─── IntelliJ IDEA Darcula / New UI Dark ───────────────────────────────────── */
 [data-theme="dark"] .chroma .k,
@@ -162,5 +160,3 @@
 [data-theme="dark"] .chroma .hl   { background: rgba(255, 198, 109, 0.12); } /* hl_lines */
 [data-theme="dark"] .code-body,
 [data-theme="dark"] .tab-panel    { color: #a9b7c6; }
-[data-theme="dark"] .tab-btn      { color: #8b949e; }
-[data-theme="dark"] .tab-btn:hover { color: #c9d1d9; background: var(--bg-code); }

@@ -1,0 +1,86 @@
+{{/*
+  Shared documentation navigation tree for desktop sidebar and mobile menu.
+*/}}
+
+{{- $currentPage := . }}
+{{- $docsSection := .Site.GetPage "section" "docs" }}
+{{- if not $docsSection }}{{ return }}{{ end }}
+
+<!-- Top-level docs link -->
+<div class="sidebar-section">
+  <nav aria-label="Documentation">
+    <ul class="sidebar-nav">
+      <li>
+        <a href="{{ $docsSection.RelPermalink }}"
+           {{ if eq $currentPage.RelPermalink $docsSection.RelPermalink }}class="active" aria-current="page"{{ end }}>
+          Overview
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+{{/* Walk each top-level section under /docs */}}
+{{ range $docsSection.Sections.ByWeight }}
+  {{- if not (.Params.sidebar_hide) }}
+  {{- $sectionTitle := .Params.sidebar_title | default .Title -}}
+  {{- $isCurrentSection := or (eq $currentPage.RelPermalink .RelPermalink) (strings.HasPrefix $currentPage.RelPermalink .RelPermalink) -}}
+  <details class="sidebar-section sidebar-group" {{ if $isCurrentSection }}open{{ end }}>
+    <summary class="sidebar-group-summary">
+      <span>{{ $sectionTitle }}</span>
+    </summary>
+    <nav aria-label="{{ .Title }} navigation">
+      <ul class="sidebar-nav sidebar-group-nav">
+        {{ if .Content }}
+        <li>
+          <a href="{{ .RelPermalink }}"
+             {{ if eq $currentPage.RelPermalink .RelPermalink }}class="active" aria-current="page"{{ end }}>
+            Overview
+          </a>
+        </li>
+        {{ end }}
+
+        {{ range (.Pages.ByWeight) }}
+          {{ if not (.Params.sidebar_hide) }}
+          <li>
+            <a href="{{ .RelPermalink }}"
+               {{ if eq $currentPage.RelPermalink .RelPermalink }}class="active" aria-current="page"{{ end }}>
+              {{ .Params.sidebar_title | default .Title }}
+            </a>
+          </li>
+          {{ end }}
+        {{ end }}
+
+        {{ range (.Sections.ByWeight) }}
+          {{ if not (.Params.sidebar_hide) }}
+          <li>
+            <a href="{{ .RelPermalink }}"
+               {{ if eq $currentPage.RelPermalink .RelPermalink }}class="active" aria-current="page"{{ end }}>
+              {{ .Params.sidebar_title | default .Title }}
+            </a>
+          </li>
+          {{ end }}
+        {{ end }}
+      </ul>
+    </nav>
+  </details>
+  {{- end }}
+{{ end }}
+
+<!-- External links -->
+<div class="sidebar-section">
+  <p class="sidebar-section-title">More</p>
+  <nav>
+    <ul class="sidebar-nav">
+      {{ with .Site.Params.api_docs_mokksy }}
+      <li><a href="{{ . }}" target="_blank" rel="noopener">Mokksy API ↗</a></li>
+      {{ end }}
+      {{ with .Site.Params.api_docs_ai_mocks }}
+      <li><a href="{{ . }}" target="_blank" rel="noopener">AI-Mocks API ↗</a></li>
+      {{ end }}
+      {{ with .Site.Params.github }}
+      <li><a href="{{ . }}" target="_blank" rel="noopener">GitHub ↗</a></li>
+      {{ end }}
+    </ul>
+  </nav>
+</div>

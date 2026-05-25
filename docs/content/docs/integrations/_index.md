@@ -9,9 +9,13 @@ aliases:
   - /docs/mokksy/ecosystem-integrations/
 ---
 
-Use this section when your application or SDK can be pointed at a configurable base URL. For
-general HTTP dependencies, use Mokksy directly. For AI provider SDKs and frameworks such as
-LangChain4j, Koog, or Spring AI, use the provider-specific AI-Mocks layer built on top of Mokksy.
+Use this section when your application, framework, or SDK can be pointed at a configurable base
+URL. These pages are organized by the client or framework you use. For general HTTP dependencies,
+use Mokksy directly. For AI provider SDKs and frameworks such as LangChain4j, Koog, or Spring AI,
+use the provider-specific AI-Mocks layer built on top of Mokksy.
+
+If you need the supported endpoint surface or mock DSL for one provider rather than client setup,
+start from the [AI-Mocks provider reference](../ai-mocks/).
 
 ## Backend frameworks
 
@@ -22,7 +26,7 @@ LangChain4j, Koog, or Spring AI, use the provider-specific AI-Mocks layer built 
 ## AI frameworks and SDKs
 
 - [LangChain4j](./langchain4j/) for provider-backed LangChain4j tests with AI-Mocks
-- [Koog with OpenAI](./koog/) for Koog applications that talk to OpenAI-compatible providers through AI-Mocks
+- [Koog](./koog/) for provider-backed Koog applications; the example uses OpenAI
 - [Spring AI](./spring-ai/) for Spring AI clients that need deterministic provider behavior
 - [OpenAI SDK](./openai-sdk/) for the official `openai-java` client
 - [Anthropic SDK](./anthropic-sdk/) for the official Anthropic Java client
@@ -31,3 +35,11 @@ LangChain4j, Koog, or Spring AI, use the provider-specific AI-Mocks layer built 
 
 - Use [Mokksy](../mokksy/) when the dependency is a general HTTP API, SSE endpoint, or internal service.
 - Use [AI-Mocks](../ai-mocks/) when the dependency is OpenAI, Anthropic, Gemini, Ollama, or A2A.
+
+## Provider references
+
+- [OpenAI](../ai-mocks/openai/)
+- [Anthropic](../ai-mocks/anthropic/)
+- [Gemini](../ai-mocks/gemini/)
+- [Ollama](../ai-mocks/ollama/)
+- [Agent-to-Agent Protocol (A2A)](../ai-mocks/a2a/)

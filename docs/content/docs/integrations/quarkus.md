@@ -30,6 +30,6 @@ services.
 
 ## Where to go next
 
-- [Mokksy overview](../mokksy/) for core HTTP and SSE mocks
-- [LangChain4j](./langchain4j/) if the Quarkus service uses LangChain4j
-- [OpenAI SDK](./openai-sdk/) or [Anthropic SDK](./anthropic-sdk/) for provider SDK clients
+- [Mokksy overview](../../mokksy/) for core HTTP and SSE mocks
+- [LangChain4j](../langchain4j/) if the Quarkus service uses LangChain4j
+- [OpenAI SDK](../openai-sdk/) or [Anthropic SDK](../anthropic-sdk/) for provider SDK clients

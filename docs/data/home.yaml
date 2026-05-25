@@ -39,7 +39,7 @@ why:
   sub: |
     Unit tests don’t cover timeouts, retries, or streaming behavior.
     Mokksy lets you test real HTTP interactions — including slow responses,
-    partial streams, and connection drops — in a deterministic way.
+    partial streams, and hanging streams — in a deterministic way.
 
 integrations:
   aria_label: Supported integrations
@@ -51,13 +51,14 @@ integrations:
         - { text: "🧩 Ktor", url: /docs/mokksy/ktor/ }
         - { text: "🌱 Spring Boot", url: /docs/integrations/spring-boot/ }
         - { text: "🚀 Quarkus", url: /docs/integrations/quarkus/ }
-    - title: "AI provider testing with AI-Mocks"
+    - title: "AI frameworks and providers with AI-Mocks"
       chips:
+        - { text: "🌿 Spring AI", url: /docs/integrations/spring-ai/ }
+        - { text: "⛓🦜 LangChain4j", url: /docs/integrations/langchain4j/ }
         - { text: "✦ OpenAI SDK", url: /docs/integrations/openai-sdk/ }
         - { text: "🤖 Anthropic SDK", url: /docs/integrations/anthropic-sdk/ }
-        - { text: "⛓🦜 LangChain4j", url: /docs/integrations/langchain4j/ }
-        - { text: "🧠 Koog with OpenAI", url: /docs/integrations/koog/ }
-        - { text: "🌿 Spring AI", url: /docs/integrations/spring-ai/ }
+        - { text: "🤖 Gemini", url: /docs/ai-mocks/gemini/ }
+        - { text: "🧑‍🍳 Koog", url: /docs/integrations/koog/ }
 
 features_section:
   aria_label: Features
@@ -97,7 +98,7 @@ products:
 
 cta:
   title: Test external services without external risk
-  sub: "Use Mokksy for real HTTP and streaming behavior. Use AI-Mocks for provider-compatible AI tests without API keys, rate limits, or provider outages."
+  sub: "Use Mokksy for real HTTP and streaming behavior. Use AI-Mocks for provider-compatible AI tests without live provider credentials, rate limits, or provider outages."
   aria_label: Call to action
   primary:
     label: 🦊 Start with Mokksy

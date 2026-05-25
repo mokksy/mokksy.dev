@@ -1,16 +1,20 @@
 ---
-title: "Koog with OpenAI"
+title: "Koog"
 weight: 70
 toc: true
-description: Test OpenAI-backed Koog applications against AI-Mocks OpenAI by injecting a mock OpenAI base URL and running real Spring Boot integration tests for chat, streaming, moderation, and failure paths.
+description: Test Koog applications against AI-Mocks provider endpoints. This guide uses a verified OpenAI-backed Spring Boot example for chat, streaming, moderation, and failure paths.
 summary: |-
-  Use AI-Mocks OpenAI with Koog to test OpenAI-backed chat, streaming, moderation, and fallback behavior without real provider calls.
+  Use AI-Mocks with Koog applications; the verified example on this page tests an OpenAI-backed application without real provider calls.
 ---
 
-This page covers the verified OpenAI-backed Koog pattern from the
+Koog is an AI framework, so the appropriate AI-Mocks module depends on the provider configured in
+your application. Use the corresponding [AI-Mocks provider guide](../../ai-mocks/) when Koog is
+configured for a supported provider.
+
+The verified end-to-end example on this page is the OpenAI-backed pattern from the
 [`koog-spring-boot-assistant`](https://github.com/kpavlov/koog-spring-boot-assistant/tree/main/integration-tests/src/test/kotlin/com/example/it)
 integration tests. In that setup, Koog talks to an OpenAI-compatible provider, so the integration
-point is [AI-Mocks OpenAI](../ai-mocks/openai/) rather than plain Mokksy. The tests start
+point is [AI-Mocks OpenAI](../../ai-mocks/openai/) rather than plain Mokksy. The tests start
 `MockOpenai`, point Koog at `mockOpenai.baseUrl()`, and exercise the real Spring Boot application
 through HTTP and WebSocket clients.
 
@@ -171,6 +175,7 @@ routes in addition to chat endpoints.
 ## Source and next steps
 
 - [Koog Spring Boot Assistant integration tests](https://github.com/kpavlov/koog-spring-boot-assistant/tree/main/integration-tests/src/test/kotlin/com/example/it)
-- [AI-Mocks OpenAI](../ai-mocks/openai/)
-- [Spring Boot](./spring-boot/)
-- [OpenAI SDK](./openai-sdk/)
+- [AI-Mocks providers](../../ai-mocks/)
+- [AI-Mocks OpenAI](../../ai-mocks/openai/)
+- [Spring Boot](../spring-boot/)
+- [OpenAI SDK](../openai-sdk/)

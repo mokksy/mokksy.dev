@@ -33,11 +33,11 @@ Server-Sent-Events (SSE), and deterministic failure simulation matter.
 ## When to choose Mokksy
 
 - You test clients that consume SSE or streaming APIs.
-- You need deterministic tests for timeouts, retries, slow chunks, and partial streams.
+- You need Kotlin or Java tests that define SSE events and stream chunks directly in test code.
 - You want concise Kotlin DSLs and Java-friendly APIs in JVM test suites.
 - You use AI provider SDKs and want AI-Mocks on top of a real HTTP/SSE mock server.
 
 ## When WireMock may be enough
 
-- Your tests mostly return static request/response JSON.
-- Your team already has a mature WireMock setup and does not need streaming-specific behavior.
+- Your team already has a mature WireMock setup and its delay or fault APIs cover your scenarios.
+- You need connection-reset or malformed-response faults that WireMock already documents directly.

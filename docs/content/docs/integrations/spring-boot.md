@@ -29,9 +29,9 @@ pipelines, and internal platform dependencies.
 
 ## Where to go next
 
-- [First integration test](../mokksy/first-integration-test/) for the end-to-end test shape
-- [Stubbing responses](../mokksy/stubbing/) for response DSL examples
-- [Request matching](../mokksy/request-matching/) for path, header, and body matching
+- [First integration test](../../mokksy/first-integration-test/) for the end-to-end test shape
+- [Stubbing responses](../../mokksy/stubbing/) for response DSL examples
+- [Request matching](../../mokksy/request-matching/) for path, header, and body matching
 
-If the dependency is OpenAI, Anthropic, Gemini, Ollama, or A2A, use [AI-Mocks](../ai-mocks/)
+If the dependency is OpenAI, Anthropic, Gemini, Ollama, or A2A, use [AI-Mocks](../../ai-mocks/)
 instead of raw Mokksy.

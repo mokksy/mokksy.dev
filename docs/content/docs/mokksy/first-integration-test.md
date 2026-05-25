@@ -1,6 +1,6 @@
 ---
 title: "First integration test"
-weight: 6
+weight: 10
 toc: true
 summary: |-
   Replace a real external HTTP service with Mokksy and verify your application behavior through a real client call.

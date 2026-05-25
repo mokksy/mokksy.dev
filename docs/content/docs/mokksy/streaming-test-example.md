@@ -1,6 +1,6 @@
 ---
 title: "Streaming test example"
-weight: 7
+weight: 65
 slug: streaming-test-example
 toc: true
 summary: |-

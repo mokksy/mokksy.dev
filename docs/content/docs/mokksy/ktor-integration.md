@@ -1,10 +1,13 @@
 ---
 title: "Ktor integration"
 slug: ktor
-weight: 70
+weight: 95
 toc: true
+description: Embed Mokksy directly inside a Ktor application for integration tests, internal API simulation, and authenticated stub routes.
 summary: |-
   Documentation for embedding Mokksy in Ktor: Run a mock server as a Ktor module. Perfect for local development, internal API simulation, and testing SSE streams.
+aliases:
+  - /docs/integrations/ktor/
 ---
 If you already own a [Ktor][ktor] `Application` — a test harness with authentication middleware, custom plugins, or routes that must coexist with stubs — use the `mokksy` extension functions to mount stub handling directly, without allocating a second embedded server.
 

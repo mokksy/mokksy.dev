@@ -1,8 +1,7 @@
 ---
 title: "Docker"
-weight: 60
+weight: 90
 toc: true
-draft: true
 summary: |-
   Run Mokksy as a standalone mock server in Docker. Mount a YAML stubs file and the server loads it before accepting the first connection — no code required.
 ---

@@ -1,6 +1,6 @@
 ---
 title: "File-based configuration"
-weight: 50
+weight: 80
 toc: true
 summary: |-
   Load mock stubs from a YAML file instead of writing Kotlin DSL code. Useful for Docker environments, shared test fixtures, and teams that prefer configuration over code.

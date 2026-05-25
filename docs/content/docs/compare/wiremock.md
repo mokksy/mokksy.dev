@@ -1,9 +1,12 @@
 ---
 title: "Mokksy vs WireMock"
-weight: 9
+weight: 10
 toc: true
+description: Compare Mokksy and WireMock for HTTP integration testing, SSE, chunked streaming, deterministic failures, and Kotlin-first JVM tests.
 summary: |-
   Compare Mokksy and WireMock for Kotlin and Java integration testing, especially SSE, streaming APIs, and failure simulation.
+aliases:
+  - /docs/mokksy/wiremock-alternative/
 ---
 
 WireMock remains a strong general-purpose HTTP stubbing tool.

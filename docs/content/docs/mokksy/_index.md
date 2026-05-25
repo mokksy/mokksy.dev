@@ -136,17 +136,30 @@ var request = HttpRequest.newBuilder()
 
 ## Sections
 
+### Guides
+
 - [Quick Start (5 minutes)](./quick-start/) — install Mokksy and run the first stub
 - [First integration test](./first-integration-test/) — replace a real HTTP dependency
-- [Streaming test example](./streaming-test-example/) — test SSE and chunked responses
 - [Failure simulation recipes](./failure-simulation/) — delays, timeouts, rate limits, and malformed streams
-- [Mokksy vs WireMock](./wiremock-alternative/) — streaming-focused comparison
+- [Streaming test example](./streaming-test-example/) — test SSE and chunked responses
+
+### Reference
+
 - [Stubbing responses](./stubbing/) — GET, POST, typed body, status-only
-- [Multipart and file uploads](./multipart/) — forms, uploaded files, multipart/mixed
-- [Streaming and SSE](./streaming/) — SSE streams, long-lived connections
 - [Request matching](./request-matching/) — matchers, specificity, priority
 - [Verification and request journal](./verification/) — verify stubs, journal modes
-- [Ktor integration](./ktor/) — embed in existing Ktor applications
-- [Ecosystem integrations](./ecosystem-integrations/) — Spring Boot, Quarkus, SDKs, and AI frameworks
+- [Multipart and file uploads](./multipart/) — forms, uploaded files, multipart/mixed
+- [Streaming and SSE](./streaming/) — SSE streams, long-lived connections
+
+### Operations
+
+- [File-based configuration](./file-config/) — load stubs from YAML
+- [Docker](./docker/) — run Mokksy as a standalone mock server
+- [Ktor integration](./ktor/) — embed Mokksy directly in an existing Ktor application
+
+### Related sections
+
+- [Integrations](../integrations/) — Spring Boot, Ktor, Quarkus, SDKs, and AI frameworks
+- [Compare and migrate](../compare/) — evaluate Mokksy and plan migrations
 
 [sse]: https://html.spec.whatwg.org/multipage/server-sent-events.html "Server-Side Events Specification"

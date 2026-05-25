@@ -1,6 +1,6 @@
 ---
 title: "Failure simulation recipes"
-weight: 8
+weight: 60
 toc: true
 summary: |-
   Recipes for delayed responses, hanging streams, timeout paths, rate limits, retry-after responses, and malformed streaming data.

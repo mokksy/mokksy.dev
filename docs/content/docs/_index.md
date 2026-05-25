@@ -1,6 +1,6 @@
 ---
 title: "Mokksy and AI-Mocks"
-#weight: 1
+weight: 1
 summary: |-
   Documentation for Mokksy and AI-Mocks. Start with HTTP integration testing, then add provider-specific AI mocks when your dependency is an LLM API.
 ---
@@ -16,25 +16,44 @@ AI-Mocks is built on Mokksy. Use it when the external dependency is an AI provid
 - [Streaming test example](./mokksy/streaming-test-example/)
 - [Failure simulation recipes](./mokksy/failure-simulation/)
 
-## Mokksy
+## Products
 
 - [Mokksy overview](./mokksy/)
-- [Why Mokksy vs WireMock](./mokksy/wiremock-alternative/)
+- [AI-Mocks overview](./ai-mocks/)
+
+## Mokksy guides, reference, and operations
+
 - [Stubbing responses](./mokksy/stubbing/)
 - [Request matching](./mokksy/request-matching/)
-- [Streaming and SSE](./mokksy/streaming/)
-- [Multipart and file uploads](./mokksy/multipart/)
 - [Verification and request journal](./mokksy/verification/)
-- [Ecosystem integrations](./mokksy/ecosystem-integrations/)
+- [Multipart and file uploads](./mokksy/multipart/)
+- [Streaming and SSE](./mokksy/streaming/)
+- [File-based configuration](./mokksy/file-config/)
+- [Docker](./mokksy/docker/)
 
-## AI-Mocks
+## Shared integrations
 
-- [AI-Mocks overview](./ai-mocks/)
-  - [OpenAI](./ai-mocks/openai/)
-  - [Anthropic](./ai-mocks/anthropic/)
-  - [Gemini](./ai-mocks/gemini/)
-  - [Ollama](./ai-mocks/ollama/)
-  - [Agent-to-Agent Protocol (A2A)](./ai-mocks/a2a/)
+- [Integrations overview](./integrations/)
+- [Spring Boot](./integrations/spring-boot/)
+- [Ktor](./mokksy/ktor/)
+- [Quarkus](./integrations/quarkus/)
+- [LangChain4j](./integrations/langchain4j/)
+- [Koog with OpenAI](./integrations/koog/)
+- [Spring AI](./integrations/spring-ai/)
+- [OpenAI SDK](./integrations/openai-sdk/)
+- [Anthropic SDK](./integrations/anthropic-sdk/)
+
+## Compare and migrate
+
+- [Mokksy vs WireMock](./compare/wiremock/)
+
+## AI-Mocks providers
+
+- [OpenAI](./ai-mocks/openai/)
+- [Anthropic](./ai-mocks/anthropic/)
+- [Gemini](./ai-mocks/gemini/)
+- [Ollama](./ai-mocks/ollama/)
+- [Agent-to-Agent Protocol (A2A)](./ai-mocks/a2a/)
 
 ## API Reference
 

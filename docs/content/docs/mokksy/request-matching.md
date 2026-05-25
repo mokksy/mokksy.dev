@@ -1,6 +1,6 @@
 ---
 title: "Request matching"
-weight: 20
+weight: 30
 toc: true
 description: Match incoming requests with path, header, body, predicate, and call matchers, then resolve conflicts with specificity and priority.
 summary: |-

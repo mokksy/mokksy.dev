@@ -1,6 +1,6 @@
 ---
 title: "AI-Mocks"
-weight: 30
+weight: 20
 summary: |-
   Provider-specific AI mocking toolkit built on Mokksy. Test OpenAI, Anthropic, Gemini, Ollama, and Agent-to-Agent clients without real provider calls.
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Multipart and file uploads"
-weight: 35
+weight: 45
 toc: true
 summary: |-
   Match multipart/form-data, uploaded files, and multipart/mixed bodies in Mokksy. Verify fields, filenames, content types, and raw bytes with the request body DSL.

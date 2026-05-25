@@ -39,15 +39,15 @@ why:
 
 integrations:
   aria_label: Supported integrations
-  label: "Ecosystem integrations"
+  label: "Integrations"
   chips:
     - { text: "🧩 Ktor", url: /docs/mokksy/ktor/ }
-    - { text: "🌱 Spring Boot", url: /docs/mokksy/ecosystem-integrations/#spring-boot }
-    - { text: "🚀 Quarkus", url: /docs/mokksy/ecosystem-integrations/#quarkus }
-    - { text: "✦ OpenAI SDK", url: /docs/ai-mocks/openai/ }
-    - { text: "🤖 Anthropic SDK", url: /docs/ai-mocks/anthropic/ }
-    - { text: "⛓🦜 LangChain4j", url: "/docs/ai-mocks/openai/#integration-with-langchain4j" }
-    - { text: "🌿 Spring AI", url: "/docs/ai-mocks/openai/#integration-with-spring-ai" }
+    - { text: "🌱 Spring Boot", url: /docs/integrations/spring-boot/ }
+    - { text: "🚀 Quarkus", url: /docs/integrations/quarkus/ }
+    - { text: "✦ OpenAI SDK", url: /docs/integrations/openai-sdk/ }
+    - { text: "🤖 Anthropic SDK", url: /docs/integrations/anthropic-sdk/ }
+    - { text: "⛓🦜 LangChain4j", url: /docs/integrations/langchain4j/ }
+    - { text: "🌿 Spring AI", url: /docs/integrations/spring-ai/ }
 
 features_section:
   aria_label: Features

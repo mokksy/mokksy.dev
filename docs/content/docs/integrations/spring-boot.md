@@ -29,6 +29,8 @@ pipelines, and internal platform dependencies.
 
 ## Where to go next
 
+This is a routing guide for Spring Boot projects. Use the linked Mokksy pages for the tested stub and verification APIs, and override your application's external base-URL property in the test profile or test fixture.
+
 - [First integration test](../../mokksy/first-integration-test/) for the end-to-end test shape
 - [Stubbing responses](../../mokksy/stubbing/) for response DSL examples
 - [Request matching](../../mokksy/request-matching/) for path, header, and body matching

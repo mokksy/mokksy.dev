@@ -18,24 +18,25 @@
   min-height: 42px;
 }
 
-.code-lang {
+.code-lang,
+.code-filename,
+.tab-filename {
   font-family: var(--font-mono);
-  font-size: 12px;
   color: var(--text-dim);
+}
+
+.code-lang {
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
 .code-filename {
-  font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--text-dim);
 }
 
 .tab-filename {
-  font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--text-dim);
   margin-top: 8px;
   margin-bottom: 10px;
   padding-left: 12px;

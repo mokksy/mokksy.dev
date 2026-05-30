@@ -13,7 +13,7 @@ Mokksy provides various matcher types to specify conditions for matching incomin
 - **Path matchers** — `path("/things")` or `path = beEqual("/things")`
 - **Header matchers** — `containsHeader("X-Request-ID", "abc")` checks for a header with an exact value
 - **Content matchers** — `bodyContains("value")` checks if the raw body string contains a substring;
-  `bodyString += contain("value")` adds a Kotest matcher directly
+  `bodyString += contain("value")` adds a [Kotest](https://kotest.io/docs/assertions/assertions.html) matcher directly
 - **Predicate matchers** — `bodyMatchesPredicate { it?.name == "foo" }` matches against the typed,
   deserialized request body — see [Typed request body](../stubbing/#typed-request-body) for the full API
 - **Call matchers** — `successCallMatcher` matches if a function called with the body does not throw
@@ -22,6 +22,14 @@ Mokksy provides various matcher types to specify conditions for matching incomin
   Use negative values (e.g. `priority = -1`) for catch-all / fallback stubs.
   Priority is a tiebreaker: it applies only when two stubs match with an equal number of conditions satisfied.
   For most cases, specificity-based matching (see below) selects the right stub automatically.
+
+Predicate and call matchers are executable code. Mokksy evaluates matchers while scoring an
+incoming request against registered stubs, and it evaluates every matcher independently rather
+than short-circuiting after the first mismatch. Keep matcher side effects deterministic and cheap:
+a matcher can run for requests that eventually match a different stub, and a throwing matcher is
+logged and counted as a failed matcher for that stub. If you need to assert application state at
+the moment a matched response is sent, prefer a `respondsWith { ... }` lambda in
+[Stubbing responses](../stubbing/#run-code-when-a-request-is-matched).
 
 ## Stub specificity
 

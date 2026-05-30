@@ -12,6 +12,8 @@ plain Mokksy. Use the provider-specific guide that matches your Spring AI client
 
 ## Supported provider guides
 
+This is a routing guide for Spring AI. Choose the provider page that matches the Spring AI client configured in your application.
+
 - [OpenAI with Spring AI](../../ai-mocks/openai/#integration-with-spring-ai)
 - [Gemini with Spring AI](../../ai-mocks/gemini/#integration-with-spring-ai)
 

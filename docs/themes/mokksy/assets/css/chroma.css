@@ -2,7 +2,10 @@
    Config: docs/config/_default/markup.yaml (highlight.*). */
 
 /* ─── Base layout ───────────────────────────────────────────────────────────── */
-.highlight { margin: 1.25rem 0; }
+.highlight {
+  position: relative;
+  margin: 1.25rem 0;
+}
 .highlight pre.chroma {
   margin: 0;
   padding: 14px 0;
@@ -10,9 +13,20 @@
   font-family: var(--font-mono);
   font-size: 14.5px;
   line-height: 1.7;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 .chroma .line  { display: flex; }
+
+.highlight pre.chroma code,
+.chroma .line,
+.chroma .ln,
+.chroma .cl,
+.chroma .cl > span {
+  font-size: inherit;
+  line-height: inherit;
+}
 
 .chroma .ln {
   display: inline-block;
@@ -31,10 +45,6 @@
 .chroma .cl { padding-right: 18px; flex: 1; }
 
 /* Language label — populated by JS via data-lang on .highlight */
-.highlight {
-  position: relative;
-  margin: 1.25rem 0;
-}
 .highlight[data-lang]::before {
   content: attr(data-lang);
   position: absolute;

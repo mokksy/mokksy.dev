@@ -18,6 +18,7 @@ It is especially useful when static JSON responses are not enough: streaming API
 
 - **Streaming Support**: true support for streaming responses and [Server-Side Events (SSE)][sse]
 - **Response Control**: define HTTP status, headers, body content, stream chunks, and delays in test code
+- **Per-Request Test Logic**: run Kotlin or Java code inside response builders and predicate matchers when requests are evaluated
 - **Delay Simulation**: simulate response delays and delays between individual chunks
 - **Failure Simulation**: model rate limits, retry-after responses, malformed payloads, hanging streams, and timeout paths
 - **Specificity-Based Matching**: When multiple stubs match a request, Mokksy automatically selects the most specific
@@ -44,95 +45,8 @@ Mokksy is the core HTTP and SSE mock server. AI-Mocks is built on top of Mokksy 
 
 ## Quick start
 
-For the fastest path, start with [Quick Start (5 minutes)](./quick-start/).
-
-1. Add dependencies:
-{{< code-tabs >}}
-{{< tab lang="kotlin" filename="build.gradle.kts" >}}
-   ```kotlin
-   dependencies {               
-        // for multiplatform projects
-       implementation("dev.mokksy:mokksy:$latestVersion")
-        // for JVM projects
-       implementation("dev.mokksy:mokksy-jvm:$latestVersion")
-   }
-   ``` 
-{{< /tab >}}
-{{< tab lang="xml" filename="pom.xml" >}}
-   ```xml
-    <dependency>
-        <groupId>dev.mokksy</groupId>
-        <artifactId>mokksy-jvm</artifactId>
-        <version>[LATEST_VERSION]</version>
-        <scope>test</scope>
-    </dependency>
-   ```
-{{< /tab >}}
-{{< /code-tabs >}}
-
-
-2. Create and start Mokksy server:
-
-   **Kotlin — all platforms (coroutine-based):**
-
-{{< code-tabs >}}
-{{< tab lang="kotlin" >}}
-   ```kotlin
-   import dev.mokksy.mokksy.Mokksy
-
-   val mokksy = Mokksy()
-   mokksy.startSuspend()
-   mokksy.awaitStarted() // port() and baseUrl() are safe after this point
-   ```
-{{< /tab >}}
-{{< /code-tabs >}}
-
-   **Kotlin — JVM blocking / Java:**
-
-{{< code-tabs >}}
-{{< tab lang="kotlin" >}}
-   ```kotlin
-   import dev.mokksy.mokksy.Mokksy
-
-   val mokksy = Mokksy().start()
-   ```
-{{< /tab >}}
-{{< tab lang="java" >}}
-```java
-import dev.mokksy.Mokksy;
-
-Mokksy mokksy = Mokksy.create();
-mokksy.start(); // baseUrl() is safe after start() returns
-```
-{{< /tab >}}
-{{< /code-tabs >}}
-
-3. Configure your HTTP client to use the Mokksy server's base URL:
-
-{{< code-tabs >}}
-{{< tab lang="kotlin" >}}
-```kotlin
-val client = HttpClient {
-  install(DefaultRequest) {
-    url(mokksy.baseUrl())
-  }
-  install(ContentNegotiation) {
-    json()
-  }
-}
-```
-{{< /tab >}}
-{{< tab lang="java" >}}
-```java
-var httpClient = HttpClient.newHttpClient();
-
-var request = HttpRequest.newBuilder()
-    .uri(URI.create(mokksy.baseUrl() + "/ping"))
-    .GET()
-    .build();
-```
-{{< /tab >}}
-{{< /code-tabs >}}
+Start with [Quick Start (5 minutes)](./quick-start/) if you want the shortest path from an empty test to a running local mock server.
+Then use [First integration test](./first-integration-test/) to wire Mokksy into application code and verify the request journal.
 
 ## Sections
 
@@ -140,8 +54,8 @@ var request = HttpRequest.newBuilder()
 
 - [Quick Start (5 minutes)](./quick-start/) — install Mokksy and run the first stub
 - [First integration test](./first-integration-test/) — replace a real HTTP dependency
-- [Failure simulation recipes](./failure-simulation/) — delays, timeouts, rate limits, and malformed streams
-- [Streaming test example](./streaming-test-example/) — test SSE and chunked responses
+- [Failure simulation](./failure-simulation/) — delays, timeouts, rate limits, and malformed streams
+- [Streaming and SSE](./streaming/) — test SSE, chunked responses, and long-lived streams
 
 ### Reference
 
@@ -149,7 +63,6 @@ var request = HttpRequest.newBuilder()
 - [Request matching](./request-matching/) — matchers, specificity, priority
 - [Verification and request journal](./verification/) — verify stubs, journal modes
 - [Multipart and file uploads](./multipart/) — forms, uploaded files, multipart/mixed
-- [Streaming and SSE](./streaming/) — SSE streams, long-lived connections
 
 ### Operations
 

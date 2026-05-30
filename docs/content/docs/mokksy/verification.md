@@ -3,7 +3,7 @@ title: "Verification and request journal"
 weight: 40
 toc: true
 summary: |-
-  Verify your tests with Mokksy. Learn how to catch unmatched requests and unused stubs using the Request Journal to ensure your integration tests are 100% accurate.
+  Verify your tests with Mokksy. Catch unmatched requests and unused stubs with the request journal.
 ---
 Mokksy provides two complementary verification methods that check opposite sides of the stub/request contract.
 
@@ -213,6 +213,9 @@ fun main() {
 // List<RecordedRequest> — HTTP requests with no matching stub
 val unmatchedRequests: List<RecordedRequest> = mokksy.findAllUnexpectedRequests()
 
+// List<RecordedRequest> — matched requests, populated only in JournalMode.FULL
+val matchedRequests: List<RecordedRequest> = mokksy.findAllMatchedRequests()
+
 // List<StubHandle> — stubs that were never triggered
 val unmatchedStubs: List<StubHandle> = mokksy.findAllUnmatchedStubs()
 ```
@@ -232,7 +235,16 @@ var unmatchedStubs = mokksy.findAllUnmatchedStubs();
 -->
 <!--- KNIT example-mokksy-verification-03.kt -->
 
-`RecordedRequest` is an immutable snapshot that captures `method`, `uri`, and `headers` of the incoming request.
+`StubHandle` and `RecordedRequest` answer different questions:
+
+- `StubHandle` identifies a registered stub. It exposes the optional stub `name`, `matchCount()`,
+  and verification helpers such as `verifyCalled()`. It does not contain HTTP request details.
+- `RecordedRequest` is the request journal entry. It captures the incoming request `method`,
+  `uri`, `headers`, whether it `matched` a stub, and `bodyAsText` when Mokksy can safely read the
+  request body as text.
+
+Use `StubHandle` when you need to verify that a known stub was called. Use `RecordedRequest` when
+you need to inspect what the client actually sent, especially for unexpected requests.
 
 ## Request journal
 

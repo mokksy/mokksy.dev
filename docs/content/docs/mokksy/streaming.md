@@ -2,14 +2,24 @@
 title: "Streaming and SSE"
 weight: 50
 toc: true
+aliases:
+  - /docs/mokksy/streaming-test-example/
 description: |-
   Server-Sent Events (SSE) enable servers to push updates to clients over a single HTTP connection. The provided code demonstrates how to use mokksy to simulate an SSE stream and verify its response in both Kotlin and Java.
 summary: |-
-  Mock true Server-Sent Events (SSE) and chunked streaming responses with Mokksy. Overcome WireMock limitations with native support for real-time data flow in Kotlin.
+  Mock true Server-Sent Events (SSE) and chunked streaming responses with Mokksy. Test real-time data flow, stream timing, and long-lived connections from Kotlin and Java.
 ---
 ## Server-Sent Events (SSE)
 
 [Server-Sent Events (SSE)][sse] allow a server to push updates to the client over a single, long-lived HTTP connection.
+
+Streaming clients fail in ways static JSON tests cannot catch: missed chunks, early completion, timeout handling, buffering, and reconnect logic.
+
+```text
+Client opens SSE connection -> Mokksy sends event chunks -> Client handles stream completion, delay, or timeout
+```
+
+This example defines an SSE endpoint, emits two events with controlled timing, and verifies that the client receives a real `text/event-stream` response.
 
 <!--- CLEAR -->
 <!--- INCLUDE
@@ -21,6 +31,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
@@ -112,14 +123,17 @@ To keep it open (e.g. for clients that reconnect on close), end the flow with `a
     }
     @Test
     suspend fun testLongLivedSse() {
-        mokksy.post { path = beEqual("/sse-ll") } respondsWithSseStream {
 -->
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
 ```kotlin
-flow = flow {
+mokksy.post {
+  path = beEqual("/sse-ll")
+} respondsWithSseStream {
+  flow = flow {
     emit(ServerSentEvent(data = "hello"))
-    awaitCancellation() // stream stays open until client disconnects
+    awaitCancellation()
+  }
 }
 ```
 {{< /tab >}}
@@ -133,9 +147,80 @@ mokksy.post(spec -> spec.path("/sse-ll"))
 {{< /tab >}}
 {{< /code-tabs >}}
 <!--- INCLUDE
-        }
     }
 -->
+
+## SSE response with chunk delays
+
+Use `delayBetweenChunks` when you want to verify that a client handles events as they arrive, instead of waiting for the full response body.
+
+<!--- INCLUDE
+    @Test
+    suspend fun testSseWithChunkDelays() {
+-->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
+```kotlin
+mokksy.get {
+  path("/events")
+} respondsWithSseStream {
+  delayBetweenChunks = 100.milliseconds
+  chunks += ServerSentEvent(data = """{"status":"accepted"}""")
+  chunks += ServerSentEvent(data = """{"status":"processed"}""")
+}
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+mokksy.get(spec -> spec.path("/events"))
+    .respondsWithSseStream(stream -> stream
+        .delayBetweenChunksMillis(100)
+        .chunk(SseEvent.data("{\"status\":\"accepted\"}"))
+        .chunk(SseEvent.data("{\"status\":\"processed\"}")));
+```
+{{< /tab >}}
+{{< /code-tabs >}}
+<!--- INCLUDE
+    }
+-->
+
+## Plain text stream
+
+Use `respondsWithStream` for non-SSE streaming responses, such as line-delimited downloads or APIs that return partial data before the transfer completes.
+
+<!--- INCLUDE
+    @Test
+    suspend fun testPlainTextStream() {
+-->
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
+```kotlin
+mokksy.get {
+  path("/download")
+} respondsWithStream {
+  delayBetweenChunks = 50.milliseconds
+  chunks += "part-1\n"
+  chunks += "part-2\n"
+}
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+mokksy.get(spec -> spec.path("/download"))
+    .respondsWithStream(stream -> stream
+        .delayBetweenChunksMillis(50)
+        .chunk("part-1\n")
+        .chunk("part-2\n"));
+```
+{{< /tab >}}
+{{< /code-tabs >}}
+<!--- INCLUDE
+    }
+-->
+
+Use these examples to test code that processes data before the full response is available.
+For timeout, retry, and malformed-stream cases, continue with [Failure simulation](../failure-simulation/).
+
 <!--- SUFFIX
 }
 -->

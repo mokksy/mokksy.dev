@@ -13,8 +13,8 @@ AI-Mocks is built on Mokksy. Use it when the external dependency is an AI provid
 
 - [Quick Start (5 minutes)](./mokksy/quick-start/)
 - [First integration test](./mokksy/first-integration-test/)
-- [Streaming test example](./mokksy/streaming-test-example/)
-- [Failure simulation recipes](./mokksy/failure-simulation/)
+- [Streaming and SSE](./mokksy/streaming/)
+- [Failure simulation](./mokksy/failure-simulation/)
 
 ## Products
 

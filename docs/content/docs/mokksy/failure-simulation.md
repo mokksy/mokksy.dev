@@ -1,14 +1,16 @@
 ---
-title: "Failure simulation recipes"
+title: "Failure simulation"
 weight: 60
 toc: true
 summary: |-
-  Recipes for delayed responses, hanging streams, timeout paths, rate limits, retry-after responses, and malformed streaming data.
+  Simulate delayed responses, hanging streams, timeout paths, rate limits, retry-after responses, and malformed streaming data.
 ---
 
-Production HTTP clients need more than happy-path JSON. Use these recipes to verify retries, backoff, timeouts, stream parsing, and fallback behavior.
+Production HTTP clients need more than happy-path JSON. Use these patterns to verify retries, backoff, timeouts, stream parsing, and fallback behavior.
 
 ## Delayed response
+
+Use `delay` when the server should accept the request but wait before sending the response.
 
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
@@ -32,6 +34,8 @@ mokksy.get(spec -> spec.path("/slow"))
 {{< /code-tabs >}}
 
 ## Delayed chunks
+
+Use `delayBetweenChunks` when the response should arrive incrementally and the client must process partial data.
 
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
@@ -57,6 +61,8 @@ mokksy.get(spec -> spec.path("/slow-stream"))
 {{< /code-tabs >}}
 
 ## Hanging request or stream
+
+Use a stream that never completes when you need to verify client-side read timeouts, cancellation, or reconnect behavior.
 
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
@@ -85,6 +91,8 @@ Use this with a short client timeout to verify timeout handling.
 
 ## Retry-after and rate limiting
 
+Return `429 Too Many Requests` with `Retry-After` when the client should back off and retry later.
+
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
 ```kotlin
@@ -110,6 +118,8 @@ mokksy.post(spec -> spec.path("/payments"))
 
 ## Malformed SSE
 
+Send malformed event-stream data when you need to test parser failures and fallback behavior.
+
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
 ```kotlin
@@ -134,6 +144,8 @@ mokksy.get(spec -> spec.path("/malformed-events"))
 {{< /code-tabs >}}
 
 ## Partial failure
+
+Send only part of the expected response when the client must handle incomplete transfers or timeout after partial data.
 
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}

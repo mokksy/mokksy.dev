@@ -30,6 +30,8 @@ services.
 
 ## Where to go next
 
+This is a routing guide for Quarkus projects. Use the linked Mokksy and AI-Mocks pages for the tested APIs, and override the outbound base-URL configuration value in your Quarkus test setup.
+
 - [Mokksy overview](../../mokksy/) for core HTTP and SSE mocks
 - [LangChain4j](../langchain4j/) if the Quarkus service uses LangChain4j
 - [OpenAI SDK](../openai-sdk/) or [Anthropic SDK](../anthropic-sdk/) for provider SDK clients

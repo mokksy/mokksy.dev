@@ -11,6 +11,8 @@ This guide gets you from an empty test to a local HTTP mock server. You will stu
 
 ## Add the test dependency
 
+Add Mokksy to the test classpath. Most JVM projects should use `mokksy-jvm` as a test dependency.
+
 {{< code-tabs >}}
 {{< tab lang="kotlin" filename="build.gradle.kts" >}}
 ```kotlin
@@ -32,6 +34,8 @@ dependencies {
 {{< /code-tabs >}}
 
 ## Stub and call an HTTP endpoint
+
+Start Mokksy before the system under test creates its HTTP client, register the expected stub, then call the endpoint through a real HTTP client.
 
 {{< code-tabs >}}
 {{< tab lang="kotlin" >}}
@@ -100,4 +104,4 @@ mokksy.shutdown();
 - The external service is replaced by Mokksy.
 - The response is deterministic and can run in CI without API keys or network access.
 
-Next, build a complete [first integration test](../first-integration-test/) or test a [streaming API](../streaming-test-example/).
+Next, build a complete [first integration test](../first-integration-test/) or test a [streaming API](../streaming/).

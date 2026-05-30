@@ -10,7 +10,7 @@ AI-Mocks provides specialized mock server implementations built on top of Mokksy
 
 Use Mokksy directly when you need a general HTTP/SSE mock server. Use AI-Mocks when your dependency is an AI provider SDK and you want provider-specific request builders, response formats, streaming behavior, and error payloads.
 
-## Supported Providers
+## Supported providers
 
 - [OpenAI API (`ai-mocks-openai`)](./openai/)
 - [Anthropic API (`ai-mocks-anthropic`)](./anthropic/)
@@ -18,17 +18,17 @@ Use Mokksy directly when you need a general HTTP/SSE mock server. Use AI-Mocks w
 - [Ollama (`ai-mocks-ollama`)](./ollama/)
 - [Agent-to-Agent Protocol (A2A) (`ai-mocks-a2a`)](./a2a/)
 
-## Feature Support Matrix
+## Feature support matrix
 
-| Feature              | OpenAI    | Anthropic | Gemini | Ollama   | A2A                                  |
-|----------------------|-----------|-----------|--------|----------|--------------------------------------|
-| **Chat Completions** | ✅         | ✅         | ✅      | ✅        | ❌                                    |
-| **Streaming**        | ✅         | ✅         | ✅      | ✅        | ✅                                    |
-| **Embeddings**       | ✅         | ❌         | ❌      | ✅        | ❌                                    |
-| **Moderation**       | ✅         | ❌         | ❌      | ❌        | ❌                                    |
-| **Additional APIs**  | Responses | -         | -      | Generate | Full A2A Protocol<br/>(11 endpoints) |
+| Feature | OpenAI | Anthropic | Gemini | Ollama | A2A |
+|---------|--------|-----------|--------|--------|-----|
+| Provider request/response mocking | Chat Completions, Responses | Messages | Generate Content | Chat, Generate | JSON-RPC A2A endpoints |
+| Streaming responses | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Embeddings | ✅ | ❌ | ❌ | ✅ | ❌ |
+| Moderation | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Additional APIs | Responses | - | - | Generate | Full A2A Protocol<br/>(11 endpoints) |
 
-### API Details by Provider
+### API details by provider
 
 #### OpenAI
 - **Chat Completions** (`/v1/chat/completions`) - with streaming support

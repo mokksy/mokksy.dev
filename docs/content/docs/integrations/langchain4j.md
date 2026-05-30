@@ -12,6 +12,8 @@ HTTP and SSE behavior, and AI-Mocks adds provider-compatible request and respons
 
 ## Supported provider guides
 
+This is a routing guide for LangChain4j. Choose the provider page that matches the model client configured in your application.
+
 - [OpenAI with LangChain4j](../../ai-mocks/openai/#integration-with-langchain4j)
 - [Anthropic with LangChain4j](../../ai-mocks/anthropic/#integration-with-langchain4j)
 - [Ollama with LangChain4j](../../ai-mocks/ollama/#integration-with-langchain4j)

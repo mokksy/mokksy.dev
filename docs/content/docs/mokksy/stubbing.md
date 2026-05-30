@@ -3,7 +3,7 @@ title: "Stubbing responses"
 weight: 20
 toc: true
 summary: |-
-  Learn how to stub HTTP responses in Mokksy. Define custom body content, status codes, and headers with a fluent Kotlin DSL. Perfect for simulating complex API behaviors.
+  Learn how to stub HTTP responses in Mokksy. Define custom body content, status codes, and headers with the Kotlin DSL or Java API.
 ---
 Mokksy supports all HTTP verbs. Here are some examples.
 
@@ -43,6 +43,7 @@ import io.ktor.http.contentType
 import io.ktor.serialization.jackson.jackson
 import io.ktor.serialization.kotlinx.json.json
 import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.coroutines.sync.Semaphore
 import org.junit.jupiter.api.Test
 
 class ReadmeTest {
@@ -427,10 +428,10 @@ see [Jackson support](#jackson-support) below.
 When no stub matches and verbose mode is on (`Mokksy(verbose = true)`), Mokksy logs the closest
 partial match and its failed conditions to help diagnose the mismatch.
 
-## Jackson support
+### Jackson support
 
-By default, Mokksy uses `kotlinx.serialization` for request body deserialization. Kotlin projects
-that prefer Jackson can configure the server with Ktor's Jackson content negotiation. 
+By default, Mokksy uses `kotlinx.serialization` for request body deserialization. Java and Kotlin projects
+that prefer [Jackson](https://github.com/FasterXML/jackson) can configure the server with Ktor's Jackson content negotiation.
 In the example below `JacksonInput` is deserialized from the request body,
 and `JacksonOutput` is serialized to response body.
 
@@ -600,6 +601,71 @@ var second = httpClient.send(
     HttpResponse.BodyHandlers.ofString()
 );
 assertThat(second.statusCode()).isEqualTo(404);
+```
+{{< /tab >}}
+{{< /code-tabs >}}
+
+<!--- INCLUDE
+  }
+-->
+
+## Run code when a request is matched
+
+`respondsWith { ... }` and `respondsWithStream { ... }` are lambdas. Mokksy evaluates the lambda
+for the matched request immediately before it builds the response, so you can inspect test state,
+coordinate concurrent code, or build a response from the incoming request.
+
+Use this for assertions that must happen at the moment the dependency is called. In this example,
+the response lambda checks a coroutine `Semaphore` before returning the response:
+
+<!--- INCLUDE
+  @Test
+  suspend fun testResponseLambdaCanInspectTestState() {
+-->
+
+{{< code-tabs >}}
+{{< tab lang="kotlin" >}}
+```kotlin
+val semaphore = Semaphore(permits = 0)
+
+mokksy.post {
+  path("/jobs")
+} respondsWith {
+  semaphore.availablePermits shouldBe 0
+  body = "accepted"
+  httpStatus = HttpStatusCode.Accepted
+  semaphore.release()
+}
+
+val response = client.post("/jobs")
+
+response.status shouldBe HttpStatusCode.Accepted
+response.bodyAsText() shouldBe "accepted"
+semaphore.availablePermits shouldBe 1
+```
+{{< /tab >}}
+{{< tab lang="java" >}}
+```java
+var semaphore = new Semaphore(0);
+
+mokksy.post(spec -> spec.path("/jobs"))
+    .respondsWith(response -> {
+        assertThat(semaphore.availablePermits()).isZero();
+        response.status(202).body("accepted");
+        semaphore.release();
+    });
+
+var result = httpClient.send(
+    HttpRequest.newBuilder()
+        .uri(URI.create(mokksy.baseUrl() + "/jobs"))
+        .POST(HttpRequest.BodyPublishers.noBody())
+        .build(),
+    HttpResponse.BodyHandlers.ofString()
+);
+
+assertThat(result.statusCode()).isEqualTo(202);
+assertThat(result.body()).isEqualTo("accepted");
+assertThat(semaphore.availablePermits()).isEqualTo(1);
 ```
 {{< /tab >}}
 {{< /code-tabs >}}

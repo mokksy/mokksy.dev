@@ -5,7 +5,7 @@ weight: 95
 toc: true
 description: Embed Mokksy directly inside a Ktor application for integration tests, internal API simulation, and authenticated stub routes.
 summary: |-
-  Documentation for embedding Mokksy in Ktor: Run a mock server as a Ktor module. Perfect for local development, internal API simulation, and testing SSE streams.
+  Embed Mokksy in Ktor: run a mock server as a Ktor module for local development, internal API simulation, and SSE stream tests.
 aliases:
   - /docs/integrations/ktor/
 ---
